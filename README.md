@@ -8,6 +8,7 @@ At this time, the main goals of this project is to code a little website with :
 * Registration : Validity check - email confirmation
 * Connection : SHA - Profile page redirection
 * Profile : Avatar and personal infos changeable by the user
+* Predicates and functions
 
 In complement of the pages, a good database structure must be done
 
