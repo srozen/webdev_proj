@@ -5,7 +5,7 @@ Web development class project for the EPHEC, year 2014-2015.
 ######Tue 27 Jan
 
 At this time, the main goals of this project is to code a little website with :
-* Registration : Validity check - email confirmation
+* Registration : Validity check - email confirmation - (CAPTCHA)
 * Connection : SHA - Profile page redirection
 * Profile : Avatar and personal infos changeable by the user
 * Predicates and functions
