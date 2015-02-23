@@ -8,8 +8,8 @@ PASSWORD = "";
 	# e.g "~/Documents/index.html"
 # $2 Specify the emplacement on Delvigne's server
 	# e.g "TRAV/5_site_core"
-function yd_up(){
-	curl --insecure --ftp-ssl -T $1 ftp://$USERNAME:$PASSWORD@193.190.65.94/$2/
+function yd_put(){
+	curl --insecure --ssl -T $1 ftp://$USERNAME:$PASSWORD@193.190.65.94/$2/
 }
 
 #Delete a file on Delvigne server
@@ -19,7 +19,7 @@ function yd_up(){
 # $2 Specify the emplacement on Delvigne's server
 	# e.g "ESSAIS"
 function yd_del(){
-	curl --insecure --ftp-ssl ftp://$USERNAME:$PASSWORD@193.190.65.94/$2/ -X "DELE $1"
+	curl --insecure --ssl ftp://$USERNAME:$PASSWORD@193.190.65.94/$2/ -X "DELE $1"
 }
 
 #Download a file on Delvigne server
@@ -29,5 +29,5 @@ function yd_del(){
 # $2 Specify the file emplacement on Delvigne's server
 	# e.g "ESSAIS/the_remote_file.txt"
 function yd_get(){
-	curl --insecure --ftp-ssl ftp://$USERNAME:$PASSWORD@193.190.65.94/$2 -o $1
+	curl --insecure --ssl -T ftp://$USERNAME:$PASSWORD@193.190.65.94/$2 -o $1
 }
