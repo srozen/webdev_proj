@@ -15,6 +15,8 @@
 </html>
 
 <?php
+
+	include 'smart_resize_image.function.php';
 	//Destination directory - Same as script for now
 	$target_dir = "";
 	//Specifies path of the file to be uploaded
@@ -45,6 +47,7 @@
 	} else {
 		if(move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
 			echo "The file " . basename($_FILES["image"]["name"]) . " has been uploaded.";
+			smart_resize_image($target_file, null, 200, 200, false, $target_file, false, false, 100);
 		} else {
 			echo "Sorry, there was an error uploading your file.";
 		}
