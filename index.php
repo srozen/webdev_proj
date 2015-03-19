@@ -1,44 +1,54 @@
 <?php
-	$css;
+	$page_type;
+	if(isset($_GET['page'])) $page_type = $_GET['page'];
+	else $page_type='index';
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8"/>
 		<title>PMM - Project</title>
-<?php
-	if(isset($_GET['style']) AND !empty($_GET['style'])) {		
-	switch($_GET['style']){
-	case 'green' : $css = 'green.css'; break;
-	case 'red' : $css = 'red.css'; break;
-	case 'blue' : $css = 'blue.css'; break;
-	}
-	}
-?>
-		<link rel="stylesheet" type="text/css" href="<?php echo $css; ?>"/>
 	</head>
 
 	<body>
-		<nav>
-			<a href="index.php?style=green">Green Theme</a>
-			<a href="index.php?style=red">Red Theme</a>
-			<a href="index.php?style=blue">Blue Theme</a>
-		</nav>
 
 		<header>
 			<h1>Header</h2>
-		</header>
 
-		<nav>
-			<a href="#">Accueil</a>
-			<a href="#">Normale</a>
-			<a href="#">Contact</a>
-			<a href="#">Inscription</a>
-			<a href="#">Connexion</a>
-		</nav>
+			<nav>
+				<a href="index.php?page=index">Accueil</a>
+				<a href="index.php?page=normal">Normale</a>
+				<a href="index.php?page=contact">Contact</a>
+				<a href="index.php?page=subscribe">Inscription</a>
+				<a href="index.php?page=login">Connexion</a>
+			</nav>
+
+		</header>
 
 		<section>
 			<h1>Body</h1>
+			<?php
+				switch($page_type) {
+					case 'index':
+						echo '<h2>Page index</h2>';
+						break;
+					case 'normal':
+						echo '<h2>Page normale</h2>';
+						break;
+					case 'contact':
+						include 'contact.php';
+						break;
+					case 'subscribe':
+						echo '<h2>Page d\'inscription</h2>';
+						break;
+					case 'login':
+						echo '<h2>Page de connexion</h2>';
+						break;
+					default:
+						echo '<h2>Page sans choix</h2>';
+				}
+			?>
+
 		</section>
 
 		<footer>
