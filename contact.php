@@ -4,11 +4,11 @@
 
 <h1>Formulaire de contact</h1> 
 <form name="contact" method="post" action="index.php?page=contact">
-	Mail : 
+	Mail : <br/> 
 	<input type="text" name="cmail"/><br/>
-	Sujet : 
+	Sujet : <br/>
 	<input type="text" name="csubject"/><br/>
-	Message : 
+	Message : <br/>
 	<textarea name="cmessage"></textarea><br/>
 	<input type="submit" name="csubmit"/>
 </form>
@@ -22,5 +22,7 @@
 			'Reply-To: admin@kek.com' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 				mail($_POST['cmail'], $_POST['csubject'], $_POST['cmessage'], $headers);
 		}
+
+		echo '<p style="color : #FF0000">Le mail a été envoyé.</p>';
 	}
 ?>
