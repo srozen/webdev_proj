@@ -1,5 +1,5 @@
 <?php
-	include 'functions.php';
+
 ?>
 
 <h1>Formulaire de contact</h1> 
