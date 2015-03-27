@@ -31,6 +31,7 @@
 
 		<section>
 			<h1>Body</h1>
+			<h2><?php echo $page->getTitle(); ?></h2>
 			<?php include $page->getUrl(); ?>
 		</section>
 

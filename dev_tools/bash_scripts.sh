@@ -1,7 +1,7 @@
 ##These scripts are used to easily manage your files on Delvigne's Server
 
-$USERNAME = "";
-PASSWORD = "";
+USERNAME="";
+PASSWORD="";
 
 #Upload a file to Delvigne server
 # $1 Specify the file path

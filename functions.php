@@ -32,7 +32,7 @@
 	{
 		switch($page){
 			case 'index' :
-				return $values = array('Index', '', 'Page index');
+				return $values = array('Index', 'welcome.php', 'Page index');
 			case 'normal' :
 				return $values = array('Normale', 'normal.php', 'Page normale');
 			case 'contact' :
