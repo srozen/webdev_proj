@@ -13,9 +13,9 @@
 	{
 		try
 		{
-			return new PDO('mysql:host=localhost;
-							dbname=1415he201041;
-							charset=utf8', 'MONROE', 'Samuel');
+			$conn = new PDO('mysql:host=localhost; dbname=1415he201041; charset=utf8', 'MONROE', 'Samuel');
+			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			return $conn;
 		}
 		catch(Exception $e)
 		{
