@@ -2,8 +2,6 @@
 
 ?>
 
-<h1>Formulaire d'enregistrement</h1>
-
 <form name="subscribe" method="post" action="index.php?page=subscription">
 	Pseudo : <br/>
 	<input type="text" name="sub_pseudo"/><br/>
