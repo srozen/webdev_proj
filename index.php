@@ -1,11 +1,13 @@
 <?php
-	include 'functions.php';
+	include 'functions.php'; // Set of basic functions ##TOSPLIT##
+
 	$page_type;
 	if(isset($_GET['page'])) $page_type = $_GET['page'];
 	else $page_type='index';
 
 	$page = define_page($page_type);
 ?>
+
 <!DOCTYPE html>
 <html>
 	<head>

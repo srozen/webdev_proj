@@ -1,12 +1,14 @@
 <?php
 
 	include 'page.obj.php';
-	
+
+	/* Check if $var is valid (not empty and set) */
 	function not_empty($var)
 	{
 		return(isset($var) AND !empty($var));
 	}
 
+	/* Return a PDO connexion to the server */
 	function db_connexion()
 	{
 		try
@@ -20,14 +22,17 @@
 			die('Erreur : '.$e->getMessage());
 			echo 'Database connexion failed';
 		}
-	}	
-	
+	}
+
+	/* Return a page definition with a title, filename and text */
 	function define_page($page)
 	{
 		$pvalues = page_value($page);
 		return new Page($pvalues[0], $pvalues[1], $pvalues[2]);
 	}
 
+
+	/* Set the Page object values depending on the GET[page] element*/
 	function page_value($page)
 	{
 		switch($page){

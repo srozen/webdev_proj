@@ -2,9 +2,9 @@
 
 ?>
 
-<h1>Formulaire de contact</h1> 
+<h1>Formulaire de contact</h1>
 <form name="contact" method="post" action="index.php?page=contact">
-	Mail : <br/> 
+	Mail : <br/>
 	<input type="text" name="cmail"/><br/>
 	Sujet : <br/>
 	<input type="text" name="csubject"/><br/>
@@ -15,10 +15,10 @@
 
 <?php
 	if(isset($_POST['csubmit'])){
-		if(not_empty($_POST['cmail'])AND not_empty($_POST['csubject']) 
+		if(not_empty($_POST['cmail'])AND not_empty($_POST['csubject'])
 		AND not_empty($_POST['cmessage']))
 		{
-			$headers = 'From: Samuel Monroe <admin@kek.com> ' . "\r\n" . 
+			$headers = 'From: Samuel Monroe <admin@kek.com> ' . "\r\n" .
 			'Reply-To: admin@kek.com' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 				mail($_POST['cmail'], $_POST['csubject'], $_POST['cmessage'], $headers);
 		}
