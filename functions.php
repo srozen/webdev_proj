@@ -3,7 +3,7 @@
 	include 'page.obj.php';
 
 	/* Check if $var is valid (not empty and set) */
-	function not_empty($var)
+	function is_filled($var)
 	{
 		return(isset($var) AND !empty($var));
 	}
