@@ -46,6 +46,8 @@
 				return $values = array('Inscription', 'subscription.php', 'Page d\'inscription');
 			case 'login' :
 				return $values = array('Connexion', 'login.php', 'Page de connexion');
+			case 'lostpwd' :
+				return $values = array('Mot de passe perdu', 'lostpwd.php', 'Récupération du mort de passe');
 			default :
 				return $values = array('', '', '');
 		}

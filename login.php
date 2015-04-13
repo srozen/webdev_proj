@@ -10,6 +10,6 @@
 	Mot de passe : <br/>
 	<input type="password" name="log_passwd"/><br/>
 	<input type="submit" name="sub_submit"/><br/>
-	<a href="#">Mot de passe oublié?</a><br/><br/>
+	<a href="index.php?page=lostpwd">Mot de passe oublié?</a><br/><br/>
 
 </form>
