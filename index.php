@@ -19,6 +19,7 @@
 	<body>
 
 		<header>
+			<img src="images/ephec.png" alt="logo ephec"/>
 			<h1>Header</h2>
 
 			<nav>
