@@ -38,3 +38,8 @@ footer
 {
 	color : #CF000F;
 }
+
+.wrong_input
+{
+	border : 1px solid #ff0000;
+}

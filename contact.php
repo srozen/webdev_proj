@@ -8,7 +8,7 @@
 	Sujet : <br/>
 	<input type="text" name="mes_subject"/><br/>
 	Message : <br/>
-	<textarea name="mes_text"></textarea><br/>
+	<textarea rows="6" cols="50" name="mes_text"></textarea><br/>
 	<input type="submit" name="mes_submit"/>
 </form>
 
@@ -22,7 +22,7 @@
 					if (!$connected)
 					{
 						$query = 'INSERT INTO contact_message (mes_subject, mes_email, mes_text)
-											VALUES (\'' . $_POST['mes_subject'] . '\',\'' . $_POST['mes_subject'] . '\',\'' . $_POST['mes_text'] . '\' );';
+											VALUES (\'' . $_POST['mes_subject'] . '\',\'' . $_POST['mes_email'] . '\',\'' . $_POST['mes_text'] . '\' );';
 						$db_socket->exec($query);
 					}
 
@@ -39,9 +39,9 @@
 					$message .= '<h2>Votre message a bien été envoyé et sera traité dans les plus brefs délais</h2>';
 					$message .= '<h3>Rappel de votre message : <h3>';
 					$message .= '<ul>';
-					$message .= '<li><b>Email<b/>'   . $_POST['mes_email']   . '</li>';
-					$message .= '<li><b>Sujet<b/>'   . $_POST['mes_subject'] . '</li>';
-					$message .= '<li><b>Message<b/>' . $_POST['mes_text']    . '</li>';
+					$message .= '<li><b>Email  :</b>'   . $_POST['mes_email']   . '</li>';
+					$message .= '<li><b>Sujet  :</b>'   . $_POST['mes_subject'] . '</li>';
+					$message .= '<li><b>Message  :</b>' . $_POST['mes_text']    . '</li>';
 					$message .= '</ul></body></html>';
 
 					mail($to, $subject, $message, $headers);

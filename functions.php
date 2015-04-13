@@ -2,12 +2,6 @@
 
 	include 'page.obj.php';
 
-	/* Check if $var is valid (not empty and set) */
-	function is_filled($var)
-	{
-		return(isset($var) AND !empty($var));
-	}
-
 	/* Return a PDO connexion to the server */
 	function db_connexion()
 	{
@@ -23,6 +17,45 @@
 			echo 'Database connexion failed';
 		}
 	}
+
+
+
+	/***************************
+	 * VALUES & FORMS CHECKING *
+	 ***************************/
+
+
+
+	/* Check if $var is valid (not empty and set) */
+	function is_filled($var)
+	{
+		return(isset($var) AND !empty($var));
+	}
+
+	/* Check is $email is conform to "xxx@yyy.zz" standard */
+	function valid_email($email)
+	{
+
+	}
+
+	/* Check if $string length suits the minimal $length */
+	function correct_length($length, $string)
+	{
+		if (strlen($string) == $length) return true;
+		else return false;
+	}
+
+	/* Check if two strings are the same */
+	function same_strings($str1, $str2)
+	{
+		if (str_cmp($str1, $str2) == 0) return true;
+		else return false;
+	}
+
+
+	/*******************
+	 * PAGE DEFINITION *
+	 *******************/
 
 	/* Return a page definition with a title, filename and text */
 	function define_page($page)

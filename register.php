@@ -28,7 +28,4 @@
 
 	}
 
-	function check_register($login, $pwd1, $pwd2, $mail1, $mail2)
-	{
-		
-	}
+?>
