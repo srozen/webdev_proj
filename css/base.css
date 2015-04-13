@@ -28,3 +28,13 @@ footer
 	width : 15%;
 	height : 15%;
 }
+
+.success_msg
+{
+	color : #26A65B;
+}
+
+.error_msg
+{
+	color : #CF000F;
+}

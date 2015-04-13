@@ -46,14 +46,18 @@
 
 					mail($to, $subject, $message, $headers);
 
-					echo '<p style="color : #FF0000">Le mail a été envoyé.</p>';
+					echo '<h3 class="success_msg">Le mail a été envoyé.</h3>';
 				}
 				catch(PDOException $e)
 		    {
 		    	echo $query . "<br>" . $e->getMessage();
 		    }
+				$db_socket = null;
 		}
-		$db_socket = null;
+		else
+		{
+			echo '<h3 class="error_msg">Vous n\'avez pas complété tout les champs !</h3>';
+		}
 	}
 
 	/*
