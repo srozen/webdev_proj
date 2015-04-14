@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include 'functions.php'; // Set of basic functions ##TOSPLIT##
 
 	$page_type;
@@ -20,14 +21,10 @@
 
 		<header>
 			<img id="epheclogo" src="images/ephec.png" alt="logo ephec"/>
-			<h1>Header</h2>
+			<h1>Bienvenue <?php if(logged()) echo $_SESSION['login']; else echo 'anonyme';?>.</h1>
 
 			<nav>
-				<a href="index.php?page=index">Accueil</a>
-				<a href="index.php?page=normal">Normale</a>
-				<a href="index.php?page=contact">Contact</a>
-				<a href="index.php?page=register">Inscription</a>
-				<a href="index.php?page=login">Connexion</a>
+				<?php create_menu(); ?>
 			</nav>
 
 		</header>
