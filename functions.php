@@ -39,15 +39,21 @@
 	}
 
 	/* Check if $string length suits the minimal $length */
-	function correct_length($length, $string)
+	function correct_length($string, $length)
 	{
 		if (strlen($string) == $length) return true;
 		else return false;
 	}
 
-	/* Check if two strings are the same */
-	function same_strings($str1, $str2)
+	/* Check if two strings are the same, if flag is true the comparison is case unsensitive */
+	function same_strings($str1, $str2, $flag = false)
 	{
+		// If flag, decapitalize strings
+		if($flag)
+		{
+			$str1 = strtolower($str1);
+			$str2 = strtolower($str2);
+		}
 		if (str_cmp($str1, $str2) == 0) return true;
 		else return false;
 	}
@@ -75,8 +81,8 @@
 				return $values = array('Normale', 'normal.php', 'Page normale');
 			case 'contact' :
 				return $values = array('Contact', 'contact.php', 'Page de contact');
-			case 'subscribe' :
-				return $values = array('Inscription', 'subscription.php', 'Page d\'inscription');
+			case 'register' :
+				return $values = array('Inscription', 'register.php', 'Page d\'inscription');
 			case 'login' :
 				return $values = array('Connexion', 'login.php', 'Page de connexion');
 			case 'lostpwd' :
