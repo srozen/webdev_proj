@@ -4,7 +4,7 @@
 
 <form name="mes_contact" method="post" action="index.php?page=contact">
 	Mail : <br/>
-	<input type="text" name="mes_email"/><br/>
+	<input type="text" name="mes_mail"/><br/>
 	Sujet : <br/>
 	<input type="text" name="mes_subject"/><br/>
 	Message : <br/>
@@ -15,18 +15,18 @@
 <?php
 
 	if(isset($_POST['mes_submit'])){
-		if(is_filled($_POST['mes_email'])AND is_filled($_POST['mes_subject']) AND is_filled($_POST['mes_text']))
+		if(is_filled($_POST['mes_mail'])AND is_filled($_POST['mes_subject']) AND is_filled($_POST['mes_text']))
 		{
 				try{
 					$db_socket = db_connexion();
 					if (!$connected)
 					{
-						$query = 'INSERT INTO contact_message (mes_subject, mes_email, mes_text)
-											VALUES (\'' . $_POST['mes_subject'] . '\',\'' . $_POST['mes_email'] . '\',\'' . $_POST['mes_text'] . '\' );';
+						$query = 'INSERT INTO contact_message (mes_subject, mes_mail, mes_text)
+											VALUES (\'' . $_POST['mes_subject'] . '\',\'' . $_POST['mes_mail'] . '\',\'' . $_POST['mes_text'] . '\' );';
 						$db_socket->exec($query);
 					}
 
-					$to = $_POST['mes_email'];
+					$to = $_POST['mes_mail'];
 
 					$subject = 'Message envoyé avec succès';
 
@@ -39,7 +39,7 @@
 					$message .= '<h2>Votre message a bien été envoyé et sera traité dans les plus brefs délais</h2>';
 					$message .= '<h3>Rappel de votre message : <h3>';
 					$message .= '<ul>';
-					$message .= '<li><b>Email  :</b>'   . $_POST['mes_email']   . '</li>';
+					$message .= '<li><b>Email  :</b>'   . $_POST['mes_mail']   . '</li>';
 					$message .= '<li><b>Sujet  :</b>'   . $_POST['mes_subject'] . '</li>';
 					$message .= '<li><b>Message  :</b>' . $_POST['mes_text']    . '</li>';
 					$message .= '</ul></body></html>';
