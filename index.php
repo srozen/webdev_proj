@@ -26,7 +26,7 @@
 				<a href="index.php?page=index">Accueil</a>
 				<a href="index.php?page=normal">Normale</a>
 				<a href="index.php?page=contact">Contact</a>
-				<a href="index.php?page=subscribe">Inscription</a>
+				<a href="index.php?page=register">Inscription</a>
 				<a href="index.php?page=login">Connexion</a>
 			</nav>
 
