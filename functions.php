@@ -20,6 +20,17 @@
 
 
 
+	/*********************
+	 * SESSIONS HANDLING *
+	 *********************/
+
+	function logged()
+	{
+		if (isset($_SESSION['logged'])) return $_SESSION['logged'];
+		else return false;
+	}
+
+
 	/***************************
 	 * VALUES & FORMS CHECKING *
 	 ***************************/
@@ -58,6 +69,27 @@
 		else return false;
 	}
 
+	/*******************
+	 * MENU DEFINITION *
+	 *******************/
+
+	function create_menu()
+	{
+		echo '<a href="index.php?page=index">Accueil</a>';
+		echo '<a href="index.php?page=normal">Normale</a>';
+		echo '<a href="index.php?page=contact">Contact</a>';
+		if(logged())
+		{
+			echo '<a href="#">Profil</a>';
+			echo '<a href="index.php?page=logout">Déconnexion</a>';
+		}
+		else
+		{
+			echo '<a href="index.php?page=register">Inscription</a>';
+			echo '<a href="index.php?page=login">Connexion</a>';
+		}
+	}
+
 
 	/*******************
 	 * PAGE DEFINITION *
@@ -87,6 +119,8 @@
 				return $values = array('Connexion', 'login.php', 'Page de connexion');
 			case 'lostpwd' :
 				return $values = array('Mot de passe perdu', 'lostpwd.php', 'Récupération du mot de passe');
+			case 'logout' :
+				return $values = array('Déconnexion', 'logout.php', 'Page de déconnexion');
 			default :
 				return $values = array('', '', '');
 		}
