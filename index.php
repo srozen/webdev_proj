@@ -1,4 +1,6 @@
 <?php
+	include 'class.page.php';
+	include 'class.user.php';
 	session_start();
 	include 'functions.php'; // Set of basic functions ##TOSPLIT##
 

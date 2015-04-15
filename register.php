@@ -1,5 +1,9 @@
 <?php
-
+	if(logged())
+	{
+		header("Location: index.php");
+		die();
+	}
 ?>
 
 <form name="register" method="post" action="index.php?page=register">

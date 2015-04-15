@@ -1,6 +1,11 @@
 <?php
-
+	if(logged())
+	{
+		header("Location: index.php");
+		die();
+	}
 ?>
+
 
 	<form name="login" method="post" action="index.php?page=login">
 		Pseudo : <br/>
@@ -30,6 +35,15 @@
 				echo "<h3 class=\"success_msg\">Connexion réussie ! </h3>";
 				$_SESSION['logged'] = true;
 				$_SESSION['login'] = $_POST['log_login'];
+
+				$query = 'SELECT user_id, user_login, user_mail, user_lastlogin
+									FROM user
+									WHERE user_login = \'' . $_POST['log_login'] . '\';';
+				$result = $dbsocket->query($query);
+				$user = $result->fetch(PDO::FETCH_ASSOC);
+				$_SESSION['user'] = new User($user['user_id'], $user['user_login'], $user['user_mail'], 0, 0);
+
+				header("Location: index.php");
 			}
 			else
 			{
