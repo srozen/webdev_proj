@@ -1,7 +1,5 @@
 <?php
 
-	include 'page.obj.php';
-
 	/* Return a PDO connexion to the server */
 	function db_connexion()
 	{
@@ -30,6 +28,10 @@
 		else return false;
 	}
 
+	function is_admin()
+	{
+		return true;
+	}
 
 	/***************************
 	 * VALUES & FORMS CHECKING *
@@ -75,18 +77,22 @@
 
 	function create_menu()
 	{
-		echo '<a href="index.php?page=index">Accueil</a>';
-		echo '<a href="index.php?page=normal">Normale</a>';
-		echo '<a href="index.php?page=contact">Contact</a>';
+		echo '<a href="index.php?page=index"> Accueil </a>';
+		echo '<a href="index.php?page=normal"> Normale </a>';
+		echo '<a href="index.php?page=contact"> Contact </a>';
 		if(logged())
 		{
-			echo '<a href="#">Profil</a>';
-			echo '<a href="index.php?page=logout">Déconnexion</a>';
+			echo '<a href="index.php?page=profile"> Profil </a>';
+			if(is_admin())
+			{
+				echo '<a href="#"> Administration </a>';
+			}
+			echo '<a href="index.php?page=logout"> Déconnexion </a>';
 		}
 		else
 		{
-			echo '<a href="index.php?page=register">Inscription</a>';
-			echo '<a href="index.php?page=login">Connexion</a>';
+			echo '<a href="index.php?page=register"> Inscription </a>';
+			echo '<a href="index.php?page=login"> Connexion </a>';
 		}
 	}
 
@@ -121,6 +127,8 @@
 				return $values = array('Mot de passe perdu', 'lostpwd.php', 'Récupération du mot de passe');
 			case 'logout' :
 				return $values = array('Déconnexion', 'logout.php', 'Page de déconnexion');
+			case 'profile' :
+				return $values = array('Profil', 'profile.php', 'Page de gestion du profil');
 			default :
 				return $values = array('', '', '');
 		}
