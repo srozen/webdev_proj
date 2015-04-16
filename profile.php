@@ -55,6 +55,8 @@
   /***********************/
 
   echo '<pre>';
+  echo '<p>Avatar : </p>';
+  echo '<p><img src="' . retrieve_image("images/avatars/", $_SESSION['user']->getId()) . '" alt="avatar" /></p>';
   print_r($_SESSION['user']);
 
   echo 'Login : ' . $_SESSION['user']->getLogin();
@@ -68,10 +70,51 @@
 
   <h2>Edition du profil</h2>
 
+<?php
+  if(isset($_POST['config_submit']))
+  {
+  	//Destination directory - Same as script for now
+  	$target_dir = "images/avatars/";
+    //Filename related to the user id
+    $temp = explode(".",$_FILES["avatar"]["name"]);
+    $newfilename = $target_dir . $_SESSION['user']->getId() . '.' .end($temp);
+
+  	//Specifies path of the file to be uploaded
+  	$target_file = $target_dir . basename($_FILES['avatar']['name']);
+  	//NOT USED YET
+  	$uploadOk = 1;
+
+    $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+
+  		$check = getimagesize($_FILES["avatar"]["tmp_name"]);
+  		if($check !== false) {
+  			echo "File is an image - " . $check["mime"] . ".";
+  			$uploadOk = 1;
+  		} else {
+  			echo "File is not an image.";
+  			$uploadOk = 0;
+  		}
+
+  	/*
+  	 * Check if $upload is set to allow upload
+  	 */
+  	if($uploadOk == 0) {
+  		echo "Sorry, your file was not uploaded.";
+  	} else {
+  		if(move_uploaded_file($_FILES["avatar"]["tmp_name"], $newfilename)) {
+  			echo "The file " . basename($_FILES["avatar"]["name"]) . " has been uploaded.";
+  			smart_resize_image($newfilename, null, 200, 200, false, $newfilename, false, false, 100);
+  		} else {
+  			echo "Sorry, there was an error uploading your file.";
+  		}
+  	}
+  }
+?>
+
 <pre>
   <h3>Vos configurations</h3>
-  <form name="config_change" action="index.php?page=profile" method="post">
-    <label>Avatar : </label><input type="file" name="config_avatar"/>
+  <form name="config_change" action="index.php?page=profile" method="post" enctype="multipart/form-data">
+    <label>Avatar : </label><input type="file" name="avatar" id="avatar"/>
     <label>Confirmez en entrant votre mot de passe : </label><input type="password" name="config_password"/>
     <input type="submit" value="Enregistrer" name="config_submit"/>
   </form>
