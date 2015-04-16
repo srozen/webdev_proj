@@ -22,7 +22,6 @@
 	{
 		if(is_filled($_POST['log_login']) AND is_filled($_POST['log_passwd']))
 		{
-			print_r($_POST);
 			$dbsocket = db_connexion();
 			$query = 'SELECT count(*)
 								FROM user
