@@ -17,7 +17,51 @@
       $this->level = $level;
 		}
 
-    public function setId()
+    public function update_db($field, $value)
+    {
+      $db_field;
+      switch($field)
+      {
+        case 'login' :
+          $db_field = 'user_login';
+          $_SESSION['user']->setLogin($value);
+          break;
+
+        case 'password' :
+          $db_field = 'user_pwd';
+          break;
+
+        case 'mail' :
+          $db_field = 'user_mail';
+          $_SESSION['user']->setMail($value);
+          break;
+
+        case 'lastlogin' :
+          $db_field = 'user_lastlogin';
+          $_SESSION['user']->setLastLogin($value);
+          break;
+
+        default:
+          $db_field = null;
+          break;
+      }
+
+      if($db_field != null)
+      {
+        $query = 'UPDATE user
+                  SET ' . $db_field . ' =\'' . $value . '\'
+                  WHERE user_id=\'' . $_SESSION['user']->getId() . '\';';
+        return $query;
+      }
+      else
+      {
+        $query = null;
+        return $query;
+      }
+
+    }
+
+    public function setId($id)
     {
       $this->id=$id;
     }
@@ -27,7 +71,7 @@
       return $this->id;
     }
 
-    public function setLogin()
+    public function setLogin($login)
     {
       $this->login=$login;
     }
@@ -37,7 +81,7 @@
       return $this->login;
     }
 
-    public function setMail()
+    public function setMail($mail)
     {
       $this->mail=$mail;
     }
@@ -47,7 +91,7 @@
       return $this->mail;
     }
 
-    public function setLastLogin()
+    public function setLastLogin($lastlogin)
     {
       $this->lastlogin=$lastlogin;
     }
@@ -57,7 +101,7 @@
       return $this->lastlogin;
     }
 
-    public function setLevel()
+    public function setLevel($level)
     {
       $this->level=$level;
     }
