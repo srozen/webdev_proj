@@ -18,9 +18,9 @@
 
 
 
-	/*********************
-	 * SESSIONS HANDLING *
-	 *********************/
+	/********************************
+	 * SESSIONS HANDLING & SECURITY *
+	 ********************************/
 
 	function logged()
 	{
@@ -33,6 +33,25 @@
 		return true;
 	}
 
+
+  function indoor_auth($password)
+  {
+    $dbsocket = db_connexion();
+    $query = 'SELECT count(*)
+              FROM user
+              WHERE user_login = \'' . $_SESSION['user']->getLogin() . '\' AND binary user_pwd = \'' . $password . '\';';
+    $result = $dbsocket->query($query);
+
+    if($result->fetchColumn() > 0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
 	/***************************
 	 * VALUES & FORMS CHECKING *
 	 ***************************/
@@ -44,6 +63,7 @@
 	{
 		return(isset($var) AND !empty($var));
 	}
+
 
 	/* Check is $email is conform to "xxx@yyy.zz" standard */
 	function valid_email($email)
@@ -85,7 +105,7 @@
 			echo '<a href="index.php?page=profile"> Profil </a>';
 			if(is_admin())
 			{
-				echo '<a href="#"> Administration </a>';
+				echo '<a href="index.php?page=administration"> Administration </a>';
 			}
 			echo '<a href="index.php?page=logout"> Déconnexion </a>';
 		}
@@ -115,22 +135,34 @@
 		switch($page){
 			case 'index' :
 				return $values = array('Index', 'welcome.php', 'Page index');
+				break;
 			case 'normal' :
 				return $values = array('Normale', 'normal.php', 'Page normale');
+				break;
 			case 'contact' :
 				return $values = array('Contact', 'contact.php', 'Page de contact');
+				break;
 			case 'register' :
 				return $values = array('Inscription', 'register.php', 'Page d\'inscription');
+				break;
 			case 'login' :
 				return $values = array('Connexion', 'login.php', 'Page de connexion');
+				break;
 			case 'lostpwd' :
 				return $values = array('Mot de passe perdu', 'lostpwd.php', 'Récupération du mot de passe');
+				break;
 			case 'logout' :
 				return $values = array('Déconnexion', 'logout.php', 'Page de déconnexion');
+				break;
 			case 'profile' :
 				return $values = array('Profil', 'profile.php', 'Page de gestion du profil');
+				break;
+			case 'administration' :
+				return $values = array('Administration', 'administration.php', 'Page d\'administration');
+				break;
 			default :
 				return $values = array('', '', '');
+				break;
 		}
 	}
 ?>
