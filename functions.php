@@ -52,6 +52,94 @@
     }
   }
 
+	/******************
+	 * ADMINISTRATION *
+	 ******************/
+
+	function display_messages($sorting)
+	{
+		$clause = '';
+
+		switch($sorting)
+		{
+			case 'date':
+				$clause = 'ORDER BY mes_date DESC';
+				break;
+			case 'noanswer':
+				$clause = 'WHERE mes_answer = false';
+				break;
+			case 'answer':
+				$clause = 'WHERE mes_answer = true';
+				break;
+			case 'anonymous':
+				$clause = 'WHERE user_id is null';
+			 	break;
+			case 'user':
+				$clause = 'WHERE user_id is not null';
+				break;
+			default:
+				break;
+		}
+
+		$query = 'SELECT user_id as Utilisateur, mes_subject as Sujet, mes_text as Message, mes_mail as \'Adresse Mail\', mes_date as \'Envoyé le\'
+		 					FROM contact_message ' . $clause . ';';
+
+		$dbsocket = db_connexion();
+
+		$result = $dbsocket->query($query);
+
+		create_table($result, 'Messages : ');
+	}
+
+	function display_users()
+	{
+
+	}
+
+	function search_users()
+	{
+
+	}
+
+	function display_config()
+	{
+
+	}
+
+
+	function create_table($reqresult, $title)
+	{
+		$data = $reqresult->fetchAll(PDO::FETCH_ASSOC);
+		$i = 0;
+		if ($title != null)
+		{
+			echo '<table><caption>' . $title . '</caption><tr>';
+		}
+		else echo '<table><tr>';
+
+		if(count($elements))
+		{
+			$col_names = array_keys($elements[0]);
+
+			foreach($col_names as $name)
+			{
+				echo '<th>'. $name .'</th>';
+			}
+			echo '</tr></thead><tbody>';
+			foreach($elements as $element)
+			{
+				echo '<tr>';
+				foreach($element as $attribute)
+				{
+					echo '<td>'. htmlspecialchars($attribute) .'</td>';
+				}
+				echo '</tr>';
+				$i++;
+			}
+			echo '</tbody></table>';
+		}
+	}
+
 	/***************************
 	 * VALUES & FORMS CHECKING *
 	 ***************************/
