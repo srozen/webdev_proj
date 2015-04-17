@@ -21,9 +21,14 @@
 					$db_socket = db_connexion();
 					if (!$connected)
 					{
-						$query = 'INSERT INTO contact_message (mes_subject, mes_mail, mes_text)
-											VALUES (\'' . $_POST['mes_subject'] . '\',\'' . $_POST['mes_mail'] . '\',\'' . $_POST['mes_text'] . '\' );';
-						$db_socket->exec($query);
+						$query = 'INSERT INTO contact_message (mes_subject, mes_mail, mes_text, mes_date)
+											VALUES (:subject, :mail, :message, NOW())';
+						$response = $db_socket->prepare($query);
+						$response->execute(array(
+							'subject' => $_POST['mes_subject'],
+							'mail' => $_POST['mes_mail'],
+							'message' => $_POST['mes_text']
+						));
 					}
 
 					$to = $_POST['mes_mail'];
