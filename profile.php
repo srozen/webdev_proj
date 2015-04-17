@@ -71,7 +71,7 @@
   <h2>Edition du profil</h2>
 
 <?php
-  if(isset($_POST['config_submit']) AND is_filled($_POST['config_password']))
+  if(isset($_POST['config_submit']) AND is_filled($_POST['config_password']) AND indoor_auth($_POST['config_password']))
   {
   	//Destination directory - Same as script for now
   	$target_dir = "images/avatars/";
