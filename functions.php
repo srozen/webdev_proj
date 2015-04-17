@@ -154,9 +154,9 @@
 
 
 	/* Check is $email is conform to "xxx@yyy.zz" standard */
-	function valid_email($email)
+	function valid_mail($email)
 	{
-
+		return filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
 
 	/* Check if $string length suits the minimal $length */
@@ -177,6 +177,106 @@
 		}
 		if (str_cmp($str1, $str2) == 0) return true;
 		else return false;
+	}
+
+	function check_register($login, $mail, $checkmail, $pwd, $checkpwd)
+	{
+		$insert_db = true;
+		$vlogin = valid_register_login($login);
+		$vmails;
+		if($vlogin != true)
+		{
+			// Affichage erreurs login
+		}
+	}
+
+	function valid_register_login($login)
+	{
+		$badlogin = '<span class="error_msg"> L\'identifiant n\'est pas correct ! </span>';
+		$alreadyused = '<span class="error_msg"> Cet identifiant est déjà utilisé ! </span>';
+		$minlength = 5; // INI
+		$maxlength = 31; //INI
+		if (!preg_match('/^[A-Za-z]{1}[A-Za-z0-9]{'. $minlength . '-' . $maxlength .'}$/', $login))
+		{
+			return $badlogin;
+		}
+		else
+		{
+			$dbsocket = db_connexion();
+	    $query = 'SELECT count(*)
+	              FROM user
+	              WHERE user_login = \'' . $login . '\';';
+	    $result = $dbsocket->query($query);
+
+	    if($result->fetchColumn() > 0)
+	    {
+	      return $alreadyused;
+	    }
+	    else
+	    {
+	      return true;
+	    }
+
+			$dbsocket = null;
+		}
+	}
+
+	function valid_register_mail($mail, $checkmail)
+	{
+		$alreadyusedmail = '<span class="error_msg"> Le mail est déjà utilisé ! </span>';
+		$badmail = '<span class="error_msg"> Le mail n\'est pas un email valide ! </span>';
+		$notsamemail = '<span class="error_msg"> Les mails ne sont pas identiques ! </span>';
+		if(same_strings($mail, $checkmail))
+		{
+			if (valid_mail($mail))
+			{
+				$dbsocket = db_connexion();
+				$query = 'SELECT count(*) FROM user WHERE user_mail = \'' . $mail . '\';';
+				$result = $dbsocket->query($query);
+
+				if($result->fetchColumn() > 0)
+				{
+					return $alreadyusedmail;
+				}
+				else
+				{
+					return true;
+				}
+
+				$dbsocket = null;
+			}
+			else
+			{
+				return $badmail;
+			}
+		}
+		else
+		{
+			return $notsamemail;
+		}
+	}
+
+	function valid_register_password($pwd, $checkpwd)
+	{
+		///// INI for the password min/max values !!
+		$badpassword = '<span class="error_msg"> Le mot de passe n\'est pas conforme ! </span>';
+		$notsamepassword = '<span class="error_msg"> Les mots de passe ne sont pas identiques ! </span>';
+
+		if(same_strings($pwd, $checkpwd))
+		{
+			if(!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/', $pwd))
+			{
+				return $badpassword;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return $notsamepassword;
+		}
 	}
 
 	/*******************
