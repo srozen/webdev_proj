@@ -91,15 +91,15 @@
 		create_table($result, 'Messages : ');
 	}
 
-	function display_users()
+	function display_users($login = false, $mail = false, $status)
 	{
+		$query = 'SELECT * FROM user';
+		$dbsocket = db_connexion();
+		$result = $dbsocket->query($query);
 
+		create_table($result, 'Utilisateurs : ');
 	}
 
-	function search_users()
-	{
-
-	}
 
 	function display_config()
 	{
@@ -109,7 +109,7 @@
 
 	function create_table($reqresult, $title)
 	{
-		$data = $reqresult->fetchAll(PDO::FETCH_ASSOC);
+		$elements = $reqresult->fetchAll(PDO::FETCH_ASSOC);
 		$i = 0;
 		if ($title != null)
 		{
