@@ -175,28 +175,84 @@
 			$str1 = strtolower($str1);
 			$str2 = strtolower($str2);
 		}
-		if (str_cmp($str1, $str2) == 0) return true;
+		if (strcmp($str1, $str2) == 0) return true;
 		else return false;
 	}
 
 	function check_register($login, $mail, $checkmail, $pwd, $checkpwd)
 	{
 		$insert_db = true;
+		$badinput = "style=\"border: 1px solid red;\"";
+		$correctinput = "style=\"border: 1px solid green;\"";
+		$check_result = array(
+			"message" => "",
+			"validity" => "",
+			"loginmessage" => "",
+			"loginclass" => "",
+			"login" => "",
+			"mailmessage" => "",
+			"mailclass" => "",
+			"mail" => "",
+			"passwordmessage" => "",
+			"passwordclass" => ""
+		);
+
 		$vlogin = valid_register_login($login);
-		$vmails;
-		if($vlogin != true)
+		$vmail = valid_register_mail($mail, $checkmail);
+		$vpassword = valid_register_password($pwd, $checkpwd);
+
+		if(gettype($vlogin) != 'boolean')
 		{
-			// Affichage erreurs login
+			$check_result['loginmessage'] = $vlogin;
+			$check_result['loginclass'] = $badinput;
+			$insert_db = false;
 		}
+		else
+		{
+			$check_result['login'] = $login;
+			$check_result['loginclass'] = $correctinput;
+		}
+
+		if(gettype($vmail) != 'boolean')
+		{
+			$check_result['mailmessage'] = $vmail;
+			$check_result['mailclass'] = $badinput;
+			$insert_db = false;
+		}
+		else
+		{
+			$check_result['mail'] = $mail;
+			$check_result['loginclass'] = $correctinput;
+		}
+
+		if(gettype($vpassword) != 'boolean')
+		{
+			$check_result['passwordmessage'] = $vpassword;
+			$check_result['passwordclass'] = $badinput;
+			$insert_db = false;
+		}
+
+		if($insert_db == true)
+		{
+			$check_result['message'] = '<span class="success_msg"> Inscription réussie, veuillez valider celle-ci via le lien envoyé à votre mail. </span><br/>';
+			$check_result['validity'] = true;
+		}
+		else
+		{
+			$check_result['message'] = '<span class="error_msg"> Une erreur est surevenue lors de votre inscription ! </span><br/>';
+			$check_result['validity'] = false;
+		}
+
+		return $check_result;
 	}
 
 	function valid_register_login($login)
 	{
-		$badlogin = '<span class="error_msg"> L\'identifiant n\'est pas correct ! </span>';
-		$alreadyused = '<span class="error_msg"> Cet identifiant est déjà utilisé ! </span>';
-		$minlength = 5; // INI
+		$badlogin = '<span class="error_msg"> L\'identifiant n\'est pas correct ! </span><br/>';
+		$alreadyused = '<span class="error_msg"> Cet identifiant est déjà utilisé ! </span><br/>';
+		$minlength = 4; // INI
 		$maxlength = 31; //INI
-		if (!preg_match('/^[A-Za-z]{1}[A-Za-z0-9]{'. $minlength . '-' . $maxlength .'}$/', $login))
+		if (!preg_match('/^[A-Za-z]{1}[A-Za-z0-9]{'. $minlength . ',' . $maxlength .'}$/', $login))
 		{
 			return $badlogin;
 		}
@@ -223,9 +279,9 @@
 
 	function valid_register_mail($mail, $checkmail)
 	{
-		$alreadyusedmail = '<span class="error_msg"> Le mail est déjà utilisé ! </span>';
-		$badmail = '<span class="error_msg"> Le mail n\'est pas un email valide ! </span>';
-		$notsamemail = '<span class="error_msg"> Les mails ne sont pas identiques ! </span>';
+		$alreadyusedmail = '<span class="error_msg"> Le mail est déjà utilisé ! </span><br/>';
+		$badmail = '<span class="error_msg"> Le mail n\'est pas un email valide ! </span><br/>';
+		$notsamemail = '<span class="error_msg"> Les mails ne sont pas identiques ! </span><br/>';
 		if(same_strings($mail, $checkmail))
 		{
 			if (valid_mail($mail))
@@ -259,12 +315,12 @@
 	function valid_register_password($pwd, $checkpwd)
 	{
 		///// INI for the password min/max values !!
-		$badpassword = '<span class="error_msg"> Le mot de passe n\'est pas conforme ! </span>';
-		$notsamepassword = '<span class="error_msg"> Les mots de passe ne sont pas identiques ! </span>';
+		$badpassword = '<span class="error_msg"> Le mot de passe n\'est pas conforme ! </span><br/>';
+		$notsamepassword = '<span class="error_msg"> Les mots de passe ne sont pas identiques ! </span><br/>';
 
 		if(same_strings($pwd, $checkpwd))
 		{
-			if(!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/', $pwd))
+			if(!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,50}$/', $pwd))
 			{
 				return $badpassword;
 			}
