@@ -34,11 +34,46 @@
 		return $id['user_id'];
 	}
 
+	/* Returns status label (string) for a specific username */
+	function get_status_login($login)
+	{
+		$dbsocket = db_connexion();
+		$query = 'SELECT status_label FROM status WHERE status_level =
+								(SELECT user_status FROM user WHERE user_login = \'' . $login . '\'';
+		$result = $dbsocket->query($query);
+		$dbsocket = null;
+		$status = $result->fetch();
+		return $id['status_label'];
+
+	}
+	/* Returns boolean, check if login is in database */
+	function user_exists($login)
+	{
+		$dbsocket = db_connexion();
+		$query = 'SELECT count(*)
+							FROM user
+							WHERE user_login = \'' . $login . '\';';
+
+		$result = $dbsocket->query($query);
+
+		if($result->fetchColumn() > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	/********************************
 	 * SESSIONS HANDLING & SECURITY *
 	 ********************************/
 
+	/*
+	 * Check Session logged field
+	 * Returns boolean
+	 */
 	function logged()
 	{
 		if (isset($_SESSION['logged'])) return $_SESSION['logged'];
@@ -50,7 +85,20 @@
 		return true;
 	}
 
+	function is_activating($status)
+	{
+		$dbsocket = db_connexion();
+		$query = 'SELECT status_label FROM status WHERE status_level = ' . $status . ';';
+		$result = $dbsocket->query($query);
+		$dbsocket = null;
+		$status = $result->fetch();
 
+		return($status['status_label'] == 'activating');
+	}
+	/*
+	 * Ask for a password and authentify LOGGED(session) user
+	 * Returns boolean
+	 */
   function indoor_auth($password)
   {
     $dbsocket = db_connexion();
@@ -169,7 +217,6 @@
 		return(isset($var) AND !empty($var));
 	}
 
-
 	/* Check is $email is conform to "xxx@yyy.zz" standard */
 	function valid_mail($email)
 	{
@@ -188,7 +235,6 @@
 		if (strcmp($str1, $str2) == 0) return true;
 		else return false;
 	}
-
 
 	function check_register($login, $mail, $checkmail, $pwd, $checkpwd)
 	{
@@ -257,7 +303,6 @@
 		return $check_result;
 	}
 
-
 	function valid_register_login($login)
 	{
 		$badlogin = '<span class="error_msg"> L\'identifiant n\'est pas correct ! </span><br/>';
@@ -270,25 +315,16 @@
 		}
 		else
 		{
-			$dbsocket = db_connexion();
-	    $query = 'SELECT count(*)
-	              FROM user
-	              WHERE user_login = \'' . $login . '\';';
-	    $result = $dbsocket->query($query);
-
-	    if($result->fetchColumn() > 0)
-	    {
-	      return $alreadyused;
+	    if(user_exists($login))
+			{
+				return $alreadyused;
 	    }
 	    else
 	    {
 	      return true;
 	    }
-
-			$dbsocket = null;
 		}
 	}
-
 
 	function valid_register_mail($mail, $checkmail)
 	{
@@ -324,7 +360,6 @@
 			return $notsamemail;
 		}
 	}
-
 
 	function valid_register_password($pwd, $checkpwd)
 	{
@@ -374,6 +409,50 @@
 		$message .= '</body></html>';
 
 		mail($to, $subject, $message, $headers);
+	}
+
+	function add_activation_code($userid, $activationcode)
+	{
+		$dbsocket = db_connexion();
+		$query = 'INSERT INTO activation (user_id, activation_code)
+							VALUES(:userid, :activationcode)';
+		$result = $dbsocket->prepare($query);
+		$result->execute(array(
+			'userid' => $userid,
+			'activationcode' => $activationcode
+		));
+		$dbsocket = null;
+	}
+
+	function login($login, $password, $activationcode = null)
+	{
+		$dbsocket = db_connexion();
+		$query = 'SELECT user_id, user_login, user_mail, user_status
+							FROM user u
+							WHERE user_login = \'' . $_POST['log_login'] . '\'
+							AND binary user_pwd = \'' . hash('sha512', $_POST['log_passwd'], false) . '\'';
+
+		$result = $dbsocket->query($query);
+
+		$user = $result->fetch();
+
+		if(!empty($user))
+		{
+			if(is_activating($user['user_status']))
+			{
+				echo 'En activation';
+			}
+			else
+			{
+				echo 'Ok';
+			}
+		}
+		else
+		{
+			echo 'Mauvaise combinaison';
+		}
+
+		$dbsocket = null;
 	}
 	/*******************
 	 * MENU DEFINITION *
