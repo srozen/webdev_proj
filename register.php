@@ -22,33 +22,21 @@
 		if(is_filled($_POST['reg_login']) AND is_filled($_POST['reg_pwd']) AND is_filled($_POST['reg_pwd_check']) AND is_filled($_POST['reg_mail']) AND is_filled($_POST['reg_mail_check']))
 		{
 			$check_result = check_register($_POST['reg_login'], $_POST['reg_mail'], $_POST['reg_mail_check'], $_POST['reg_pwd'], $_POST['reg_pwd_check']);
-			/*
-			$dbsocket = db_connexion();
-			$query = 'INSERT INTO user (user_login, user_pwd, user_mail, user_subscription)
-								VALUES (\'' . $_POST['reg_login'] . '\', \'' . $_POST['reg_pwd'] . '\', \'' . $_POST['reg_mail'] .'\', NOW())';
-			$dbsocket->exec($query);
-			$dbsocket = null;
-			echo "<h3 class=\"success_msg\">Inscription réussie ! </h3>";
 
-			$to = $_POST['reg_mail'];
+			if($check_result['valid'] == true)
+			{
 
-			$subject = 'Insription au Wiki';
+				$dbsocket = db_connexion();
+				$query = 'INSERT INTO user (user_login, user_pwd, user_mail, user_subscription)
+									VALUES (\'' . $_POST['reg_login'] . '\', \'' . hash('sha512', $_POST['reg_pwd'], false) . '\', \'' . $_POST['reg_mail'] .'\', NOW())';
+				$dbsocket->exec($query);
+				$dbsocket = null;
 
-			$headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
-			$headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
-			$headers .= "MIME-Version: 1.0\r\n";
-			$headers .= "Content-Type: text/html; charset=utf-8\r\n";
+				get_id_login($_POST['reg_login']);
+				$activation_code = generate_activation_code($_POST['reg_mail'],$_POST['reg_login']);
 
-			$message = '<html><body>';
-			$message .= '<h2>Vous avez été inscrit !</h2>';
-			$message .= '<h3>Rappel de votre message : <h3>';
-			$message .= '<ul>';
-			$message .= '<li><b>Pseudo  :</b>'   . $_POST['reg_login']   . '</li>';
-			$message .= '<li><b>Email  :</b>'   . $_POST['reg_mail'] . '</li>';
-			$message .= '</ul></body></html>';
-
-			mail($to, $subject, $message, $headers);
-			*/
+				send_registration_mail($activation_code, $_POST['reg_mail']);
+			}
 		}
 		else
 		{
