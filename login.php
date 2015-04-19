@@ -25,7 +25,7 @@
 			$dbsocket = db_connexion();
 			$query = 'SELECT count(*)
 								FROM user
-								WHERE user_login = \'' . $_POST['log_login'] . '\' AND binary user_pwd = \'' . $_POST['log_passwd'] . '\';';
+								WHERE user_login = \'' . $_POST['log_login'] . '\' AND user_pwd = \'' . hash('sha512', $_POST['log_passwd'], false) . '\';';
 
 			$result = $dbsocket->query($query);
 
@@ -42,7 +42,8 @@
 				$user = $result->fetch(PDO::FETCH_ASSOC);
 				$_SESSION['user'] = new User($user['user_id'], $user['user_login'], $user['user_mail'], 0, 0);
 
-				header("Location: index.php");
+				//header("Location: index.php");
+				login($_POST['log_login'], $_POST['log_passwd']);
 			}
 			else
 			{
