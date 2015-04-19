@@ -27,15 +27,15 @@
 			{
 
 				$dbsocket = db_connexion();
-				$query = 'INSERT INTO user (user_login, user_pwd, user_mail, user_subscription)
-									VALUES (\'' . $_POST['reg_login'] . '\', \'' . hash('sha512', $_POST['reg_pwd'], false) . '\', \'' . $_POST['reg_mail'] .'\', NOW())';
+				$query = 'INSERT INTO user (user_login, user_pwd, user_mail, user_subscription, user_status)
+									VALUES (\'' . $_POST['reg_login'] . '\', \'' . hash('sha512', $_POST['reg_pwd'], false) . '\', \'' . $_POST['reg_mail'] .'\', NOW(), 30)';
 				$dbsocket->exec($query);
 				$dbsocket = null;
 
-				get_id_login($_POST['reg_login']);
 				$activation_code = generate_activation_code($_POST['reg_mail'],$_POST['reg_login']);
 
 				send_registration_mail($activation_code, $_POST['reg_mail']);
+				add_activation_code(get_id_login($_POST['reg_login']), $activation_code);
 			}
 		}
 		else
