@@ -17,6 +17,23 @@
 	}
 
 
+	/************************
+	 * DATABASE INTERACTION *
+   ************************/
+
+	/* Returns the related id from a username */
+	function get_id_login($login)
+	{
+		$dbsocket = db_connexion();
+		$query = 'SELECT user_id
+							FROM user
+							WHERE user_login = \'' . $login . '\'';
+		$result = $dbsocket->query($query);
+		$dbsocket = null;
+		$id = $result->fetch();
+		return $id['user_id'];
+	}
+
 
 	/********************************
 	 * SESSIONS HANDLING & SECURITY *
@@ -159,13 +176,6 @@
 		return filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
 
-	/* Check if $string length suits the minimal $length */
-	function correct_length($string, $length)
-	{
-		if (strlen($string) == $length) return true;
-		else return false;
-	}
-
 	/* Check if two strings are the same, if flag is true the comparison is case unsensitive */
 	function same_strings($str1, $str2, $flag = false)
 	{
@@ -179,6 +189,7 @@
 		else return false;
 	}
 
+
 	function check_register($login, $mail, $checkmail, $pwd, $checkpwd)
 	{
 		$insert_db = true;
@@ -186,7 +197,7 @@
 		$correctinput = "style=\"border: 1px solid green;\"";
 		$check_result = array(
 			"message" => "",
-			"validity" => "",
+			"valid" => "",
 			"loginmessage" => "",
 			"loginclass" => "",
 			"login" => "",
@@ -235,16 +246,17 @@
 		if($insert_db == true)
 		{
 			$check_result['message'] = '<span class="success_msg"> Inscription réussie, veuillez valider celle-ci via le lien envoyé à votre mail. </span><br/>';
-			$check_result['validity'] = true;
+			$check_result['valid'] = true;
 		}
 		else
 		{
 			$check_result['message'] = '<span class="error_msg"> Une erreur est surevenue lors de votre inscription ! </span><br/>';
-			$check_result['validity'] = false;
+			$check_result['valid'] = false;
 		}
 
 		return $check_result;
 	}
+
 
 	function valid_register_login($login)
 	{
@@ -276,6 +288,7 @@
 			$dbsocket = null;
 		}
 	}
+
 
 	function valid_register_mail($mail, $checkmail)
 	{
@@ -312,6 +325,7 @@
 		}
 	}
 
+
 	function valid_register_password($pwd, $checkpwd)
 	{
 		///// INI for the password min/max values !!
@@ -335,6 +349,32 @@
 		}
 	}
 
+	function generate_activation_code($mail,$login)
+	{
+		return hash('sha1', mt_rand(10000,99999).time().$mail.$login, false);
+	}
+
+	function send_registration_mail($activation_code, $mail)
+	{
+		$to = $mail;
+
+		$subject = 'Insription au Wiki';
+
+		$headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+		$headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+		$headers .= "MIME-Version: 1.0\r\n";
+		$headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+		$message = '<html><body>';
+		$message .= '<h2>Vous vous êtes inscrit au wiki !</h2>';
+		$message .= '<h3> Veuillez valider votre inscription via le lien suivant : </h3>';
+		$message .= '<a href="http://193.190.65.94/HE201041/TRAV/5_site_core/webdev_project/index.php?page=login&activation=' . $activation_code . '">Activation</a><br/>';
+		$message .= '<h3> Ou en copiant ce lien dans votre navigateur : </h3>';
+		$message .= '<span>http://193.190.65.94/HE201041/TRAV/5_site_core/webdev_project/index.php?page=login&activation='. $activation_code;
+		$message .= '</body></html>';
+
+		mail($to, $subject, $message, $headers);
+	}
 	/*******************
 	 * MENU DEFINITION *
 	 *******************/
@@ -420,6 +460,8 @@
 	 * IMAGES HANDLING *
 	 *******************/
 
+	/* Returns *file_path*
+		 From a *target_dir* and a *user_id* */
 	function retrieve_image($target_dir, $id)
 	{
 		$extensions = array('jpg', 'png', 'gif');
