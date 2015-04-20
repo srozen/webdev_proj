@@ -16,40 +16,50 @@
 		}
 	}
 
+	$dbsocket = db_connexion();
 
-	/************************
-	 * DATABASE INTERACTION *
-   ************************/
+	/****************
+	 * USER QUERIES *
+   ****************/
 
 	/* Returns the related id from a username */
-	function get_id_login($login)
+	function get_user_id($login)
 	{
-		$dbsocket = db_connexion();
 		$query = 'SELECT user_id
 							FROM user
 							WHERE user_login = \'' . $login . '\'';
 		$result = $dbsocket->query($query);
-		$dbsocket = null;
 		$id = $result->fetch();
 		return $id['user_id'];
 	}
 
 	/* Returns status label (string) for a specific username */
-	function get_status_login($login)
+	function get_user_status($login)
 	{
-		$dbsocket = db_connexion();
 		$query = 'SELECT status_label FROM status WHERE status_level =
 								(SELECT user_status FROM user WHERE user_login = \'' . $login . '\'';
 		$result = $dbsocket->query($query);
-		$dbsocket = null;
 		$status = $result->fetch();
-		return $id['status_label'];
+		return $status['status_label'];
 
 	}
+
+	/* Returns activation code for a specific username */
+	// TODO : Return latest activation code
+	// TODO : Check activationcode appellation in db
+	//
+	function get_user_activation_code($login)
+	{
+
+		$query = 'SELECT activationcode FROM activation WHERE user_id = \'' . get_user_id($login) ? '\';';
+		$result = $dbsocket->query($query);
+		$activation = $result->fetch();
+		return $activation['activationcode'];
+	}
+
 	/* Returns boolean, check if login is in database */
 	function user_exists($login)
 	{
-		$dbsocket = db_connexion();
 		$query = 'SELECT count(*)
 							FROM user
 							WHERE user_login = \'' . $login . '\';';
@@ -87,10 +97,8 @@
 
 	function is_activating($status)
 	{
-		$dbsocket = db_connexion();
 		$query = 'SELECT status_label FROM status WHERE status_level = ' . $status . ';';
 		$result = $dbsocket->query($query);
-		$dbsocket = null;
 		$status = $result->fetch();
 
 		return($status['status_label'] == 'activating');
@@ -101,7 +109,6 @@
 	 */
   function indoor_auth($password)
   {
-    $dbsocket = db_connexion();
     $query = 'SELECT count(*)
               FROM user
               WHERE user_login = \'' . $_SESSION['user']->getLogin() . '\' AND binary user_pwd = \'' . $password . '\';';
@@ -149,8 +156,6 @@
 		$query = 'SELECT user_id as Utilisateur, mes_subject as Sujet, mes_text as Message, mes_mail as \'Adresse Mail\', mes_date as \'Envoyé le\'
 		 					FROM contact_message ' . $clause . ';';
 
-		$dbsocket = db_connexion();
-
 		$result = $dbsocket->query($query);
 
 		create_table($result, 'Messages : ');
@@ -159,7 +164,6 @@
 	function display_users($login = false, $mail = false, $status)
 	{
 		$query = 'SELECT * FROM user';
-		$dbsocket = db_connexion();
 		$result = $dbsocket->query($query);
 
 		create_table($result, 'Utilisateurs : ');
@@ -335,7 +339,6 @@
 		{
 			if (valid_mail($mail))
 			{
-				$dbsocket = db_connexion();
 				$query = 'SELECT count(*) FROM user WHERE user_mail = \'' . $mail . '\';';
 				$result = $dbsocket->query($query);
 
@@ -347,8 +350,6 @@
 				{
 					return true;
 				}
-
-				$dbsocket = null;
 			}
 			else
 			{
@@ -413,7 +414,6 @@
 
 	function add_activation_code($userid, $activationcode)
 	{
-		$dbsocket = db_connexion();
 		$query = 'INSERT INTO activation (user_id, activation_code)
 							VALUES(:userid, :activationcode)';
 		$result = $dbsocket->prepare($query);
@@ -421,12 +421,10 @@
 			'userid' => $userid,
 			'activationcode' => $activationcode
 		));
-		$dbsocket = null;
 	}
 
-	function login($login, $password, $activationcode = null)
+	function login($login, $password, $activationcode = '0')
 	{
-		$dbsocket = db_connexion();
 		$query = 'SELECT user_id, user_login, user_mail, user_status
 							FROM user u
 							WHERE user_login = \'' . $_POST['log_login'] . '\'
@@ -440,19 +438,31 @@
 		{
 			if(is_activating($user['user_status']))
 			{
-				echo 'En activation';
+				if(strcmp(get_user_activation_code($login), $activationcode) == 0)
+				{
+					// Activation
+					// Changement de status user
+					// Chargement de la session
+					// Set date d'activation
+					// Redirection vers profil ou index
+				}
+				else
+				{
+					// Le code n'est pas valide
+					// Message d'erreur
+				}
 			}
 			else
 			{
-				echo 'Ok';
+				// Connexion
+				// Chargement de la session
+				// Redirection
 			}
 		}
 		else
 		{
 			echo 'Mauvaise combinaison';
 		}
-
-		$dbsocket = null;
 	}
 	/*******************
 	 * MENU DEFINITION *
