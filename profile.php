@@ -5,8 +5,6 @@
 		die();
   }
 
-  $dbsocket = db_connexion();
-
   /*** MAIL CHANGING ***/
   if(isset($_POST['mail_submit']))
   {

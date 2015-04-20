@@ -18,6 +18,7 @@
 
 	$dbsocket = db_connexion();
 
+
 	/****************
 	 * USER QUERIES *
    ****************/
@@ -103,6 +104,7 @@
 
 		return($status['status_label'] == 'activating');
 	}
+	
 	/*
 	 * Ask for a password and authentify LOGGED(session) user
 	 * Returns boolean
@@ -111,7 +113,7 @@
   {
     $query = 'SELECT count(*)
               FROM user
-              WHERE user_login = \'' . $_SESSION['user']->getLogin() . '\' AND binary user_pwd = \'' . $password . '\';';
+              WHERE user_login = \'' . $_SESSION['user']->getLogin() . '\' AND user_pwd = \'' . hash('sha512', $password, false) . '\';';
     $result = $dbsocket->query($query);
 
     if($result->fetchColumn() > 0)
@@ -385,11 +387,13 @@
 		}
 	}
 
+	/* Returns random string from $mail and $login of the user */
 	function generate_activation_code($mail,$login)
 	{
 		return hash('sha1', mt_rand(10000,99999).time().$mail.$login, false);
 	}
 
+	/* Send a mail with an $activation_code to the $mail */
 	function send_registration_mail($activation_code, $mail)
 	{
 		$to = $mail;
@@ -404,9 +408,9 @@
 		$message = '<html><body>';
 		$message .= '<h2>Vous vous êtes inscrit au wiki !</h2>';
 		$message .= '<h3> Veuillez valider votre inscription via le lien suivant : </h3>';
-		$message .= '<a href="http://193.190.65.94/HE201041/TRAV/5_site_core/webdev_project/index.php?page=login&activation=' . $activation_code . '">Activation</a><br/>';
+		$message .= '<a href="http://193.190.65.94/HE201041/TRAV/5_site_core/index.php?page=login&activation=' . $activation_code . '">Activation</a><br/>';
 		$message .= '<h3> Ou en copiant ce lien dans votre navigateur : </h3>';
-		$message .= '<span>http://193.190.65.94/HE201041/TRAV/5_site_core/webdev_project/index.php?page=login&activation='. $activation_code;
+		$message .= '<span>http://193.190.65.94/HE201041/TRAV/5_site_core/index.php?page=login&activation='. $activation_code;
 		$message .= '</body></html>';
 
 		mail($to, $subject, $message, $headers);
@@ -440,9 +444,11 @@
 			{
 				if(strcmp(get_user_activation_code($login), $activationcode) == 0)
 				{
-					// Activation
+					// Activation //
 					// Changement de status user
+					$query = 'UPDATE user SET user_status = \'20\' WHERE user_login = \'' . $login . '\';';
 					// Chargement de la session
+
 					// Set date d'activation
 					// Redirection vers profil ou index
 				}

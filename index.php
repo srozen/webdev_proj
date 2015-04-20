@@ -23,7 +23,7 @@
 
 		<header>
 			<img id="epheclogo" src="images/ephec.png" alt="logo ephec"/>
-			<h1>Bienvenue <?php if(logged()) echo $_SESSION['login']; else echo 'anonyme';?>.</h1>
+			<h1>Bienvenue <?php if(logged()) echo $_SESSION['user']->getLogin(); else echo 'anonyme';?>.</h1>
 
 			<nav>
 				<?php create_menu(); ?>
