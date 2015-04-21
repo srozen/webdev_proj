@@ -6,13 +6,13 @@
  /* Create the menu for the <nav> bar in index */
  function create_menu()
  {
-  $menu =  '<a href="index.php"> Accueil </a>';
-  $menu .= '<a href="contact.php"> Contact </a>';
+  $nav =  '<a href="index.php?page=index"> Accueil </a>';
+  $nav .= '<a href="index.php?page=contact"> Contact </a>';
 
-  $menu .= '<a href="register.php"> Inscription </a>';
-  $menu .= '<a href="login.php"> Connexion </a>';
+  $nav .= '<a href="index.php?page=register"> Inscription </a>';
+  $nav .= '<a href="index.php?page=login"> Connexion </a>';
 
-  return $menu;
+  echo $nav;
  }
 
  /* Return a page definition with a title, filename and text */
@@ -26,9 +26,10 @@
  /* Set the Page object values depending on the GET[page] element*/
  function page_values($page)
  {
-   switch($page){
+   switch($page)
+   {
      case 'index' :
-       return $values = array('Accueil', 'index.php', 'Page d\'accueil');
+       return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
        break;
      case 'contact' :
        return $values = array('Contact', 'contact.php', 'Page de contact');
@@ -40,7 +41,7 @@
        return $values = array('Connexion', 'login.php', 'Page de connexion');
        break;
      default :
-       return $values = array('Accueil', 'index.php', 'Page d\'accueil');
+       return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
        break;
    }
  }
