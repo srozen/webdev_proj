@@ -3,8 +3,12 @@
  * MAIN CONTAINER PAGE *
  ***********************/
 
-  session_start();
-  include_once('functions.index.php');
+  //session_start();
+  include('functions.index.php');
+  include('class.page.php');
+
+  if(isset($_GET['page']))  $page = create_page($_GET['page']);
+  else $page = create_page('index');
 
 ?>
 
@@ -19,11 +23,12 @@
   <body>
 
     <header>
-      <h3>Menu : </h3><nav><?php echo create_menu(); ?> </nav>
+      <h3>Menu : </h3><nav><?php create_menu(); ?> </nav>
     </header>
 
     <section>
       <h1>Corps de page</h1>
+      <?php include($page->getUrl()); ?>
     </section>
 
     <footer>
