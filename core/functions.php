@@ -104,7 +104,7 @@
 
 		return($status['status_label'] == 'activating');
 	}
-	
+
 	/*
 	 * Ask for a password and authentify LOGGED(session) user
 	 * Returns boolean
