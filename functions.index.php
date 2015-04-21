@@ -3,7 +3,7 @@
  * SET OF FUNCTIONS USED TO LAY OUT INDEX PAGE *
  ***********************************************/
 
- /* Create the menu for the <nav> bar in index */
+ /* Creates the menu for the <nav> bar in index */
  function create_menu()
  {
   $nav =  '<a href="index.php?page=index"> Accueil </a>';
