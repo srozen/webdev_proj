@@ -15,12 +15,12 @@
 
 		public function setTabTitle($val)
 		{
-			$this->metatitle = $val;
+			$this->tabtitle = $val;
 		}
 
 		public function getTabTitle()
 		{
-			return $this->metatitle;
+			return $this->tabtitle;
 		}
 
 		public function setUrl($val)
