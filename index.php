@@ -17,18 +17,21 @@
   <head>
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
-    <title>Accueil</title>
+    <title><?php echo $page->getTabTitle(); ?></title>
   </head>
 
   <body>
 
     <header>
-      <h3>Menu : </h3><nav><?php create_menu(); ?> </nav>
+      <nav><span>Menu : </span><?php create_menu(); ?> </nav>
     </header>
 
     <section>
       <h1>Corps de page</h1>
-      <?php include($page->getUrl()); ?>
+      <?php
+        echo '<h2>' . $page->getTitle() . '</h2>';
+        include($page->getUrl());
+      ?>
     </section>
 
     <footer>
