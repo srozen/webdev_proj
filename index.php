@@ -3,10 +3,17 @@
  * MAIN CONTAINER PAGE *
  ***********************/
 
-  //session_start();
+  session_start();
+
+  $config = parse_ini_file('config.ini', true);
+
+  // Include functions and classes files
   include('functions.index.php');
+  include('functions.input.php');
+  include('functions.register.php');
   include('class.page.php');
 
+  // Creating the Page object
   if(isset($_GET['page']))  $page = create_page($_GET['page']);
   else $page = create_page('index');
 
