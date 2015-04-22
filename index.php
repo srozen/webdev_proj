@@ -5,13 +5,29 @@
 
   session_start();
 
+  try
+  {
+    $dbsocket = new PDO('mysql:host=localhost; dbname=1415he201041; charset=utf8', 'MONROE', 'Samuel');
+    $dbsocket->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  }
+  catch(Exception $e)
+  {
+    die('Erreur : '.$e->getMessage());
+    echo 'Database connexion failed';
+  }
+
+
+
   $config = parse_ini_file('config.ini', true);
 
   // Include functions and classes files
   include('functions.index.php');
   include('functions.input.php');
   include('functions.register.php');
+  include('functions.database.php');
+
   include('class.page.php');
+
   include('constants.text.php');
 
   // Creating the Page object
@@ -49,3 +65,7 @@
   </body>
 
 </html>
+
+<?php
+  $dbsocket = null;
+?>
