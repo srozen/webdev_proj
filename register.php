@@ -1,29 +1,51 @@
 <?php
+
+  $register_log = array(
+    "message" => "",
+    "valid" => "",
+    "loginmessage" => "",
+    "loginclass" => "",
+    "login" => "",
+    "mailmessage" => "",
+    "mailclass" => "",
+    "mail" => "",
+    "passwordmessage" => "",
+    "passwordclass" => ""
+  );
+
   if(isset($_POST['reg_submit']))
   {
-    valid_register_login($_POST['login'], $config);
-    valid_register_mail($_POST['mail'], $_POST['mail_check'], $config);
-    valid_register_password($_POST['password'], $_POST['password_check'], $config);
+    $register_log = check_register($_POST['login'], $_POST['mail'], $_POST['checkmail'], $_POST['password'], $_POST['checkpassword'], $config, $dbsocket);
   }
 ?>
 
+<?php echo $register_log['message']; ?>
 <form name="regiser" action="index.php?page=register" method="post">
   <label>Login : </label>
-    <input type="text" name="login" required/>
-    <?php echo '<small>' . $LOGINLENGTH . '</small><br/>';?>
+    <input type="text" value ="<?php echo $register_log['login']; ?>" class="<?php echo $register_log['loginclass']; ?>" name="login" />
+    <?php
+      echo '<small>' . $LOGIN_REQUIREMENTS . '</small><br/>';
+      echo $register_log['loginmessage'];
+    ?>
 
   <label>Mot de passe : </label>
-    <input type="password" name="password" placeholder="" required/>
-    <?php echo '<small>' . $PASSWORDLENGTH . '</small><br/>';?>
+    <input type="password" class="<?php echo $register_log['passwordclass']; ?>" name="password" placeholder="" />
+    <?php
+      echo '<small>' . $PASSWORD_REQUIREMENTS . '</small><br/>';
+      echo $register_log['passwordmessage'];
+    ?>
 
   <label>Vérification mot de passe : </label>
-    <input autocomplete="off" type="password" name="password_check" placeholder="" required/><br/>
+    <input autocomplete="off" type="password" class="<?php echo $register_log['passwordclass']; ?>" name="checkpassword" placeholder="" /><br/>
 
   <label>Adresse mail : </label>
-    <input type="email" name="mail" placeholder="" required/><br/>
+    <input type="text" value="<?php echo $register_log['mail']; ?>" class="<?php echo $register_log['mailclass']; ?>" name="mail" placeholder="" /><br/>
+    <?php
+      echo $register_log['mailmessage'];
+    ?>
 
   <label>Vérification du mail : </label>
-    <input autocomplete="off" type="email" name="mail_check" placeholder="" required/><br/>
+    <input autocomplete="off" type="text" class="<?php echo $register_log['mailclass']; ?>" name="checkmail" placeholder="" /><br/>
 
     <input type="submit" name="reg_submit" value="Inscription"/>
 </form>
