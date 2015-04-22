@@ -22,3 +22,23 @@ footer
 {
 	background-color: #EEEEEE;
 }
+
+.badinput
+{
+	border : 1px solid red;
+}
+
+.correctinput
+{
+	border : 2px solid #14FA18;
+}
+
+.error_msg
+{
+	color : #FA1414;
+}
+
+.success_msg
+{
+	color : #14FA18;
+}
