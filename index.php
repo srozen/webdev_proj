@@ -12,6 +12,7 @@
   include('functions.input.php');
   include('functions.register.php');
   include('class.page.php');
+  include('constants.text.php');
 
   // Creating the Page object
   if(isset($_GET['page']))  $page = create_page($_GET['page']);
