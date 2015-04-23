@@ -155,4 +155,21 @@
      return "<span class=\"error_msg\"> Les mots de passe doivent être remplis ! </span><br/>";
    }
  }
+
+ /* Returns random string from $mail and $login of the user */
+ function generate_activation_code($mail,$login, $config, $dbsocket)
+ {
+   return hash('sha1', mt_rand(10000,99999).time().$mail.$login, false);
+ }
+
+ function create_new_user()
+ {
+   $hashed = hash($config['PASSWORD']['crypto']), $password, false);
+   $query = 'INSERT INTO user (login, password, mail, status, registration, statuschange)
+             VALUES (:login, :password, :mail, :status, :registration, :statuschange);';
+   $result = $dbsocket->prepare($query);
+   $result->execute(array(
+     // 
+   ))
+ }
 ?>
