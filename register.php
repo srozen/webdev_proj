@@ -16,6 +16,14 @@
   if(isset($_POST['reg_submit']))
   {
     $register_log = check_register($_POST['login'], $_POST['mail'], $_POST['checkmail'], $_POST['password'], $_POST['checkpassword'], $config, $dbsocket);
+    if($register_log['valid'])
+    {
+      // Generate activation code
+        //$code = generate_activation_code($_POST['mail'], $_POST['login']);
+      // Create new user
+      // Add activation link into db
+      // Send email
+    }
   }
 ?>
 
