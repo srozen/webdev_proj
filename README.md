@@ -14,6 +14,9 @@ Languages I'll use :
 
 ## TODO
 
-* Create a checked register form
-* Send register mail with activation keys
 * Allow user to connect & activate
+* Load user data when connected
+* Create a contact page
+* Contact page should contain user data if connected
+* Create a user profile page
+* Allow user to change personal infos
