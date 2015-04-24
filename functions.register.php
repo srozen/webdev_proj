@@ -157,19 +157,72 @@
  }
 
  /* Returns random string from $mail and $login of the user */
- function generate_activation_code($mail,$login, $config, $dbsocket)
+ function generate_activation_code($mail,$login)
  {
    return hash('sha1', mt_rand(10000,99999).time().$mail.$login, false);
  }
 
- function create_new_user()
+ function link_activation_code($userid, $activationcode, $dbsocket)
  {
-   $hashed = hash($config['PASSWORD']['crypto']), $password, false);
+   $query = 'INSERT INTO activation (user_id, activation_code)
+             VALUES(:userid, :activationcode)';
+   $result = $dbsocket->prepare($query);
+   $result->execute(array(
+     'userid' => $userid,
+     'activationcode' => $activationcode
+   ));
+ }
+
+ function create_new_user($login, $password, $mail, $status, $config, $dbsocket)
+ {
+   $hashed = hash($config['PASSWORD']['crypto'], $password, false);
+   /*
    $query = 'INSERT INTO user (login, password, mail, status, registration, statuschange)
              VALUES (:login, :password, :mail, :status, :registration, :statuschange);';
    $result = $dbsocket->prepare($query);
    $result->execute(array(
-     // 
-   ))
+     'login' => $login,
+     'password' => $hashed,
+     'mail' => $mail,
+     'status' => $status,
+     'registration' => 'NOW()',
+     'statuschange' => 'NOW()',
+   ));
+   */
+   $uservalues = array(
+     'login' => $login,
+     'password' => $hashed,
+     'mail' => $mail,
+     'status' => $status,
+     'registration' => 'NOW()',
+     'statuschange' => 'NOW()',
+   );
+   return $uservalues;
  }
+
+ /* Send a mail with an $activation_code to the $mail */
+ function send_registration_mail($mail, $activation_code)
+ {
+   $url = 'http://'. $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?page=login&activation=';
+
+   $to = $mail;
+
+   $subject = 'Insription au Wiki';
+
+   $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+   $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+   $headers .= "MIME-Version: 1.0\r\n";
+   $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+   $message = '<html><body>';
+   $message .= '<h2>Vous vous êtes inscrit au wiki !</h2>';
+   $message .= '<h3> Veuillez valider votre inscription via le lien suivant : </h3>';
+   $message .= '<a href="'. $url . $activation_code . '">Activation</a><br/>';
+   $message .= '<h3> Ou en copiant ce lien dans votre navigateur : </h3>';
+   $message .= '<span>'. $url . $activation_code;
+   $message .= '</body></html>';
+
+   mail($to, $subject, $message, $headers);
+ }
+
 ?>
