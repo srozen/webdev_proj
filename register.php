@@ -18,11 +18,17 @@
     $register_log = check_register($_POST['login'], $_POST['mail'], $_POST['checkmail'], $_POST['password'], $_POST['checkpassword'], $config, $dbsocket);
     if($register_log['valid'])
     {
+      echo '<span> Les données user suivantes vont être encodées en base de donnée : </span></br><pre>';
+      print_r(create_new_user($_POST['login'], $_POST['password'], $_POST['mail'], 'activating', $config, $dbsocket));
+      echo '</pre>';
       // Generate activation code
-        //$code = generate_activation_code($_POST['mail'], $_POST['login']);
+        $code = generate_activation_code($_POST['mail'], $_POST['login']);
       // Create new user
+      
       // Add activation link into db
+
       // Send email
+        send_registration_mail($_POST['mail'], $code);
     }
   }
 ?>
