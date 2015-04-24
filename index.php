@@ -41,12 +41,14 @@
   <head>
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
-    <title><?php echo $page->getTabTitle(); ?></title>
+    <title><?php echo $config['GLOBAL']['title'] . ' - ' . $page->getTabTitle(); ?></title>
   </head>
 
   <body>
 
     <header>
+      <img src="<?php echo $config['GLOBAL']['banner']; ?>" alt="Logo Ephec"/>
+      <h1><?php echo $config['GLOBAL']['title'];?></title></h1>
       <nav><span>Menu : </span><?php create_menu(); ?> </nav>
     </header>
 
@@ -59,7 +61,7 @@
     </section>
 
     <footer>
-      <span>Copyright Samuel Monroe 2014 - 2015 <a href="mailto:spat.monroe@gmail.com">Contact</a></span>
+      <span><?php echo $config['GLOBAL']['copyright'] . ' ';?><a href="mailto:<?php echo $config['ADMIN']['mail'];?>"><?php echo $config['ADMIN']['name'];?></a> - Code sous licence MIT</span>
     </footer>
 
   </body>
