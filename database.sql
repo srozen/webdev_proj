@@ -1,10 +1,10 @@
 create table user(
 	  id int not null auto_increment primary key,
-    login varchar(64) not null unique,
-    password char(128) not null,
-    mail varchar(100) not null unique,
-    status int not null,
-    registration datetime not null,
+    login varchar(64) not null unique,  -- XXX To Fill in Register --
+    password char(128) not null,				-- XXX To Fill in Register --
+    mail varchar(100) not null unique,  -- XXX To Fill in Register --
+    status int not null,								-- XXX To Fill in Register --
+    registration datetime not null,			-- XXX To Fill in Register --
     lastlogin datetime default null,
     lastlastlogin datetime default null,
     activation datetime,
