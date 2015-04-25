@@ -39,4 +39,9 @@ function same_inputs($str1, $str2, $flag = false)
   else return false;
 }
 
+function encrypt($password, $encryption)
+{
+  return hash($encryption, $password, false);
+}
+
 ?>
