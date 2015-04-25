@@ -3,7 +3,8 @@ create table user(
     login varchar(64) not null unique,  -- XXX To Fill in Register --
     password char(128) not null,				-- XXX To Fill in Register --
     mail varchar(100) not null unique,  -- XXX To Fill in Register --
-    status int not null,								-- XXX To Fill in Register --
+    class varchar(64) not null,					-- XXX To Fill in Register --
+		subclass varchar(64) not null,			-- XXX To Fill in Register --
     registration datetime not null,			-- XXX To Fill in Register --
     lastlogin datetime default null,
     lastlastlogin datetime default null,
@@ -13,11 +14,6 @@ create table user(
     foreign key (status) references status(status_level)
 );
 
-create table status(
-		id int not null auto_increment primary key,
-    level int not null unique,
-    label varchar(45) not null unique
-);
 
 create table activation(
 		user_id int not null unique primary key,
