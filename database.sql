@@ -7,7 +7,7 @@ create table user(
 		subclass varchar(64) not null,			-- XXX To Fill in Register --
     registration datetime not null,			-- XXX To Fill in Register --
     lastlogin datetime default null,
-    lastlastlogin datetime default null,
+    currentlogin datetime default null,
     activation datetime,
     statuschange datetime,
     avatar boolean default false,
