@@ -1,45 +1,60 @@
 <?php
-function login($login, $password, $activationcode = '0')
+function login($login, $password, $config, $dbsocket, $code = '0')
 {
-  $query = 'SELECT id, login, mail, status
-            FROM user
-            WHERE user_login = \'' . $_POST['log_login'] . '\'
-            AND  user_pwd = \'' . hash('sha512', $_POST['log_passwd'], false) . '\'';
-
-  $result = $dbsocket->query($query);
-
-  $user = $result->fetch();
-
-  if(!empty($user))
+  if(filled($login) AND filled($password))
   {
-    if(is_activating($user['user_status']))
-    {
-      if(strcmp(get_user_activation_code($login), $activationcode) == 0)
-      {
-        // Activation //
-        // Changement de status user
-        $query = 'UPDATE user SET user_status = \'20\' WHERE user_login = \'' . $login . '\';';
-        // Chargement de la session
+    $query = 'SELECT id, login, mail, class, subclass
+              FROM user
+              WHERE login = \'' . $login . '\'
+              AND password = \'' . encrypt($config['PASSWORD']['crypto'], $password) . '\'';
 
-        // Set date d'activation
-        // Redirection vers profil ou index
+    $result = $dbsocket->query($query);
+
+    $user = $result->fetch();
+
+    // If request returned a result //
+    if(/!empty($user))
+    {
+      // Check if user is activating //
+      if($user['subclass'] == 'activating')
+      {
+        if($code != 0)
+        {
+          if(/* Code fit in db */)
+          {
+            // Activation //
+            // Changement de status user
+            // Chargement de la session
+
+            // Set date d'activation
+            // Redirection vers profil ou index
+          }
+          else
+          {
+            return 'Vous n\'avez pas fourni un code d\'activation valide, vérifiez votre adresse mail ! ';
+          }
+        }
+        else
+        {
+          return 'Vous devez vous activer pour vous connecter, vérifiez votre adresse email pour activer ce compte ! ';
+        }
       }
       else
       {
-        // Le code n'est pas valide
-        // Message d'erreur
+        // Connexion
+        // Chargement de la session
+        // Redirection
       }
     }
     else
     {
-      // Connexion
-      // Chargement de la session
-      // Redirection
+      return 'Mauvaise combinaison login / mot de passe !';
     }
   }
   else
   {
-    echo 'Mauvaise combinaison';
+    return 'Les champs ne sont pas remplis ! ';
   }
+
 }
 ?>
