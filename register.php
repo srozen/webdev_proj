@@ -28,7 +28,7 @@
       // Add activation link into db
 
       // Send email
-        send_registration_mail($_POST['mail'], $code);
+        send_registration_mail($_POST['mail'], $code, $_POST['login']);
     }
   }
 ?>
