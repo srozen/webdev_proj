@@ -175,7 +175,7 @@
 
  function create_new_user($login, $password, $mail, $config, $dbsocket)
  {
-   $hashed = encrypt($config['PASSWORD']['crypto'], $password);
+   $hashed = encrypt($password, $config['PASSWORD']['crypto']);
    /*
    $query = 'INSERT INTO user (login, password, mail, class, subclass, registration, statuschange)
              VALUES (:login, :password, :mail, :class, :subclass, :registration, :statuschange);';
@@ -203,13 +203,13 @@
  }
 
  /* Send a mail with an $activation_code to the $mail */
- function send_registration_mail($mail, $activation_code)
+ function send_registration_mail($mail, $activation_code, $login)
  {
    $url = 'http://'. $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?page=login&activation=';
 
    $to = $mail;
 
-   $subject = 'Insription au Wiki';
+   $subject = 'Insription au Wiki - Bienvenue '. $login . ' ! ';
 
    $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
    $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
