@@ -162,29 +162,30 @@
    return hash('sha1', mt_rand(10000,99999).time().$mail.$login, false);
  }
 
- function link_activation_code($userid, $activationcode, $dbsocket)
+ function add_activation_code($userid, $code, $dbsocket)
  {
-   $query = 'INSERT INTO activation (user_id, activation_code)
-             VALUES(:userid, :activationcode)';
+   $query = 'INSERT INTO activation (user_id, code)
+             VALUES(:userid, :code)';
    $result = $dbsocket->prepare($query);
    $result->execute(array(
      'userid' => $userid,
-     'activationcode' => $activationcode
+     'acode' => $code
    ));
  }
 
- function create_new_user($login, $password, $mail, $status, $config, $dbsocket)
+ function create_new_user($login, $password, $mail, $config, $dbsocket)
  {
-   $hashed = hash($config['PASSWORD']['crypto'], $password, false);
+   $hashed = encrypt($config['PASSWORD']['crypto'], $password);
    /*
-   $query = 'INSERT INTO user (login, password, mail, status, registration, statuschange)
-             VALUES (:login, :password, :mail, :status, :registration, :statuschange);';
+   $query = 'INSERT INTO user (login, password, mail, class, subclass, registration, statuschange)
+             VALUES (:login, :password, :mail, :class, :subclass, :registration, :statuschange);';
    $result = $dbsocket->prepare($query);
    $result->execute(array(
      'login' => $login,
      'password' => $hashed,
      'mail' => $mail,
-     'status' => $status,
+     'class' => 'user',
+     'subclass' => 'activating'
      'registration' => 'NOW()',
      'statuschange' => 'NOW()',
    ));
@@ -193,7 +194,8 @@
      'login' => $login,
      'password' => $hashed,
      'mail' => $mail,
-     'status' => $status,
+     'class' => 'user',
+     'subclass' => 'activating',
      'registration' => 'NOW()',
      'statuschange' => 'NOW()',
    );
