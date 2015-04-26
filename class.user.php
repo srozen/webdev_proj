@@ -7,17 +7,15 @@
     private $mail;
     private $class;
     private $subclass;
-    private $currentlogin;
     private $lastlogin;
 
-    public function __construct($id, $login, $mail, $class, $subclass, $currentlogin, $lastlogin)
+    public function __construct($id, $login, $mail, $class, $subclass, $lastlogin)
 		{
 			$this->id = $id;
 			$this->login = $login;
 			$this->mail = $mail;
       $this->class = $class;
       $this->subclass = $subclass;
-      $this->currentlogin = $currentlogin;
       $this->lastlogin = $lastlogin;
 		}
 
@@ -38,6 +36,16 @@
         case 'mail' :
           $db_field = 'mail';
           $_SESSION['user']->setMail($value);
+          break;
+
+        case 'class' :
+          $db_field = 'class';
+          $_SESSION['class']->setClass($value);
+          break:
+
+        case 'subclasss' :
+          $db_field = 'subclass';
+          $_SESSION['subclass']->setSubClass($value);
           break;
 
         case 'lastlogin' :
@@ -125,15 +133,6 @@
       return $this->lastlogin;
     }
 
-    public function setCurrentLogin($currentlogin)
-    {
-      $this->currentlogin = $currentlogin;
-    }
-
-    public function getCurrentLogin()
-    {
-      return $this->currentlogin;
-    }
 
     /*
      * Setters and getters
