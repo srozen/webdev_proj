@@ -180,13 +180,13 @@
    $query = 'INSERT INTO user (login, password, mail, class, subclass, registration, statuschange)
              VALUES (:login, :password, :mail, :class, :subclass, :registration, :statuschange);';
    $result = $dbsocket->prepare($query);
-   
+
    $result->execute(array(
      'login' => $login,
      'password' => $hashed,
      'mail' => $mail,
      'class' => 'user',
-     'subclass' => 'activating'
+     'subclass' => 'activating',
      'registration' => 'NOW()',
      'statuschange' => 'NOW()',
    ));
