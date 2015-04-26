@@ -1,5 +1,11 @@
 <?php
 
+  if(logged())
+  {
+    header("Location: index.php");
+    die();
+  }
+
   $register_log = array(
     "message" => "",
     "valid" => "",
@@ -18,11 +24,12 @@
     $register_log = check_register($_POST['login'], $_POST['mail'], $_POST['checkmail'], $_POST['password'], $_POST['checkpassword'], $config, $dbsocket);
     if($register_log['valid'])
     {
-      echo '<span class="success_msg"> Les données user suivantes vont être encodées en base de donnée : </span></br>';
-      create_new_user($_POST['login'], $_POST['password'], $_POST['mail'], $config, $dbsocket));
+      echo '<span class="success_msg"> Un mail d\'activation va vous êtres envoyé à  : '. $_POST['mail'] . '</span></br>';
+      create_new_user($_POST['login'], $_POST['password'], $_POST['mail'], $config, $dbsocket);
 
       $code = generate_activation_code($_POST['mail'], $_POST['login']);
-      $userid = get_user_value('id', 'login', $_POST['login'], $dbsocket)
+      $userid = get_user_value('id', 'login', $_POST['login'], $dbsocket);
+      add_activation_code($userid, $code, $dbsocket);
 
       send_registration_mail($_POST['mail'], $code, $_POST['login']);
     }
