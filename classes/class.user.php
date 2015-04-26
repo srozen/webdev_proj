@@ -41,7 +41,7 @@
         case 'class' :
           $db_field = 'class';
           $_SESSION['class']->setClass($value);
-          break:
+          break;
 
         case 'subclasss' :
           $db_field = 'subclass';
