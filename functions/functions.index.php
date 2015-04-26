@@ -15,7 +15,7 @@
   }
   else
   {
-    $nav .= '<a href="index.php?page=profile"> Profil </a>;';
+    $nav .= '<a href="index.php?page=profile"> Profil </a>';
     $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
   }
   echo $nav;
