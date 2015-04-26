@@ -28,6 +28,7 @@
   include('functions/functions.accessrights.php');
 
   include('classes/class.page.php');
+  include('classes/class.user.php');
 
 
   // Creating the Page object
