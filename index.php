@@ -4,7 +4,7 @@
  ***********************/
   $config = parse_ini_file('config.ini', true);
 
-  session_name($config['SESSION']['name']);
+  session_name('kekeke');
   session_start();
 
   try
@@ -26,6 +26,7 @@
   include('functions/functions.login.php');
   include('functions/functions.database.php');
   include('functions/functions.accessrights.php');
+  include('functions/functions.messenger.php');
 
   include('classes/class.page.php');
   include('classes/class.user.php');
@@ -51,6 +52,8 @@
       <img src="<?php echo $config['GLOBAL']['banner']; ?>" alt="Logo Ephec"/>
       <h1><?php echo $config['GLOBAL']['title'];?></h1>
       <h2><?php if(logged()) echo 'Bienvenue user'; else echo 'Bienvenue anonyme'; ?></h2>
+      <h3>Description de la session</h3>
+      <?php echo '<pre>' . print_r($_SESSION) . '</pre>';?>
       <nav><span>Menu : </span><?php create_menu(); ?> </nav>
     </header>
 
