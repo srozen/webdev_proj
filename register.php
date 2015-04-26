@@ -18,17 +18,13 @@
     $register_log = check_register($_POST['login'], $_POST['mail'], $_POST['checkmail'], $_POST['password'], $_POST['checkpassword'], $config, $dbsocket);
     if($register_log['valid'])
     {
-      echo '<span> Les données user suivantes vont être encodées en base de donnée : </span></br><pre>';
-      print_r(create_new_user($_POST['login'], $_POST['password'], $_POST['mail'], $config, $dbsocket));
-      echo '</pre>';
-      // Generate activation code
-        $code = generate_activation_code($_POST['mail'], $_POST['login']);
-      // Create new user
+      echo '<span class="success_msg"> Les données user suivantes vont être encodées en base de donnée : </span></br>';
+      create_new_user($_POST['login'], $_POST['password'], $_POST['mail'], $config, $dbsocket));
 
-      // Add activation link into db
+      $code = generate_activation_code($_POST['mail'], $_POST['login']);
+      $userid = get_user_value('id', 'login', $_POST['login'], $dbsocket)
 
-      // Send email
-        send_registration_mail($_POST['mail'], $code, $_POST['login']);
+      send_registration_mail($_POST['mail'], $code, $_POST['login']);
     }
   }
 ?>
@@ -38,14 +34,14 @@
   <label>Login : </label><br/>
     <input type="text" value ="<?php echo $register_log['login']; ?>" class="<?php echo $register_log['loginclass']; ?>" name="login" />
     <?php
-      echo '<small>' . $LOGIN_REQUIREMENTS . '</small><br/>';
+      echo '<small>' . ($config['LOGIN']['minlength']+1) . ' à ' . $config['LOGIN']['maxlength'] . ' caractères chiffres ou lettres.</small><br/>';
       echo $register_log['loginmessage'];
     ?>
 
   <label>Mot de passe : </label><br/>
     <input type="password" class="<?php echo $register_log['passwordclass']; ?>" name="password" placeholder="" />
     <?php
-      echo '<small>' . $PASSWORD_REQUIREMENTS . '</small><br/>';
+      echo '<small>' . ($config['PASSWORD']['minlength']+1) . ' à ' . $config['PASSWORD']['maxlength'] . ' , minimum une majuscule, minuscule, chiffre.</small><br/>';
       echo $register_log['passwordmessage'];
     ?>
 

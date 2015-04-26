@@ -176,10 +176,11 @@
  function create_new_user($login, $password, $mail, $config, $dbsocket)
  {
    $hashed = encrypt($password, $config['PASSWORD']['crypto']);
-   /*
+
    $query = 'INSERT INTO user (login, password, mail, class, subclass, registration, statuschange)
              VALUES (:login, :password, :mail, :class, :subclass, :registration, :statuschange);';
    $result = $dbsocket->prepare($query);
+   
    $result->execute(array(
      'login' => $login,
      'password' => $hashed,
@@ -189,17 +190,6 @@
      'registration' => 'NOW()',
      'statuschange' => 'NOW()',
    ));
-   */
-   $uservalues = array(
-     'login' => $login,
-     'password' => $hashed,
-     'mail' => $mail,
-     'class' => 'user',
-     'subclass' => 'activating',
-     'registration' => 'NOW()',
-     'statuschange' => 'NOW()',
-   );
-   return $uservalues;
  }
 
  /* Send a mail with an $activation_code to the $mail */

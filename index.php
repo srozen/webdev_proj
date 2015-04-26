@@ -20,16 +20,15 @@
 
 
   // Include functions and classes files
-  include('functions.index.php');
-  include('functions.input.php');
-  include('functions.register.php');
-  include('functions.login.php');
-  include('functions.database.php');
-  include('functions.accessrights.php');
+  include('functions/functions.index.php');
+  include('functions/functions.input.php');
+  include('functions/functions.register.php');
+  include('functions/functions.login.php');
+  include('functions/functions.database.php');
+  include('functions/functions.accessrights.php');
 
-  include('class.page.php');
+  include('classes/class.page.php');
 
-  include('constants.text.php');
 
   // Creating the Page object
   if(isset($_GET['page']))  $page = create_page($_GET['page']);
