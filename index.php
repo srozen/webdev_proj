@@ -2,7 +2,9 @@
 /***********************
  * MAIN CONTAINER PAGE *
  ***********************/
+  $config = parse_ini_file('config.ini', true);
 
+  session_name($config['SESSION']['name']);
   session_start();
 
   try
@@ -17,14 +19,13 @@
   }
 
 
-
-  $config = parse_ini_file('config.ini', true);
-
   // Include functions and classes files
   include('functions.index.php');
   include('functions.input.php');
   include('functions.register.php');
+  include('functions.login.php');
   include('functions.database.php');
+  include('functions.accessrights.php');
 
   include('class.page.php');
 
@@ -48,7 +49,8 @@
 
     <header>
       <img src="<?php echo $config['GLOBAL']['banner']; ?>" alt="Logo Ephec"/>
-      <h1><?php echo $config['GLOBAL']['title'];?></title></h1>
+      <h1><?php echo $config['GLOBAL']['title'];?></h1>
+      <h2><?php if(logged()) echo 'Bienvenue user'; else echo 'Bienvenue anonyme'; ?></h2>
       <nav><span>Menu : </span><?php create_menu(); ?> </nav>
     </header>
 
