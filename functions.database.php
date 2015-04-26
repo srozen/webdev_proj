@@ -58,7 +58,7 @@ function get_activation_code($userid, $dbsocket)
   $query = 'SELECT code
             FROM activation
             WHERE user_id = \'' . $userid . '\';';
-  $result = dbsocket->query($query);
+  $result = $dbsocket->query($query);
   $activation = $result->fetch();
 
   return $activation['code'];
