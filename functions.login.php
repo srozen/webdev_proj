@@ -1,9 +1,10 @@
 <?php
-function login($login, $password, $config, $dbsocket, $code = '0')
+
+function login($login, $password, $code, $config, $dbsocket)
 {
   if(filled($login) AND filled($password))
   {
-    $query = 'SELECT id, login, mail, class, subclass
+    $query = 'SELECT id, subclass
               FROM user
               WHERE login = \'' . $login . '\'
               AND password = \'' . encrypt($config['PASSWORD']['crypto'], $password) . '\'';
@@ -18,47 +19,65 @@ function login($login, $password, $config, $dbsocket, $code = '0')
       // Check if user is activating //
       if($user['subclass'] == 'activating')
       {
-        if($code != 0)
+        if(filled($code))
         {
           if(get_activation_code($user['id']) == $code)
           {
-            // Activation //
-            // Changement de status user
-            //set_user_value('subclass', 'normal', $user['id'], $dbsocket);
-            // Chargement de la session
-            // $_SESSION['logged'] = true;
-            // $_SESSION['user'] = new User();
-            // Set date d'activation
-            //set_user_value('activation', 'NOW()', $user['id'], $dbsocket);
-            // Redirection vers profil ou index
+
+            set_user_value('subclass', 'normal', $user['id'], $dbsocket);
+            set_user_value('statuschange', 'NOW()', $user['id'], $dbsocket);
+            set_user_value('activation', 'NOW()', $user['id'], $dbsocket);
+
+            login_procedure($user['id'], $dbsocket);
           }
           else
           {
-            return 'Vous n\'avez pas fourni un code d\'activation valide, vérifiez votre adresse mail ! ';
+            echo 'Vous n\'avez pas fourni un code d\'activation valide, vérifiez votre adresse mail ! ';
           }
         }
         else
         {
-          return 'Vous devez vous activer pour vous connecter, vérifiez votre adresse email pour activer ce compte ! ';
+          echo 'Vous devez vous activer pour vous connecter, vérifiez votre adresse email pour activer ce compte ! ';
         }
+      }
+      else if($user['subclass'] == 'normal')
+      {
+        login_procedure($user['id'], $dbsocket);
       }
       else
       {
-        // Connexion
-        // Chargement de la session
-        // Redirection
+        echo 'Vous n\'êtes pas authorisé à vous connecter ! ';
       }
     }
     else
     {
-      return 'Mauvaise combinaison login / mot de passe !';
+      echo 'Mauvaise combinaison login / mot de passe !';
     }
   }
   else
   {
-    return 'Les champs ne sont pas remplis ! ';
+    echo 'Les champs ne sont pas remplis ! ';
   }
 
+}
+
+function login_procedure($userid, $dbsocket)
+{
+  $lastlogin = get_user_value('currentlogin', 'id', $userid, $dbsocket);
+  set_user_value('lastlogin', $lastlogin, $userid, $dbsocket);
+  set_user_value('currentlogin', 'NOW()', $userid, $dbsocket);
+
+  //Récupèrer l'entièreté des données utiles
+  $query = 'SELECT id, login, mail, class, subclass, lastlogin
+            FROM user
+            WHERE id = \'' . $userid . '\'';
+
+  $result = $dbsocket->query($query);
+
+  $user = $result->fetch(PDO::FETCH_ASSOC);
+  $_SESSION['logged'] = true;
+  $_SESSION['user'] = new User($user['id'], $user['login'], $user['mail'], $user['class'], $user['subclass'], $user['lastlogin']);
+  header("Location: index.php");
 }
 
 ?>
