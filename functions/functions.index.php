@@ -8,10 +8,16 @@
  {
   $nav =  '<a href="index.php?page=index"> Accueil </a>';
   $nav .= '<a href="index.php?page=contact"> Contact </a>';
-
-  $nav .= '<a href="index.php?page=register"> Inscription </a>';
-  $nav .= '<a href="index.php?page=login"> Connexion </a>';
-
+  if(!logged())
+  {
+    $nav .= '<a href="index.php?page=register"> Inscription </a>';
+    $nav .= '<a href="index.php?page=login"> Connexion </a>';
+  }
+  else
+  {
+    $nav .= '<a href="index.php?page=profile"> Profil </a>;';
+    $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
+  }
   echo $nav;
  }
 
@@ -39,6 +45,9 @@
        break;
      case 'login' :
        return $values = array('Connexion', 'login.php', 'Page de connexion');
+       break;
+     case 'profile' :
+       return $values = array('Profil', 'profile.php', 'Gestion du profil');
        break;
      default :
        return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
