@@ -33,8 +33,8 @@ function save_contact_message($mail, $subject, $message, $dbsocket)
   }
 
   $query = 'INSERT INTO contact_message (subject, mail, message, date, user_id)
-            VALUES (:subject, :mail, :message, NOW())';
-  $response = $db_socket->prepare($query);
+            VALUES (:subject, :mail, :message, NOW(), :user_id);';
+  $response = $dbsocket->prepare($query);
   $response->execute(array(
     'subject' => $subject,
     'mail' => $mail,
