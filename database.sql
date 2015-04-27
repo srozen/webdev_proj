@@ -1,17 +1,16 @@
 create table user(
 	  id int not null auto_increment primary key,
-    login varchar(64) not null unique,  -- XXX To Fill in Register --
-    password char(128) not null,				-- XXX To Fill in Register --
-    mail varchar(100) not null unique,  -- XXX To Fill in Register --
-    class varchar(64) not null,					-- XXX To Fill in Register --
-		subclass varchar(64) not null,			-- XXX To Fill in Register --
-    registration datetime not null,			-- XXX To Fill in Register --
+    login varchar(64) not null unique,
+    password char(128) not null,
+    mail varchar(100) not null unique,
+    class varchar(64) not null,
+		subclass varchar(64) not null,
+    registration datetime not null,
     lastlogin datetime default null,
     currentlogin datetime default null,
     activation datetime,
     statuschange datetime,
-    avatar boolean default false,
-    foreign key (status) references status(status_level)
+    avatar boolean default false
 );
 
 
