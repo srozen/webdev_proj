@@ -23,8 +23,6 @@
     echo 'Database connexion failed';
   }
 
-  include('classes/class.page.php');
-  include('classes/class.user.php');
 
   // Include functions and classes files
   include('functions/functions.index.php');
@@ -57,7 +55,7 @@
       <h1><?php echo $config['GLOBAL']['title'];?></h1>
       <h2><?php if(logged()) echo 'Bienvenue user'; else echo 'Bienvenue anonyme'; ?></h2>
       <h3>Description de la session</h3>
-      <?php echo '<pre>' . print_r($_SESSION) . '</pre>';?>
+      <?php echo '<pre>'; echo print_r($_SESSION); echo ' </pre>';?>
       <nav><span>Menu : </span><?php create_menu(); ?> </nav>
     </header>
 
