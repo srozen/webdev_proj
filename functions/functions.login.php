@@ -28,6 +28,8 @@ function login($login, $password, $code, $config, $dbsocket)
             set_user_value('statuschange', 'NOW()', $user['id'], $dbsocket);
             set_user_value('activation', 'NOW()', $user['id'], $dbsocket);
 
+            // TODO : Remove activation row in db
+
             login_procedure($user['id'], $dbsocket);
           }
           else
