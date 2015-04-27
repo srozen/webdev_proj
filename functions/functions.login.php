@@ -7,7 +7,7 @@ function login($login, $password, $code, $config, $dbsocket)
     $query = 'SELECT id, subclass
               FROM user
               WHERE login = \'' . $login . '\'
-              AND password = \'' . encrypt($config['PASSWORD']['crypto'], $password) . '\'';
+              AND password = \'' . encrypt($password, $config['PASSWORD']['crypto']) . '\'';
 
     $result = $dbsocket->query($query);
 
@@ -21,9 +21,10 @@ function login($login, $password, $code, $config, $dbsocket)
       {
         if(filled($code))
         {
-          if(get_activation_code($user['id']) == $code)
+          if(get_activation_code($user['id'], $dbsocket) == $code)
           {
-
+            set_user_value('lastlogin', 'NOW()', $use['id'], $dbsocket);
+            set_user_value('currentlogin', 'NOW()', $user['id'], $dbsocket);
             set_user_value('subclass', 'normal', $user['id'], $dbsocket);
             set_user_value('statuschange', 'NOW()', $user['id'], $dbsocket);
             set_user_value('activation', 'NOW()', $user['id'], $dbsocket);
