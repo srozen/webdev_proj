@@ -16,6 +16,10 @@
   else
   {
     $nav .= '<a href="index.php?page=profile"> Profil </a>';
+    if($_SESSION['user']->getClass == 'admin')
+    {
+      $nav .= '<a href="#"> Administration </a>';
+    }
     $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
   }
   echo $nav;
