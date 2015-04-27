@@ -4,6 +4,7 @@
  *******************************************/
 
 /* Check if $var is not empty and set */
+
 function filled($var)
 {
   return (isset($var) AND !empty($var));
@@ -42,6 +43,11 @@ function same_inputs($str1, $str2, $flag = false)
 function encrypt($password, $encryption)
 {
   return hash($encryption, $password, false);
+}
+
+function sanitize($string)
+{
+  return htmlspecialchars(trim($string));
 }
 
 ?>
