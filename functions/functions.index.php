@@ -53,6 +53,9 @@
      case 'profile' :
        return $values = array('Profil', 'profile.php', 'Gestion du profil');
        break;
+     case 'logout' :
+        return $values = array('Déconnexion', 'logout.php', 'Page de déconnexion');
+        break;
      default :
        return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
        break;
