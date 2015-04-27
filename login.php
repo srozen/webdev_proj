@@ -13,7 +13,7 @@
 ?>
 
 
-	<form name="login" method="post" action="index.php?page=login">
+	<form name="login" method="post" action="index.php?page=login&activation=<?php echo $_GET['activation'];?>">
 		Pseudo : <br/>
 		<input type="text" name="login"/><br/>
 		Mot de passe : <br/>
