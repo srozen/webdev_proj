@@ -2,6 +2,11 @@
 /***********************
  * MAIN CONTAINER PAGE *
  ***********************/
+
+
+  include('classes/class.page.php');
+  include('classes/class.user.php');
+
   $config = parse_ini_file('config.ini', true);
 
   session_name($config['SESSION']['name']);
@@ -18,6 +23,8 @@
     echo 'Database connexion failed';
   }
 
+  include('classes/class.page.php');
+  include('classes/class.user.php');
 
   // Include functions and classes files
   include('functions/functions.index.php');
@@ -27,9 +34,6 @@
   include('functions/functions.database.php');
   include('functions/functions.accessrights.php');
   include('functions/functions.messenger.php');
-
-  include('classes/class.page.php');
-  include('classes/class.user.php');
 
 
   // Creating the Page object
