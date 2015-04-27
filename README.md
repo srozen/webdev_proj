@@ -14,9 +14,9 @@ Languages I'll use :
 
 ## TODO
 
-* Allow user to connect & activate
-* Load user data when connected
-* Create a contact page
-* Contact page should contain user data if connected
+* Allow user to connect & activate [x] To test
+* Load user data when connected [x] To test
+* Create a contact page [x]
+* Contact page should contain user data if connected[x] To test
 * Create a user profile page
 * Allow user to change personal infos
