@@ -14,8 +14,8 @@
     {
       $mail = $_POST['mail'];
     }
-    
-    send_contact_message($mail, $_POST['subject'], $_POST['message']);
+
+    send_contact_message(sanitize($mail), sanitize($_POST['subject']), sanitize($_POST['message']), $dbsocket);
   }
 
 
