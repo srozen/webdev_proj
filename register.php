@@ -39,7 +39,7 @@
 <?php echo $register_log['message']; ?>
 <form name="regiser" action="index.php?page=register" method="post">
   <label>Login : </label><br/>
-    <input type="text" size="<?php echo $config['LOGIN']['size']; ?>" maxlength="<?php echo $config['LOGIN']['maxlength']; ?>" value =" <?php echo $register_log['login']; ?>" class="<?php echo $register_log['loginclass']; ?>" name="login" />
+    <input type="text" size="<?php echo $config['LOGIN']['size']; ?>" maxlength="<?php echo $config['LOGIN']['maxlength']; ?>" value ="<?php echo $register_log['login']; ?>" class="<?php echo $register_log['loginclass']; ?>" name="login" />
     <?php
       echo '<small>' . ($config['LOGIN']['minlength']+1) . ' à ' . $config['LOGIN']['maxlength'] . ' caractères chiffres ou lettres.</small><br/>';
       echo $register_log['loginmessage'];
