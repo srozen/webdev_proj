@@ -4,12 +4,12 @@
  ***********************/
   $config = parse_ini_file('config.ini', true);
 
-  session_name('kekeke');
+  session_name($config['SESSION']['name']);
   session_start();
 
   try
   {
-    $dbsocket = new PDO('mysql:host=localhost; dbname=1415he201041; charset=utf8', 'MONROE', 'Samuel');
+    $dbsocket = new PDO('mysql:host=localhost; dbname=' . $config['DATABASE']['name'] . '; charset=utf8', $config['DATABASE']['login'], $config['DATABASE']['password']);
     $dbsocket->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
   catch(Exception $e)
