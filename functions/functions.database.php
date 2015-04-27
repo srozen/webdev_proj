@@ -43,13 +43,21 @@ function get_user_value($value, $col, $colvalue, $dbsocket)
 // USE : set_user_value('login', 'johnsmith', '24', $dbsocket); "Set user 24 login with 'johnsmith'" //
 function set_user_value($field, $value, $userid, $dbsocket)
 {
-  $query = 'UPDATE user
-            SET ' . $field . ' =\'' . $value . '\'
-            WHERE user_id =\'' . $userid . '\';';
+  if($value == 'NOW()')
+  {
+    $set = 'SET ' . $field . ' = NOW() ';
+  }
+  else
+  {
+    $set = 'SET ' . $field . ' = \'' . $value . '\'';
+  }
+
+  $query = 'UPDATE user ' . $set . ' WHERE id =\'' . $userid . '\';';
 
   $result = $dbsocket->exec($query);
   return $result;
 }
+
 
 /* Return an activation code from a $userid */
 // USER : get_activation_code(1, $dbsocket); "Get me the activation code for user 1" //
