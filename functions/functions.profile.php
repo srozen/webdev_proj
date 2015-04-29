@@ -31,9 +31,19 @@
     }
   }
 
-  function update_user_password()
+  function update_user_password($user, $password, $checkpassword, $config, $dbsocket)
   {
-
+    $vpassword = check_passwords($password, $checkpassword, $config);
+    if($vpassword == true)
+    {
+      $hashed = encrypt($password, $config['PASSWORD']['crypto']);
+      $user->update('password', $hashed, $dbsocket);
+      echo '<span class="succes_msg"> Le mot de passe à été changé !! </span>';
+    }
+    else
+    {
+      echo $vpassword;
+    }
   }
 
   function update_user_avatar()
