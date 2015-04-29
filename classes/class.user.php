@@ -19,14 +19,14 @@
       $this->lastlogin = $lastlogin;
 		}
 
-    public function update_db($field, $value)
+    public function update($field, $value, $dbsocket)
     {
       $db_field;
       switch($field)
       {
         case 'login' :
           $db_field = 'login';
-          $_SESSION['user']->setLogin($value);
+          $this->setLogin($value);
           break;
 
         case 'password' :
@@ -35,24 +35,27 @@
 
         case 'mail' :
           $db_field = 'mail';
-          $_SESSION['user']->setMail($value);
+          $this->setMail($value);
           break;
 
         case 'class' :
           $db_field = 'class';
-          $_SESSION['class']->setClass($value);
+          $this->setClass($value);
           break;
 
         case 'subclasss' :
           $db_field = 'subclass';
-          $_SESSION['subclass']->setSubClass($value);
+          $this->setSubClass($value);
           break;
 
         case 'lastlogin' :
           $db_field = 'lastlogin';
-          $_SESSION['user']->setLastLogin($value);
+          $this->setLastLogin($value);
           break;
 
+        case 'avatar' :
+          $db_field = 'avatar';
+          break;
         default:
           $db_field = null;
           break;
@@ -62,13 +65,13 @@
       {
         $query = 'UPDATE user
                   SET ' . $db_field . ' =\'' . $value . '\'
-                  WHERE id=\'' . $_SESSION['user']->getId() . '\';';
-        return $query;
+                  WHERE id=\'' . $this->getId() . '\';';
+        $dbsocket->exec($query);
+        return true;
       }
       else
       {
-        $query = null;
-        return $query;
+        return false;
       }
 
     }
