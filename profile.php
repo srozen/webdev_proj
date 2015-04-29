@@ -151,20 +151,11 @@ else
   <h3> Données du profil </h3>
   <pre>
     <h4> Avatar : </h4>
-      <?php
-        if($_SESSION['user']->getAvatar() == true)
-        {
-        		$extensions = array('jpg', 'png', 'gif');
-
-        		foreach($extensions as $ext)
-        		{
-        			$file = $config['GLOBAL']['avatar'] . $_SESSION['user']->getId() . '.' . $ext;
-        			if(file_exists($file)) echo '<img src="' . $file . '" alt="Avatar de ' . $_SESSION['user']->getId() . '"/>';
-        		}
-        }
-      ?>
+      <?php display_avatar($_SESSION['user'], $config); ?>
     <h4> Login : </h4>
+      <?php echo $_SESSION['user']->getLogin(); ?>
     <h4> Mail : </h4>
+      <?php echo $_SESSION['user']->getMail(); ?>
   </pre>
 
   <a href="index.php?page=profile&modification=true"> Modifier Profil </a>
