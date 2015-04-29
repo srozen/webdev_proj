@@ -16,8 +16,10 @@
   else
   {
     $nav .= '<a href="index.php?page=profile"> Profil </a>';
-
-    $nav .= '<a href="index.php?page=administration"> Administration </a>';
+    if(is_admin($_SESSION['user']))
+    {
+      $nav .= '<a href="#"> Administration </a>';
+    }
 
     $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
   }
