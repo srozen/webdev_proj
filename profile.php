@@ -26,11 +26,11 @@ if(isset($_GET['modification']) AND $_GET['modification'] == 'true')
   {
     if(profile_auth($_POST['old_password'], $config, $dbsocket))
     {
-      echo 'Password ok pour changer le mot de passe !';
+      update_user_password($_SESSION['user'], $_POST['new_password'], $_POST['new_passwordcheck'], $config, $dbsocket);
     }
     else
     {
-      echo 'Mauvais mot de passe ! ';
+      echo '<span class="error_msg"> Mauvais mot de passe ! </span>';
     }
   }
 
@@ -43,7 +43,7 @@ if(isset($_GET['modification']) AND $_GET['modification'] == 'true')
     }
     else
     {
-      echo 'Mauvais mot de passe ! ';
+      echo '<span class="error_msg"> Mauvais mot de passe ! </span>';
     }
   }
 
@@ -56,7 +56,7 @@ if(isset($_GET['modification']) AND $_GET['modification'] == 'true')
     }
     else
     {
-      echo 'Mauvais mot de passe ! ';
+      echo '<span class="error_msg"> Mauvais mot de passe ! </span>';
     }
   }
 
