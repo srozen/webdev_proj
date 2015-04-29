@@ -16,10 +16,9 @@
   else
   {
     $nav .= '<a href="index.php?page=profile"> Profil </a>';
-    if($_SESSION['user']->getClass() == 'admin')
-    {
-      $nav .= '<a href="#"> Administration </a>';
-    }
+
+    $nav .= '<a href="index.php?page=administration"> Administration </a>';
+
     $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
   }
   echo $nav;
@@ -52,6 +51,9 @@
        break;
      case 'profile' :
        return $values = array('Profil', 'profile.php', 'Gestion du profil');
+       break;
+     case 'administration' :
+       return $values = array('Administration', 'administration.php', 'Page d\'administration');
        break;
      case 'logout' :
         return $values = array('Déconnexion', 'logout.php', 'Page de déconnexion');
