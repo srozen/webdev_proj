@@ -24,7 +24,7 @@
     $register_log = check_register($_POST['login'], $_POST['mail'], $_POST['checkmail'], $_POST['password'], $_POST['checkpassword'], $config, $dbsocket);
     if($register_log['valid'])
     {
-      echo '<span class="success_msg"> Un mail d\'activation va vous êtres envoyé à  : '. $_POST['mail'] . '</span></br>';
+      echo '<span class="success_msg"> Un mail d\'activation va vous être envoyé à  : '. $_POST['mail'] . '</span></br>';
       create_new_user($_POST['login'], $_POST['password'], $_POST['mail'], $config, $dbsocket);
 
       $code = generate_activation_code($_POST['mail'], $_POST['login']);
