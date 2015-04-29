@@ -50,9 +50,9 @@ if(isset($_GET['modification']) AND $_GET['modification'] == 'true')
   /*** CONFIG CHANGING ***/
   if(isset($_POST['userconfig_submit']))
   {
-    if(profile_auth($_POST['mail_password'], $config, $dbsocket))
+    if(profile_auth($_POST['userconfig_password'], $config, $dbsocket))
     {
-      echo 'Password ok pour changer le mail';
+      update_user_avatar($_SESSION['user'], $config);
     }
     else
     {
@@ -151,6 +151,18 @@ else
   <h3> Données du profil </h3>
   <pre>
     <h4> Avatar : </h4>
+      <?php
+        if($_SESSION['user']->getAvatar() == true)
+        {
+        		$extensions = array('jpg', 'png', 'gif');
+
+        		foreach($extensions as $ext)
+        		{
+        			$file = $config['GLOBAL']['avatar'] . $_SESSION['user']->getId() . '.' . $ext;
+        			if(file_exists($file)) echo '<img src="' . $file . '" alt="Avatar de ' . $_SESSION['user']->getId() . '"/>';
+        		}
+        }
+      ?>
     <h4> Login : </h4>
     <h4> Mail : </h4>
   </pre>
