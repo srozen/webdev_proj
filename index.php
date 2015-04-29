@@ -38,7 +38,6 @@
   // Creating the Page object
   if(isset($_GET['page']))  $page = create_page($_GET['page']);
   else $page = create_page('index');
-
 ?>
 
 <!DOCTYPE html>
