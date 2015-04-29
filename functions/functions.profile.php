@@ -3,6 +3,27 @@
  * SET OF FUNCTIONS USED TO MANAGE USER PROFILE PAGE *
  *****************************************************/
 
+  function display_avatar($user, $config)
+  {
+    if($user->getAvatar() == true)
+    {
+        $extensions = array('jpg', 'png', 'gif');
+
+        foreach($extensions as $ext)
+        {
+          $file = $config['GLOBAL']['avatar'] . $user->getId() . '.' . $ext;
+          if(file_exists($file))
+          {
+            echo '<img src="' . $file . '" alt="Avatar de ' . $user->getId() . '"/>';
+          }
+        }
+    }
+    else
+    {
+      echo '<img src="'. $config['GLOBAL']['avatar'] . $config['GLOBAL']['defaultavatar'] . '" alt="Avatar par défaut">';
+    }
+  }
+
   function update_user_mail($user, $mail, $mailcheck, $config, $dbsocket)
   {
     $vmail = check_mails($mail, $mailcheck, $config, $dbsocket);
