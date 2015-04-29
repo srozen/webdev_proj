@@ -8,6 +8,7 @@
     private $class;
     private $subclass;
     private $lastlogin;
+    private $avatar;
 
     public function __construct($id, $login, $mail, $class, $subclass, $lastlogin)
 		{
@@ -17,6 +18,7 @@
       $this->class = $class;
       $this->subclass = $subclass;
       $this->lastlogin = $lastlogin;
+      $this->avatar = $avatar;
 		}
 
     public function update($field, $value, $dbsocket)
@@ -55,6 +57,7 @@
 
         case 'avatar' :
           $db_field = 'avatar';
+          $this->setAvatar($value);
           break;
         default:
           $db_field = null;
@@ -136,6 +139,15 @@
       return $this->lastlogin;
     }
 
+    public function setAvatar($value)
+    {
+      $this->avatar=$value;
+    }
+
+    public function getAvatar()
+    {
+      return $this->avatar;
+    }
 
     /*
      * Setters and getters
