@@ -10,4 +10,21 @@ function logged()
   else return false;
 }
 
+function indoor_auth($password, $config, $dbsocket)
+{
+  $query = 'SELECT count(*)
+            FROM user
+            WHERE login = \'' . $_SESSION['user']->getLogin() . '\' AND password = \'' . encrypt($password, $config['PASSWORD']['crypto']) . '\';';
+  $result = $dbsocket->query($query);
+
+  if($result->fetchColumn() > 0)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
 ?>
