@@ -43,7 +43,7 @@ function save_contact_message($mail, $subject, $message, $dbsocket)
   ));
 }
 
-function confirm_contact_message($mail, $subject, $message)
+function confirm_contact_message($mail, $subj, $text)
 {
   $to = $mail;
 
@@ -59,8 +59,8 @@ function confirm_contact_message($mail, $subject, $message)
   $message .= '<h3>Rappel de votre message : <h3>';
   $message .= '<ul>';
   $message .= '<li><b>Email  :</b>'   . $mail    . '</li>';
-  $message .= '<li><b>Sujet  :</b>'   . $subject . '</li>';
-  $message .= '<li><b>Message  :</b>' . $message . '</li>';
+  $message .= '<li><b>Sujet  :</b>'   . $subj . '</li>';
+  $message .= '<li><b>Message  :</b>' . $text . '</li>';
   $message .= '</ul></body></html>';
 
   mail($to, $subject, $message, $headers);
