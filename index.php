@@ -32,6 +32,7 @@
   include('functions/functions.database.php');
   include('functions/functions.accessrights.php');
   include('functions/functions.messenger.php');
+  include('functions/functions.profile.php');
 
 
   // Creating the Page object
