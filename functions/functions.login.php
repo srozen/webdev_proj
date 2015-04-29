@@ -1,4 +1,7 @@
 <?php
+/********************************************
+ * FUNCTIONS USED TO MANAGE LOGIN PROCEDURE *
+ ********************************************/
 
 function login($login, $password, $code, $config, $dbsocket)
 {

@@ -1,9 +1,7 @@
 <?php
-
-
-  /************************************************************************
-   * THIS SET OF FUNCTIONS PROVIDES AN API FOR INTERNAL MESSAGES MANAGING *
-   ************************************************************************/
+/************************************************************************
+ * THIS SET OF FUNCTIONS PROVIDES AN API FOR INTERNAL MESSAGES MANAGING *
+ ************************************************************************/
 
 
 function send_contact_message($mail, $subject, $message, $dbsocket)
