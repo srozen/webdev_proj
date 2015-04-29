@@ -71,7 +71,7 @@ function login_procedure($userid, $dbsocket)
   set_user_value('currentlogin', 'NOW()', $userid, $dbsocket);
 
   //Récupèrer l'entièreté des données utiles
-  $query = 'SELECT id, login, mail, class, subclass, lastlogin
+  $query = 'SELECT id, login, mail, class, subclass, lastlogin, avatar
             FROM user
             WHERE id = \'' . $userid . '\'';
 
@@ -79,7 +79,7 @@ function login_procedure($userid, $dbsocket)
 
   $user = $result->fetch(PDO::FETCH_ASSOC);
   $_SESSION['logged'] = true;
-  $_SESSION['user'] = new User($user['id'], $user['login'], $user['mail'], $user['class'], $user['subclass'], $user['lastlogin']);
+  $_SESSION['user'] = new User($user['id'], $user['login'], $user['mail'], $user['class'], $user['subclass'], $user['lastlogin'], $user['avatar']);
   header("Location: index.php");
 }
 
