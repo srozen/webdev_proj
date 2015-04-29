@@ -95,7 +95,7 @@
 
       if(move_uploaded_file($_FILES["avatar"]["tmp_name"], $newfilename)) {
         echo "The file " . basename($_FILES["avatar"]["name"]) . " has been uploaded.";
-        smart_resize_image($newfilename, null, 200, 200, false, $newfilename, false, false, 100);
+        smart_resize_image($newfilename, null, 200, 200, true, $newfilename, false, false, 100);
       }
       else
       {
