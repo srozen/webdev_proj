@@ -5,13 +5,13 @@
     header("Location: index.php");
     die();
   }
-  /*
-  if(!is_admin($_SESSION['user'])
+
+  if(!is_admin($_SESSION['user']))
   {
     header("Location: index.php");
     die();
   }
-  */
+
 
   echo '<ul> Panneau d\'administration';
   echo '<li><a href=index.php?page=administration&manage=user> Gestion des membres </a></li>';
