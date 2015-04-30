@@ -43,22 +43,11 @@
           display_users($_POST['user_login'], $_POST['user_mail'], $_POST['user_status']);
         }
         break;
-      case 'mail' : ?>
-        <h3>Bienvenue dans la gestion des mails</h3>
-        <form name="mail" action='index.php?page=administration&manage=mail' method="post">
-          <select name="mail_sort">
-            <option value="date">Classement par date</option>
-            <option value="noanswer">Messages non répondus</option>
-            <option value="answer">Messages répondus</option>
-            <option value="anonymous">Messages anonymes</option>
-            <option value="user">Messages utilisateurs</option>
-          </select>
-          <input type="submit" value="Rechercher" name="mail_submit"/>
-        </form>
-        <?php
+      case 'mail' :
+        select_messages();
         if(isset($_POST['mail_submit']))
         {
-          display_messages($_POST['mail_sort']);
+          display_messages($_POST['mail_sort'], $dbsocket);
         }
         break;
       case 'config' :
