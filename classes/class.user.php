@@ -10,7 +10,7 @@
     private $lastlogin;
     private $avatar;
 
-    public function __construct($id, $login, $mail, $class, $subclass, $lastlogin)
+    public function __construct($id, $login, $mail, $class, $subclass, $lastlogin, $avatar)
 		{
 			$this->id = $id;
 			$this->login = $login;
