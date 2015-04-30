@@ -52,7 +52,7 @@ if(isset($_GET['modification']) AND $_GET['modification'] == 'true')
   {
     if(profile_auth($_POST['userconfig_password'], $config, $dbsocket))
     {
-      update_user_avatar($_SESSION['user'], $config);
+      update_user_avatar($_SESSION['user'], $config, $dbsocket);
     }
     else
     {
@@ -149,6 +149,7 @@ else
 {
   ?>
   <h3> Données du profil </h3>
+  <a href="index.php?page=profile&modification=true"> Modifier Profil </a>
   <pre>
     <h4> Avatar : </h4>
       <?php display_avatar($_SESSION['user'], $config); ?>
@@ -156,8 +157,12 @@ else
       <?php echo $_SESSION['user']->getLogin(); ?>
     <h4> Mail : </h4>
       <?php echo $_SESSION['user']->getMail(); ?>
+    <h4> Dernière connexion : </h4>
+      <?php echo $_SESSION['user']->getLastLogin(); ?>
+    <h4> Type d'utilisateur : </h4>
+      <?php echo $_SESSION['user']->getClass(); ?>
+    <h4> Status utilisateur : </h4>
+      <?php echo $_SESSION['user']->getSubClass(); ?>
   </pre>
-
-  <a href="index.php?page=profile&modification=true"> Modifier Profil </a>
   <?php
 }
