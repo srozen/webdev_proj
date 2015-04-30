@@ -88,7 +88,7 @@
 
  function create_new_user($login, $password, $mail, $config, $dbsocket)
  {
-   $hashed = encrypt($password, $config['PASSWORD']['crypto']);
+   $hashed = encrypt($password, $config['PASSWORD']['password_crypto']);
 
    $query = 'INSERT INTO user (login, password, mail, class, subclass, registration, statuschange)
              VALUES (:login, :password, :mail, :class, :subclass, NOW(), NOW());';

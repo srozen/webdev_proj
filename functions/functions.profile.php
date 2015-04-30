@@ -57,7 +57,7 @@
     $vpassword = check_passwords($password, $checkpassword, $config);
     if($vpassword == true)
     {
-      $hashed = encrypt($password, $config['PASSWORD']['crypto']);
+      $hashed = encrypt($password, $config['PASSWORD']['password_crypto']);
       $user->update('password', $hashed, $dbsocket);
       echo '<span class="succes_msg"> Le mot de passe à été changé !! </span>';
     }
@@ -67,11 +67,11 @@
     }
   }
 
-  function update_user_avatar($user, $config)
+  function update_user_avatar($user, $config, $dbsocket)
   {
     if($user->getAvatar() == false)
     {
-      $user->setAvatar(true);
+      $user->update('avatar', 'true', $dbsocket);
     }
     //Filename related to the user id
     $temp = explode(".",$_FILES["avatar"]["name"]);
@@ -115,7 +115,7 @@
       }
 
       if(move_uploaded_file($_FILES["avatar"]["tmp_name"], $newfilename)) {
-        echo "The file " . basename($_FILES["avatar"]["name"]) . " has been uploaded.";
+        echo '<span class="success_msg">Le fichier ' . basename($_FILES["avatar"]["name"]) . ' a été uploadé.</span>';
         smart_resize_image($newfilename, null, 200, 200, true, $newfilename, false, false, 100);
       }
       else

@@ -40,40 +40,40 @@
 <form name="regiser" action="index.php?page=register" method="post">
   <label>Login : </label><br/>
     <input type="text"
-           size="<?php echo $config['LOGIN']['size']; ?>"
-           maxlength="<?php echo $config['LOGIN']['maxlength']; ?>"
+           size="<?php echo $config['LOGIN']['login_size']; ?>"
+           maxlength="<?php echo $config['LOGIN']['login_maxlength']; ?>"
            value ="<?php echo $register_log['login']; ?>"
            class="<?php echo $register_log['loginclass']; ?>"
            name="login" />
     <?php
-      echo '<small>' . ($config['LOGIN']['minlength']+1) . ' à ' . $config['LOGIN']['maxlength'] . ' caractères chiffres ou lettres.</small><br/>';
+      echo '<small>' . ($config['LOGIN']['login_minlength']+1) . ' à ' . $config['LOGIN']['login_maxlength'] . ' caractères chiffres ou lettres.</small><br/>';
       echo $register_log['loginmessage'];
     ?>
 
   <label>Mot de passe : </label><br/>
     <input type="password"
-           size="<?php echo $config['PASSWORD']['size']; ?>"
-           maxlength="<?php echo $config['PASSWORD']['maxlength']; ?>"
+           size="<?php echo $config['PASSWORD']['password_size']; ?>"
+           maxlength="<?php echo $config['PASSWORD']['password_maxlength']; ?>"
            class="<?php echo $register_log['passwordclass']; ?>"
            name="password"
            placeholder="" />
     <?php
-      echo '<small>' . ($config['PASSWORD']['minlength']+1) . ' à ' . $config['PASSWORD']['maxlength'] . ' , minimum une majuscule, minuscule, chiffre.</small><br/>';
+      echo '<small>' . ($config['PASSWORD']['minlength']+1) . ' à ' . $config['PASSWORD']['password_maxlength'] . ' , minimum une majuscule, minuscule, chiffre.</small><br/>';
       echo $register_log['passwordmessage'];
     ?>
 
   <label>Vérification mot de passe : </label><br/>
     <input autocomplete="off"
-           size="<?php echo $config['PASSWORD']['size']; ?>"
-           maxlength="<?php echo $config['PASSWORD']['maxlength']; ?>"
+           size="<?php echo $config['PASSWORD']['password_size']; ?>"
+           maxlength="<?php echo $config['PASSWORD']['password_maxlength']; ?>"
            type="password" class="<?php echo $register_log['passwordclass']; ?>"
            name="checkpassword"
            placeholder="" /><br/>
 
   <label>Adresse mail : </label><br/>
     <input type="text"
-           size="<?php echo $config['EMAIL']['size']; ?>"
-           maxlength="<?php echo $config['EMAIL']['maxlength']; ?>"
+           size="<?php echo $config['MAIL']['mail_size']; ?>"
+           maxlength="<?php echo $config['MAIL']['mail_maxlength']; ?>"
            value="<?php echo $register_log['mail']; ?>"
            class="<?php echo $register_log['mailclass']; ?>"
            name="mail"
@@ -85,8 +85,8 @@
 
   <label>Vérification du mail : </label><br/>
     <input autocomplete="off"
-           size="<?php echo $config['EMAIL']['size']; ?>"
-           maxlength="<?php echo $config['EMAIL']['maxlength']; ?>"
+           size="<?php echo $config['MAIL']['mail_size']; ?>"
+           maxlength="<?php echo $config['MAIL']['mail_maxlength']; ?>"
            type="text" class="<?php echo $register_log['mailclass']; ?>"
            name="checkmail"
            placeholder="" />

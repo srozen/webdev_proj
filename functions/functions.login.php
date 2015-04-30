@@ -10,7 +10,7 @@ function login($login, $password, $code, $config, $dbsocket)
     $query = 'SELECT id, subclass
               FROM user
               WHERE login = \'' . $login . '\'
-              AND password = \'' . encrypt($password, $config['PASSWORD']['crypto']) . '\'';
+              AND password = \'' . encrypt($password, $config['PASSWORD']['password_crypto']) . '\'';
 
     $result = $dbsocket->query($query);
 

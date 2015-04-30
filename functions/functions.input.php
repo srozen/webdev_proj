@@ -19,13 +19,13 @@ function valid_mail($mail)
 /* Check if login follows requirements */
 function valid_login($login, $config)
 {
-  return preg_match('/^[A-Za-z]{1}[A-Za-z0-9]{'. $config['LOGIN']['minlength'] . ',' . $config['LOGIN']['maxlength'] .'}$/', $login);
+  return preg_match('/^[A-Za-z]{1}[A-Za-z0-9]{'. $config['LOGIN']['login_minlength'] . ',' . $config['LOGIN']['login_maxlength'] .'}$/', $login);
 }
 
 /* Check if password follows requirements */
 function valid_password($password, $config)
 {
-  return preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{'. $config['PASSWORD']['minlength'] . ',' . $config['PASSWORD']['maxlength'] . '50}$/', $password);
+  return preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{'. $config['PASSWORD']['password_minlength'] . ',' . $config['PASSWORD']['password_maxlength'] . '50}$/', $password);
 }
 
 /* Check if two strings are the same, if flag is true the comparison is case unsensitive */
