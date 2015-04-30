@@ -3,9 +3,52 @@
  * SET OF FUNCTIONS TO MANAGE ADMINISTRATION PAGE *
  **************************************************/
 
-function display_messages()
+function select_messages()
 {
+  echo '<h2>Gestion des messages de contact</h2>';
+  echo '<form name="mail" action=\'index.php?page=administration&manage=mail\' method="post">
+        <select name="mail_sort">
+          <option value="date">Classement par date</option>
+          <option value="noanswer">Messages non répondus</option>
+          <option value="answer">Messages répondus</option>
+          <option value="anonymous">Messages anonymes</option>
+          <option value="user">Messages utilisateurs</option>
+        </select>
+        <input type="submit" value="Rechercher" name="mail_submit"/>
+      </form>';
+}
 
+function display_messages($sorting, $dbsocket)
+{
+  $clause = '';
+
+  switch($sorting)
+  {
+    case 'date':
+      $clause = 'ORDER BY date DESC';
+      break;
+    case 'noanswer':
+      $clause = 'WHERE answer = false';
+      break;
+    case 'answer':
+      $clause = 'WHERE answer = true';
+      break;
+    case 'anonymous':
+      $clause = 'WHERE user_id is null';
+       break;
+    case 'user':
+      $clause = 'WHERE user_id is not null';
+      break;
+    default:
+      break;
+  }
+
+  $query = 'SELECT id as \'Id Message\', user_id as Utilisateur, subject as Sujet, message as Message, mail as \'Adresse Mail\', date as \'Envoyé le\', answer as Répondu
+             FROM contact_message ' . $clause . ';';
+
+  $result = $dbsocket->query($query);
+
+  create_table($result);
 }
 
 function display_users()
@@ -95,6 +138,37 @@ function update_config($password, $config, $dbsocket)
   else
   {
     echo '<span class="error_msg"> Mauvais mot de passe ! </span>';
+  }
+}
+
+
+function create_table($reqresult)
+{
+  $elements = $reqresult->fetchAll(PDO::FETCH_ASSOC);
+  $i = 0;
+  echo '<table><tr>';
+
+  if(count($elements))
+  {
+    $col_names = array_keys($elements[0]);
+
+    foreach($col_names as $name)
+    {
+      echo '<th>'. $name .'</th>';
+    }
+    echo '</tr></thead><tbody>';
+    foreach($elements as $element)
+    {
+      echo '<tr>';
+      foreach($element as $attribute)
+      {
+        echo '<td>'. htmlspecialchars($attribute) .'</td>';
+      }
+      echo '<td><a href="' . $element['Adresse Mail'] . '"> Répondre </a></td>';
+      echo '</tr>';
+      $i++;
+    }
+    echo '</tbody></table>';
   }
 }
 ?>
