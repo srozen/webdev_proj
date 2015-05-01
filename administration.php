@@ -23,28 +23,20 @@
   {
     switch($_GET['manage'])
     {
-      case 'user' : ?>
-        <h3>Bienvenue dans la gestion des utilisateurs</h3>
-        <form name="user" action='index.php?page=administration&manage=user' method="post">
-          <label>Entrez un pseudo à rechercher : </label>
-          <input type="text" name="user_login"/>
-          <label>Entrez un email à rechercher : </label>
-          <input type="text" name ="user_mail"/>
-          <label>Sélectionnez un statut : </label>
-          <select name="user_status">
-            <option value="all">Statut</option>
-            <option value="activated">Actif</option>
-            <option value="unactivated">En attente d'activation</option>
-          </select>
-          <input type="submit" value="Rechercher" name="user_submit"/>
-        <?php
-        if(isset($_POST['user_submit']))
-        {
-          display_users($_POST['user_login'], $_POST['user_mail'], $_POST['user_status']);
-        }
+      case 'user' :
+        select_users();
         break;
       case 'mail' :
         select_messages();
+        if(isset($_POST['answer_message']))
+        {
+          answer_contact_message($_POST['mail'], $_POST['subject'], $_POST['message'], $_POST['answer'], $_POST['id'], $dbsocket);
+          echo '<span class="success_msg"> Votre réponse a bien été envoyée !</span>';
+        }
+        if(isset($_POST['select_message']))
+        {
+          answer_message_form($_POST['answer_id'], $dbsocket);
+        }
         if(isset($_POST['mail_submit']))
         {
           display_messages($_POST['mail_sort'], $dbsocket);
