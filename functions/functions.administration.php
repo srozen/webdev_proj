@@ -43,12 +43,75 @@ function display_messages($sorting, $dbsocket)
       break;
   }
 
-  $query = 'SELECT id as \'Id Message\', user_id as Utilisateur, subject as Sujet, message as Message, mail as \'Adresse Mail\', date as \'Envoyé le\', answer as Répondu
+  $query = 'SELECT id , user_id as Utilisateur, subject as Sujet, message as Message, mail as \'Adresse Mail\', date as \'Envoyé le\', answer as Répondu
              FROM contact_message ' . $clause . ';';
 
   $result = $dbsocket->query($query);
 
-  create_table($result);
+  $elements = $result->fetchAll(PDO::FETCH_ASSOC);
+  $i = 0;
+  echo '<form name="select_message" action="index.php?page=administration&manage=mail" method="post"><table><tr>';
+
+  if(count($elements))
+  {
+    $col_names = array_keys($elements[0]);
+
+    foreach($col_names as $name)
+    {
+      echo '<th>'. $name .'</th>';
+    }
+    echo '</tr></thead><tbody>';
+    foreach($elements as $element)
+    {
+      echo '<tr>';
+      foreach($element as $attribute)
+      {
+        echo '<td>'. htmlspecialchars($attribute) .'</td>';
+      }
+      echo '<td><input type="radio" name="answer_id" value="'. $element['id'] . '"/>Répondre</td>';
+      echo '</tr>';
+      $i++;
+    }
+    echo '</tbody></table><input type="submit" value="Répondre" name="select_message"></form>';
+  }
+}
+
+function answer_message_form($id, $dbsocket)
+{
+  $query = 'SELECT id, subject, message, mail, date
+             FROM contact_message
+             WHERE id = ' . $id .';';
+
+  $result = $dbsocket->query($query);
+  $contact = $result->fetch(PDO::FETCH_ASSOC);
+
+  echo '<form name="answer_message" action="index.php?page=administration&manage=mail" method="post">';
+  echo '<h4> Id Message : </h4><label>' . $contact['id'] .'</label><input type="hidden" name="id" value="'. $contact['id'] .'"/>';
+  echo '<h4> Mail : </h4><label>' . $contact['mail'] .'</label><input type="hidden" name="mail" value="'. $contact['mail'] .'"/>';
+  echo '<h4> Sujet : </h4><label>' . $contact['subject'] .'</label><input type="hidden" name="subject" value="'. $contact['subject'] .'"/>';
+  echo '<h4> Message : </h4><label>' . $contact['message'] .'</label><input type="hidden" name="message" value="'. $contact['message'] .'"/>';
+  echo '<h4> Votre réponse : </h4><textarea rows="6" cols="50" name="answer"/></textarea><br/>';
+  echo '<input type="submit" name="answer_message"/>';
+  echo '</form>';
+}
+
+
+function select_users()
+{
+  echo '<h3>Bienvenue dans la gestion des utilisateurs</h3>
+        <form name="user" action="index.php?page=administration&manage=user" method="post">
+          <label>Entrez un pseudo à rechercher : </label>
+            <input type="text" name="user_login"/>
+          <label>Entrez un email à rechercher : </label>
+            <input type="text" name ="user_mail"/>
+          <label>Sélectionnez un statut : </label>
+            <select name="user_status">
+              <option value="all">Statut</option>
+              <option value="activated">Actif</option>
+              <option value="unactivated">En attente d\'activation</option>
+            </select>
+            <input type="submit" value="Rechercher" name="user_submit"/>
+        </form>'
 }
 
 function display_users()
