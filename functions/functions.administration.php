@@ -101,22 +101,91 @@ function select_users()
   echo '<h3>Bienvenue dans la gestion des utilisateurs</h3>
         <form name="user" action="index.php?page=administration&manage=user" method="post">
           <label>Entrez un pseudo à rechercher : </label>
-            <input type="text" name="user_login"/>
+            <input type="text" name="login"/>
           <label>Entrez un email à rechercher : </label>
-            <input type="text" name ="user_mail"/>
+            <input type="text" name ="mail"/>
           <label>Sélectionnez un statut : </label>
-            <select name="user_status">
+            <select name="status">
               <option value="all">Statut</option>
-              <option value="activated">Actif</option>
-              <option value="unactivated">En attente d\'activation</option>
+              <option value="normal">Actif</option>
+              <option value="activation">En attente d\'activation</option>
             </select>
-            <input type="submit" value="Rechercher" name="user_submit"/>
-        </form>'
+            <input type="submit" value="Rechercher" name="select_users"/>
+        </form>';
 }
 
-function display_users()
+function display_users($login, $mail, $status, $dbsocket)
 {
+  $loginclause = '';
+  $mailclause = '';
+  $statusclause = '';
+  $lc = false;
+  $mc = false;
+  $sc = false;
+  $clause = '';
 
+  if($login != null)
+  {
+    $loginclause .= 'login = \'' . $login . '\' ';
+    $lc = true;
+  }
+  if($mail != null)
+  {
+    if($lc == true)
+    {
+      $mailclause .= ' AND ';
+    }
+    $mailclause .= 'mail = \'' . $mail . '\' ';
+    $mc = true;
+  }
+  if($status != 'all')
+  {
+    if($lc == true OR $mc == true)
+    {
+      $statusclause .= ' AND ';
+    }
+    $sc = true;
+    $statusclause .= 'subclass = \'' . $status . '\' ';
+  }
+
+  if($lc == true or $mc == true or $sc == true)
+  {
+    $clause = 'WHERE ' . $loginclause . $mailclause . $statusclause;
+  }
+
+  $query = 'SELECT id , login, mail, class, subclass
+            FROM user '. $clause . ';';
+
+
+  $result = $dbsocket->query($query);
+
+  $elements = $result->fetchAll(PDO::FETCH_ASSOC);
+
+  $i = 0;
+  echo '<form name="select_user" action="index.php?page=administration&manage=user" method="post"><table><tr>';
+
+  if(count($elements))
+  {
+    $col_names = array_keys($elements[0]);
+
+    foreach($col_names as $name)
+    {
+      echo '<th>'. $name .'</th>';
+    }
+    echo '</tr></thead><tbody>';
+    foreach($elements as $element)
+    {
+      echo '<tr>';
+      foreach($element as $attribute)
+      {
+        echo '<td>'. htmlspecialchars($attribute) .'</td>';
+      }
+      echo '<td><input type="radio" name="user_id" value="'. $element['id'] . '"/>Gérer</td>';
+      echo '</tr>';
+      $i++;
+    }
+    echo '</tbody></table><input type="submit" value="Gestion du user" name="select_message"></form>';
+  }
 }
 
 /* Function display config.ini parameters and create a form to change its values */
@@ -227,7 +296,7 @@ function create_table($reqresult)
       {
         echo '<td>'. htmlspecialchars($attribute) .'</td>';
       }
-      echo '<td><a href="' . $element['Adresse Mail'] . '"> Répondre </a></td>';
+      echo '<td><a href="' . $element['id'] . '"> Gèrer </a></td>';
       echo '</tr>';
       $i++;
     }
