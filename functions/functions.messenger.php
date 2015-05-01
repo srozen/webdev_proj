@@ -19,7 +19,7 @@ function send_contact_message($mail, $subject, $message, $dbsocket)
 }
 
 
-function save_contact_message($mail, $subject, $message, $dbsocket)
+function save_contact_message($mail, $subject, $message, $dbsocket, $parentid = null)
 {
   if(logged())
   {
@@ -30,8 +30,8 @@ function save_contact_message($mail, $subject, $message, $dbsocket)
     $userid = null;
   }
 
-  $query = 'INSERT INTO contact_message (subject, mail, message, date, user_id)
-            VALUES (:subject, :mail, :message, NOW(), :user_id);';
+  $query = 'INSERT INTO contact_message (subject, mail, message, date, user_id, parentid)
+            VALUES (:subject, :mail, :message, NOW(), :user_id, ' . $parentid . ');';
   $response = $dbsocket->prepare($query);
   $response->execute(array(
     'subject' => $subject,
