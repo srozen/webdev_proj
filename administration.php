@@ -25,12 +25,17 @@
     {
       case 'user' :
         select_users();
+        if(isset($_POST['select_users']))
+        {
+          display_users($_POST['login'], $_POST['mail'], $_POST['status'], $dbsocket);
+        }
         break;
       case 'mail' :
         select_messages();
         if(isset($_POST['answer_message']))
         {
           answer_contact_message($_POST['mail'], $_POST['subject'], $_POST['message'], $_POST['answer'], $_POST['id'], $dbsocket);
+          save_contact_message($_SESSION['user']->getMail(), $_POST['subject'], $_POST['answer'], $dbsocket, $_POST['id']);
           echo '<span class="success_msg"> Votre réponse a bien été envoyée !</span>';
         }
         if(isset($_POST['select_message']))
