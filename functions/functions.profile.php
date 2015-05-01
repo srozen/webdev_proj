@@ -30,6 +30,7 @@
     if($vmail == true)
     {
       $user->update('mail', $mail, $dbsocket);
+      $user->update('subclass', 'reactivation', $dbsocket);
       echo '<span class="success_msg"> Le mail a été changé !! </span><br/>';
     }
     else
@@ -116,7 +117,7 @@
 
       if(move_uploaded_file($_FILES["avatar"]["tmp_name"], $newfilename)) {
         echo '<span class="success_msg">Le fichier ' . basename($_FILES["avatar"]["name"]) . ' a été uploadé.</span>';
-        smart_resize_image($newfilename, null, 200, 200, true, $newfilename, false, false, 100);
+        smart_resize_image($newfilename, null, $config['AVATAR']['width'], $config['AVATAR']['height'], true, $newfilename, false, false, 100);
       }
       else
       {
