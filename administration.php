@@ -29,6 +29,10 @@
         {
           display_users($_POST['login'], $_POST['mail'], $_POST['status'], $dbsocket);
         }
+        if(isset($_POST['manage_user']))
+        {
+          manage_user($_POST['user_id'], $config, $dbsocket);
+        }
         break;
       case 'mail' :
         select_messages();
