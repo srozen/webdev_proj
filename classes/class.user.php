@@ -59,6 +59,9 @@
           $db_field = 'avatar';
           $this->setAvatar($value);
           break;
+        case 'password' :
+          $value = encrypt($value, 'sha512');
+          $db_field = 'password';
         default:
           $db_field = null;
           break;
