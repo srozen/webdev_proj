@@ -184,10 +184,49 @@ function display_users($login, $mail, $status, $dbsocket)
       echo '</tr>';
       $i++;
     }
-    echo '</tbody></table><input type="submit" value="Gestion du user" name="select_message"></form>';
+    echo '</tbody></table><input type="submit" value="Gestion du user" name="manage_user"></form>';
   }
 }
 
+
+function manage_user($userid, $config, $dbsocket)
+{
+  $query = 'SELECT id, login, mail, class, subclass, lastlogin, avatar
+            FROM user
+            WHERE id = \'' . $userid . '\'';
+
+  $result = $dbsocket->query($query);
+
+  $user = $result->fetch(PDO::FETCH_ASSOC);
+  $user = new User($user['id'], $user['login'], $user['mail'], $user['class'], $user['subclass'], $user['lastlogin'], $user['avatar']);
+
+  echo '<form name="update_user" action="index.php?page=administration&manage=user" method="post">
+          <h4> Login : </h4>
+          <input name="login" type="text" value=" ' . $user->getLogin() . '"/>
+          <h4> Mail : </h4>
+          <input name="mail" type="text" value=" ' . $user->getMail() . '"/>
+          <h4> Password </h4>
+          <input name ="password" type="password"/>
+          <h4> Classe et statut </h4>
+          <select name="class">
+            <option value=" ' . $user->getClass() . '" selected> ' .  $user->getClass() . '</option>
+            <option value="user"> User </option>
+            <option value="admin"> Administrateur </option>
+          </select>
+          <select name="subclass">
+            <option value=" ' . $user->getSubClass() . '" selected> ' .  $user->getSubClass() . '</option>
+            <option value="normal"> Normal </option>
+            <option value="activating"> En activation </option>
+            <option value="reactivating"> En réactivation </option>
+          </select>
+          <h4> Avatar : </h4>' .
+          display_avatar($user, $config) . '
+          <input type="file" name="avatar"/>
+
+          <h4>Mot de passe pour confirmer les changements : </h4>
+          <input type="submit" name="update_user"/>
+        </form>';
+}
 /* Function display config.ini parameters and create a form to change its values */
 function display_config()
 {
