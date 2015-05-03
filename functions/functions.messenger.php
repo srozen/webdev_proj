@@ -89,4 +89,25 @@ function answer_contact_message($mail, $subj, $text, $answer, $id, $dbsocket)
             WHERE id = \'' . $id . '\';';
   $result = $dbsocket->exec($query);
 }
+
+function send_status_mail($mail, $class, $subclass)
+{
+  $to = $mail;
+
+  $subject = 'Modification de statut';
+
+  $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+  $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+  $message = '<html><body>';
+  $message .= '<h3>Votre statut a été modifié par un administrateur du wiki. </h3>';
+  $message .= '<div> Votre classe d\'utilisateur : <b>' . $class . '</b></div>';
+  $message .= '<div> Votre statut utilisateur : <b>' . $subclass . '</b></div>';
+  $message .= 'En cas de problème, veuillez contacter l\'administrateur du site.';
+  $message .= '</body></html>';
+
+  mail($to, $subject, $message, $headers);
+}
 ?>
