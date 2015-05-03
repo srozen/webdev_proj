@@ -45,7 +45,7 @@
           $this->setClass($value);
           break;
 
-        case 'subclasss' :
+        case 'subclass' :
           $db_field = 'subclass';
           $this->setSubClass($value);
           break;
