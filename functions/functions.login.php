@@ -46,6 +46,10 @@ function login($login, $password, $code, $config, $dbsocket)
           echo 'Vous devez vous activer pour vous connecter, vérifiez votre adresse email pour activer ce compte ! ';
         }
       }
+      else if($user['subclass'] == 'banned')
+      {
+        echo 'Vous êtes banni ! ';
+      }
       else if($user['subclass'] == 'normal')
       {
         login_procedure($user['id'], $dbsocket);
