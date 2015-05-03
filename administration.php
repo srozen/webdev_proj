@@ -14,7 +14,7 @@
 
 
   echo '<ul> Panneau d\'administration';
-  echo '<li><a href=index.php?page=administration&manage=user> Gestion des membres </a></li>';
+  echo '<li><a href=index.php?page=administration&manage=user&action=display> Gestion des membres </a></li>';
   echo '<li><a href=index.php?page=administration&manage=mail> Gestion des messages </a></li>';
   echo '<li><a href=index.php?page=administration&manage=config> Gestion de la configuration </a></li>';
   echo '</ul>';
@@ -24,16 +24,28 @@
     switch($_GET['manage'])
     {
       case 'user' :
-        select_users();
-        if(isset($_POST['select_users']))
+        if(isset($_GET['action']))
         {
-          display_users($_POST['login'], $_POST['mail'], $_POST['status'], $dbsocket);
-        }
-        if(isset($_POST['manage_user']))
-        {
-          manage_user($_POST['user_id'], $config, $dbsocket);
+          switch($_GET['action'])
+          {
+            case 'display' :
+              select_user($dbsocket);
+              break;
+            case 'manage' :
+              if(isset($_POST['manage_user_id']))
+              {
+                $_SESSION['managed_user_id'] = $_POST['manage_user_id'];
+              }
+              manage_user($config, $dbsocket);
+              break;
+            default :
+              echo '<span class="error_msg"> L\'option que vous essayez d\'atteindre n\'existe pas ! </span>';
+              break;
+          }
         }
         break;
+
+
       case 'mail' :
         select_messages();
         if(isset($_POST['answer_message']))
@@ -51,6 +63,7 @@
           display_messages($_POST['mail_sort'], $dbsocket);
         }
         break;
+        
       case 'config' :
         if(isset($_POST['config_submit']))
         {
