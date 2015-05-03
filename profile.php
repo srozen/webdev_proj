@@ -8,6 +8,12 @@
 
 if(isset($_GET['modification']) AND $_GET['modification'] == 'true')
 {
+  if($_SESSION['user']->getSubClass() == 'frozen')
+  {
+    echo 'Vous êtes gelé, vous ne pouvez pas modifier votre profil ! ';
+    echo '<a href="index.php?page=profile"> Retour au profil </a>';
+
+  }
   /*** MAIL CHANGING ***/
   if(isset($_POST['mail_submit']))
   {
@@ -149,7 +155,16 @@ else
 {
   ?>
   <h3> Données du profil </h3>
-  <a href="index.php?page=profile&modification=true"> Modifier Profil </a>
+  
+  <?php
+    $readonly = '';
+    if($_SESSION['user']->getSubClass() == 'frozen')
+    {
+      $readonly = 'readonly';
+    }
+    echo '<a href="index.php?page=profile&modification=true" ' . $readonly . '> Modifier Profil </a>';
+  ?>
+
   <pre>
     <h4> Avatar : </h4>
       <?php display_avatar($_SESSION['user'], $config); ?>
