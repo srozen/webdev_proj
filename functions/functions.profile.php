@@ -72,7 +72,7 @@
   {
     if($user->getAvatar() == false)
     {
-      $user->update('avatar', 'true', $dbsocket);
+      $user->update('avatar', true, $dbsocket);
     }
     //Filename related to the user id
     $temp = explode(".",$_FILES["avatar"]["name"]);
