@@ -6,9 +6,11 @@
 function select_messages()
 {
   echo '<h2>Gestion des messages de contact</h2>';
-  echo '<form name="mail" action=\'index.php?page=administration&manage=mail\' method="post">
+  echo '<form name="mail" action="index.php?page=administration&manage=mail" method="post">
         <select name="mail_sort">
-          <option value="date">Classement par date</option>
+          <option value="">Type de classement</option>
+          <option value="datedesc"> Les plus récents</option>
+          <option value="dateasc"> Les plus anciens</option>
           <option value="noanswer">Messages non répondus</option>
           <option value="answer">Messages répondus</option>
           <option value="anonymous">Messages anonymes</option>
@@ -24,8 +26,11 @@ function display_messages($sorting, $dbsocket)
 
   switch($sorting)
   {
-    case 'date':
+    case 'datedesc':
       $clause = 'ORDER BY date DESC';
+      break;
+    case 'dateasc':
+      $cause = 'ORDER BY date ASC';
       break;
     case 'noanswer':
       $clause = 'WHERE answer = false';
@@ -40,6 +45,7 @@ function display_messages($sorting, $dbsocket)
       $clause = 'WHERE user_id is not null';
       break;
     default:
+      $clause = '';
       break;
   }
 
@@ -96,10 +102,11 @@ function answer_message_form($id, $dbsocket)
 }
 
 
-function select_users()
+
+function select_user($dbsocket)
 {
   echo '<h3>Bienvenue dans la gestion des utilisateurs</h3>
-        <form name="user" action="index.php?page=administration&manage=user" method="post">
+        <form name="user" action="index.php?page=administration&manage=user&action=display" method="post">
           <label>Entrez un pseudo à rechercher : </label>
             <input type="text" name="login"/>
           <label>Entrez un email à rechercher : </label>
@@ -110,123 +117,234 @@ function select_users()
               <option value="normal">Actif</option>
               <option value="activation">En attente d\'activation</option>
             </select>
-            <input type="submit" value="Rechercher" name="select_users"/>
+            <input type="submit" value="Rechercher" name="display_users"/>
         </form>';
-}
 
-function display_users($login, $mail, $status, $dbsocket)
-{
-  $loginclause = '';
-  $mailclause = '';
-  $statusclause = '';
-  $lc = false;
-  $mc = false;
-  $sc = false;
-  $clause = '';
+  if(isset($_POST['display_users']))
+  {
+    $login = $_POST['login'];
+    $mail = $_POST['mail'];
+    $status = $_POST['status'];
 
-  if($login != null)
-  {
-    $loginclause .= 'login = \'' . $login . '\' ';
-    $lc = true;
-  }
-  if($mail != null)
-  {
-    if($lc == true)
+    $loginclause = '';
+    $mailclause = '';
+    $statusclause = '';
+
+    $lc = false;
+    $mc = false;
+    $sc = false;
+    $clause = '';
+
+    if($login != null)
     {
-      $mailclause .= ' AND ';
+      $loginclause .= 'login = \'' . $login . '\' ';
+      $lc = true;
     }
-    $mailclause .= 'mail = \'' . $mail . '\' ';
-    $mc = true;
-  }
-  if($status != 'all')
-  {
-    if($lc == true OR $mc == true)
+    if($mail != null)
     {
-      $statusclause .= ' AND ';
-    }
-    $sc = true;
-    $statusclause .= 'subclass = \'' . $status . '\' ';
-  }
-
-  if($lc == true or $mc == true or $sc == true)
-  {
-    $clause = 'WHERE ' . $loginclause . $mailclause . $statusclause;
-  }
-
-  $query = 'SELECT id , login, mail, class, subclass
-            FROM user '. $clause . ';';
-
-
-  $result = $dbsocket->query($query);
-
-  $elements = $result->fetchAll(PDO::FETCH_ASSOC);
-
-  $i = 0;
-  echo '<form name="select_user" action="index.php?page=administration&manage=user" method="post"><table><tr>';
-
-  if(count($elements))
-  {
-    $col_names = array_keys($elements[0]);
-
-    foreach($col_names as $name)
-    {
-      echo '<th>'. $name .'</th>';
-    }
-    echo '</tr></thead><tbody>';
-    foreach($elements as $element)
-    {
-      echo '<tr>';
-      foreach($element as $attribute)
+      if($lc == true)
       {
-        echo '<td>'. htmlspecialchars($attribute) .'</td>';
+        $mailclause .= ' AND ';
       }
-      echo '<td><input type="radio" name="user_id" value="'. $element['id'] . '"/>Gérer</td>';
-      echo '</tr>';
-      $i++;
+      $mailclause .= 'mail = \'' . $mail . '\' ';
+      $mc = true;
     }
-    echo '</tbody></table><input type="submit" value="Gestion du user" name="manage_user"></form>';
+    if($status != 'all')
+    {
+      if($lc == true OR $mc == true)
+      {
+        $statusclause .= ' AND ';
+      }
+      $sc = true;
+      $statusclause .= 'subclass = \'' . $status . '\' ';
+    }
+
+    if($lc == true or $mc == true or $sc == true)
+    {
+      $clause = 'WHERE ' . $loginclause . $mailclause . $statusclause;
+    }
+
+    $query = 'SELECT id , login, mail, class, subclass
+              FROM user '. $clause . ';';
+
+
+    $result = $dbsocket->query($query);
+
+    $elements = $result->fetchAll(PDO::FETCH_ASSOC);
+
+    $i = 0;
+    echo '<form name="select_user" action="index.php?page=administration&manage=user&action=manage" method="post"><table><tr>';
+
+    if(count($elements))
+    {
+      $col_names = array_keys($elements[0]);
+
+      foreach($col_names as $name)
+      {
+        echo '<th>'. $name .'</th>';
+      }
+      echo '</tr></thead><tbody>';
+      foreach($elements as $element)
+      {
+        echo '<tr>';
+        foreach($element as $attribute)
+        {
+          echo '<td>'. htmlspecialchars($attribute) .'</td>';
+        }
+        echo '<td><input type="radio" name="manage_user_id" value="'. $element['id'] . '"/>Gérer</td>';
+        echo '</tr>';
+        $i++;
+      }
+      echo '</tbody></table><input type="submit" value="Gestion du user" name="manage_user"></form>';
+    }
   }
 }
 
 
-function manage_user($userid, $config, $dbsocket)
+function manage_user($config, $dbsocket)
 {
-  $query = 'SELECT id, login, mail, class, subclass, lastlogin, avatar
-            FROM user
-            WHERE id = \'' . $userid . '\'';
 
-  $result = $dbsocket->query($query);
+  if(isset($_POST['mail_submit']))
+  {
+    if(profile_auth($_POST['password'], $config, $dbsocket))
+    {
+      update_user_mail($_SESSION['managed_user'], $_POST['mail'], $_POST['checkmail'], $config, $dbsocket);
+    }
+    else
+    {
+      echo '<span class="error_msg"> Mauvais mot de passe pour changer le mail de l\'utilisateur ! </span>';
+    }
+  }
 
-  $user = $result->fetch(PDO::FETCH_ASSOC);
-  $user = new User($user['id'], $user['login'], $user['mail'], $user['class'], $user['subclass'], $user['lastlogin'], $user['avatar']);
+  /*** PASSWORD CHANGING ***/
+  if(isset($_POST['password_submit']))
+  {
+    if(profile_auth($_POST['password'], $config, $dbsocket))
+    {
+      update_user_password($_SESSION['managed_user'], $_POST['newpassword'], $_POST['checkpassword'], $config, $dbsocket);
+    }
+    else
+    {
+      echo '<span class="error_msg"> Mauvais mot de passe pour changer le mot de passe de l\'utilisateur ! </span>';
+    }
+  }
 
-  echo '<form name="update_user" action="index.php?page=administration&manage=user" method="post">
-          <h4> Login : </h4>
-          <input name="login" type="text" value=" ' . $user->getLogin() . '"/>
-          <h4> Mail : </h4>
-          <input name="mail" type="text" value=" ' . $user->getMail() . '"/>
-          <h4> Password </h4>
-          <input name ="password" type="password"/>
-          <h4> Classe et statut </h4>
-          <select name="class">
-            <option value=" ' . $user->getClass() . '" selected> ' .  $user->getClass() . '</option>
-            <option value="user"> User </option>
-            <option value="admin"> Administrateur </option>
-          </select>
-          <select name="subclass">
-            <option value=" ' . $user->getSubClass() . '" selected> ' .  $user->getSubClass() . '</option>
-            <option value="normal"> Normal </option>
-            <option value="activating"> En activation </option>
-            <option value="reactivating"> En réactivation </option>
-          </select>
+  /*** LOGIN CHANGING ***/
+  if(isset($_POST['login_submit']))
+  {
+    if(profile_auth($_POST['password'], $config, $dbsocket))
+    {
+      update_user_login($_SESSION['managed_user'], $_POST['login'], $_POST['password'], $config, $dbsocket);
+    }
+    else
+    {
+      echo '<span class="error_msg"> Votre mot de passe est invalide pour effectuer les changements ! </span>';
+    }
+  }
+
+  /*** AVATAR CHANGING ***/
+
+  if(isset($_POST['update_avatar']))
+  {
+    if(profile_auth($_POST['password'], $config, $dbsocket))
+    {
+      update_user_avatar($_SESSION['managed_user'], $config, $dbsocket);
+    }
+    else
+    {
+      echo '<span class="error_msg"> Mauvais mot de passe pour changer l\'avatar ! </span>';
+    }
+  }
+
+  /*** STATUS CHANGING ***/
+
+  if(isset($_POST['status_submit']))
+  {
+    if(profile_auth($_POST['password'], $config, $dbsocket))
+    {
+      // TODO : create function
+      $_SESSION['managed_user']->update('class', $_POST['class'], $dbsocket);
+      $_SESSION['managed_user']->update('subclass', $_POST['subclass'], $dbsocket);
+      send_status_mail($_SESSION['managed_user']->getMail(), $_POST['class'], $_POST['subclass']);
+      echo '<span class="success_msg"> Les statuts du user ont été modifiés ! </span>';
+    }
+    else
+    {
+      echo '<span class="error_msg"> Mauvais mot de passe pour changer le statut ! </span>';
+    }
+  }
+
+  if(filled($_SESSION['managed_user_id']))
+  {
+    $query = 'SELECT id, login, mail, class, subclass, lastlogin, avatar
+              FROM user
+              WHERE id = \'' . $_SESSION['managed_user_id'] . '\'';
+
+    $result = $dbsocket->query($query);
+
+    $user = $result->fetch(PDO::FETCH_ASSOC);
+    $user = new User($user['id'], $user['login'], $user['mail'], $user['class'], $user['subclass'], $user['lastlogin'], $user['avatar']);
+
+    $_SESSION['managed_user'] = $user;
+  }
+  echo '<form name="update_login" action="index.php?page=administration&manage=user&action=manage" method="post">
+          <h4> Modification du login : </h4>
+          <input name="login" type="text" value="' . $_SESSION['managed_user']->getLogin() .'"/><br/>
+          <label>Validez avec votre mot de passe : </label>
+          <input name="password" type="password"/>
+          <input type="submit" name ="login_submit"/>
+        </form>';
+
+  echo '<form name="update_mail" action="index.php?page=administration&manage=user&action=manage" method="post">
+          <h4> Mail et confirmation : </h4>
+          <input name="mail" type="text" value="' . $_SESSION['managed_user']->getMail() .'"/>
+          <input name="checkmail" type="text"/>
+          <label>Validez avec votre mot de passe : </label>
+          <input name="password" type="password"/>
+          <input type="submit" name ="mail_submit"/>
+        </form>';
+
+  echo '<form name="update_password" action="index.php?page=administration&manage=user&action=manage" method="post">
+          <h4> Mot de passe et confirmation </h4>
+          <input name="newpassword" type="password"/>
+          <input name="checkpassword" type="password"/>
+          <label>Validez avec votre mot de passe : </label>
+          <input name="password" type="password"/>
+          <input type="submit" name ="password_submit"/>
+        </form>';
+
+          if($_SESSION['managed_user']->getClass() =='admin');
+          else
+          {
+            echo '<form name="update_status" action="index.php?page=administration&manage=user&action=manage" method="post">
+                    <h4> Classe et statut </h4>
+                    <select name="class">
+                      <option value=" ' . $_SESSION['managed_user']->getClass() . '" selected> ' .  $_SESSION['managed_user']->getClass() . '</option>
+                      <option value="user"> User </option>
+                      <option value="moderateur"> Moderateur </option>
+                    </select>
+                    <select name="subclass">
+                      <option value=" ' . $_SESSION['managed_user']->getSubClass() . '" selected> ' .  $_SESSION['managed_user']->getSubClass() . '</option>
+                      <option value="normal"> Normal </option>
+                      <option value="activating"> En activation </option>
+                      <option value="reactivating"> En réactivation </option>
+                    </select>
+                    <input type="password" name="password"/>
+                    <input type="submit" name="status_submit"/>
+                  </form>';
+          }
+  echo '<form name="update_password" action="index.php?page=administration&manage=user&action=manage" method="post" enctype="multipart/form-data">
           <h4> Avatar : </h4>' .
-          display_avatar($user, $config) . '
-          <input type="file" name="avatar"/>
+          display_avatar($_SESSION['managed_user'], $config) . '
+          <input type="file" name="avatar" id="avatar"/>
 
-          <h4>Mot de passe pour confirmer les changements : </h4>
-          <input type="submit" name="update_user"/>
+          <label>Mot de passe pour confirmer le changement : </label>
+          <input type="password" name="password"/>
+          <input type="submit" name="update_avatar"/>
         </form>';
 }
+
+//function update_user($user, $login, $mail, $password, )
 /* Function display config.ini parameters and create a form to change its values */
 function display_config()
 {
