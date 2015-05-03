@@ -115,7 +115,11 @@ function select_user($dbsocket)
             <select name="status">
               <option value="all">Statut</option>
               <option value="normal">Actif</option>
-              <option value="activation">En attente d\'activation</option>
+              <option value="activating">En attente d\'activation</option>
+              <option value="reactivating">En réactivation</option>
+              <option value="lostpwd">Mot de passe perdu</option>
+              <option value="frozen">Gelé</option>
+              <option value="banned">Banni</option>
             </select>
             <input type="submit" value="Rechercher" name="display_users"/>
         </form>';
