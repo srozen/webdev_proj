@@ -30,7 +30,10 @@
     if($vmail == true)
     {
       $user->update('mail', $mail, $dbsocket);
-      $user->update('subclass', 'reactivation', $dbsocket);
+      if($user->getClass() != 'admin')
+      {
+        $user->update('subclass', 'reactivation', $dbsocket);
+      }
       echo '<span class="success_msg"> Le mail a été changé !! </span><br/>';
     }
     else
