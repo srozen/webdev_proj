@@ -60,6 +60,9 @@
      case 'logout' :
         return $values = array('Déconnexion', 'logout.php', 'Page de déconnexion');
         break;
+     case 'lostpwd' :
+        return $values = array('Mot de passe perdu', 'lostpwd.php', 'Récupération du mot de passe');
+        break;
      default :
        return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
        break;
