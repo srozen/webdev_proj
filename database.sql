@@ -19,6 +19,7 @@ create table user(
 create table activation(
 		user_id int not null unique primary key,
     code varchar(128),
+		recovery boolean default false,
     foreign key(user_id) references user(id)
 );
 
