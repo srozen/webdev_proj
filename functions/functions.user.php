@@ -10,13 +10,13 @@
    * @return Boolean telling if the value has been found
   */
 
-  function user_exists()
+  function user_exists($field, $value)
   {
     $query = 'SELECT count(*)
               FROM user
               WHERE ' . $field . ' = \'' . $value . '\';';
 
-    $result = $dbsocket->query($query);
+    $result = $GLOBALS['dbsocket']->query($query);
 
     if($result->fetchColumn() > 0)
     {
