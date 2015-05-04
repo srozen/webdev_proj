@@ -28,6 +28,26 @@
     }
   }
 
+  function is_user_status($status, $userid)
+  {
+    $query = 'SELECT count(*)
+              FROM user_status
+              WHERE user_id = \'' . $userid . '\' AND
+              status_id = (SELECT id
+              FROM status
+              WHERE label = \'' . $status . '\');';
+              
+    $result = $GLOBALS['dbsocket']->query($query);
+
+    if($result->fetchColumn() > 0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
 
   /**
    * Returns a value by looking for a know value in a known column
@@ -49,6 +69,16 @@
     return $uservalue[$value];
   }
 
+  function set_user_value($field, $value, $userid)
+  {
+    $set = 'SET ' . $field . ' = \'' . $value . '\'';
+
+    $query = 'UPDATE user ' . $set . ' WHERE id =\'' . $userid . '\';';
+
+    $result = $GLOBALS['dbsocket']->exec($query);
+
+    return $result;
+  }
 
   /**
    * @param $mail - User mail to create unique code
@@ -90,7 +120,7 @@
     ));
   }
 
-  function add_status($user_id, $status_id)
+  function add_user_status($user_id, $status_id)
   {
     $query = 'INSERT into user_status(user_id, status_id, date)
               VALUES (:userid, :statusid, NOW());';
@@ -111,7 +141,7 @@
     $GLOBALS['dbsocket']->exec($query);
   }
 
-  function remove_status($user_id, $status_id)
+  function remove_user_status($user_id, $status_id)
   {
     $query = 'DELETE from user_status
               WHERE user_id = \'' . $user_id . '\'
