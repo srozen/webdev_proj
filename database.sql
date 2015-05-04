@@ -1,4 +1,4 @@
-create table user(
+CREATE TABLE user(
 	  id int not null auto_increment primary key,
     login varchar(64) not null unique,
     password char(128) not null,
@@ -17,7 +17,7 @@ create table user(
 );
 
 
-create table activation(
+CREATE TABLE activation(
 		user_id int not null unique primary key,
     code varchar(128),
 		recovery boolean default false,
@@ -35,3 +35,11 @@ CREATE TABLE contact_message(
     parentid int default null,
     foreign key(user_id) references user(id)
 );
+
+-----------------
+-- SQL QUERIES --
+-----------------
+
+-- select * from user;
+-- select * from activation;
+-- select * from contact_message;
