@@ -43,7 +43,7 @@
   /* Encrypt string */
   function encrypt($string)
   {
-    return hash('sha512', $password, false);
+    return hash('sha512', $string, false);
   }
 
   /* Remove white spaces and sanitize input */
