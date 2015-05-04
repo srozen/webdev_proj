@@ -1,7 +1,7 @@
 <?php
 	if(isset($_POST['login_submit']))
 	{
-		login($_POST['login'], $_POST['password'], $_POST['activation']);
+		login(sanitize($_POST['login']), sanitize($_POST['password']), sanitize($_POST['activation']));
 	}
 ?>
 
