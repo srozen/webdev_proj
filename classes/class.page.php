@@ -23,14 +23,14 @@
 			return $this->tabtitle;
 		}
 
-		public function setFile($val)
+		public function setFile($file)
 		{
-			$this->url = $val;
+			$this->file = $file;
 		}
 
 		public function getFile()
 		{
-			return $this->url;
+			return $this->file;
 		}
 
 		public function setTitle($var)
