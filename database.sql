@@ -10,7 +10,9 @@ create table user(
     currentlogin datetime default null,
     activation datetime,
     statuschange datetime,
-    avatar boolean default false
+    avatar boolean default false,
+		secret varchar(128) default null,
+		answer char(128) default null
 );
 
 
