@@ -36,7 +36,7 @@
               status_id = (SELECT id
               FROM status
               WHERE label = \'' . $status . '\');';
-              
+
     $result = $GLOBALS['dbsocket']->query($query);
 
     if($result->fetchColumn() > 0)
@@ -107,6 +107,17 @@
       'mail' => $mail
     ));
 
+  }
+
+  function get_activation_code($userid)
+  {
+    $query = 'SELECT code
+              FROM activation
+              WHERE user_id = \'' . $userid . '\';';
+    $result = $GLOBALS['dbsocket']->query($query);
+    $activation = $result->fetch();
+
+    return $activation['code'];
   }
 
   function add_activation_code($userid, $code)
