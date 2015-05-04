@@ -3,18 +3,23 @@ CREATE TABLE user(
     login varchar(64) not null unique,
     password char(128) not null,
     mail varchar(100) not null unique,
-    class varchar(64) not null,
-		subclass varchar(64) not null,
-    registration datetime not null,
+    register datetime not null,
     lastlogin datetime default null,
     currentlogin datetime default null,
     activation datetime,
-    statuschange datetime,
     avatar boolean default false,
 		question varchar(128) default null,
 		answer char(128) default null,
-		questionset boolean default false
+		secret boolean default false
 );
+
+CREATE TABLE user_status(
+
+)
+
+CREATE TABLE status(
+
+)
 
 
 CREATE TABLE activation(
@@ -43,3 +48,5 @@ CREATE TABLE contact_message(
 -- select * from user;
 -- select * from activation;
 -- select * from contact_message;
+-- select * from user_status;
+-- select * from status;
