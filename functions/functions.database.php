@@ -70,3 +70,11 @@ function get_activation_code($userid, $dbsocket)
 
   return $activation['code'];
 }
+
+function delete_activation_code($userid, $dbsocket)
+{
+  $query 'DELETE
+          FROM activation
+          WHERE user_id = \'' . $userid . '\';';
+  $result = $dbsocket->exec($query);
+}
