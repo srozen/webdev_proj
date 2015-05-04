@@ -14,7 +14,7 @@ CREATE TABLE user(
 );
 
 CREATE TABLE user_status(
-
+	
 )
 
 CREATE TABLE status(
