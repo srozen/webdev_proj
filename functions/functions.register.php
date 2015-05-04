@@ -5,11 +5,12 @@
 
   function registration($login, $password, $mail)
   {
-    // create new user
-    // generate code
-    // add code
-    // send mail
-    // echo message
+    // create_new_user($login, $password, $mail);
+    // $activationcode = generate_code($login, $mail);
+    // $userid = get_user_value('id', 'login', $login);
+    // add_activationcode($userid, $activationcode);
+    // send_registration_mail($mail, $activationcode, $login);
+    // echo '<div class="success_msg"> Vous êtes inscrit au site ! </div>';
   }
 
   function send_registration_mail($mail, $activation_code, $login)
