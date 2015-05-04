@@ -16,7 +16,7 @@
 
     if($valid_form)
     {
-      //registration($_POST['login'], $_POST['mail'], $_POST['password'])
+      //registration(sanitize($_POST['login']), sanitize($_POST['mail']), sanitize($_POST['password']))
     }
 
   }
