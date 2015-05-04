@@ -52,4 +52,144 @@
     return htmlspecialchars(trim($string));
   }
 
+  function check_login($login)
+  {
+    if(filled($login))
+    {
+      if(valid_login($login))
+      {
+        if(!user_exists('login', $login))
+        {
+          return true;
+        }
+        else
+        {
+          echo "<span class=\"error_msg\"> Le login existe déjà ! </span><br/>";
+          return false;
+        }
+      }
+      else
+      {
+        echo "<span class=\"error_msg\"> Le login est incorrect ! </span><br/>";
+        return false;
+      }
+    }
+    else
+    {
+      echo "<span class=\"error_msg\"> Le login doit être rempli ! </span><br/>";
+      return false;
+    }
+  }
+
+  function check_mails($mail, $checkmail)
+  {
+    if(filled($mail) AND filled($checkmail))
+    {
+      if(same_inputs($mail, $checkmail))
+      {
+        if(valid_mail($mail))
+        {
+          if(!user_exists('mail', $mail))
+          {
+            return true;
+          }
+          else
+          {
+            echo "<span class=\"error_msg\">Le mail est déjà utilisé ! </span><br/>";
+            return false;
+          }
+        }
+        else
+        {
+          echo "<span class=\"error_msg\">Le mail est invalide ! </span><br/>";
+          return false;
+        }
+      }
+      else
+      {
+        echo "<span class=\"error_msg\">Les mails ne sont pas identiques ! </span><br/>";
+        return false;
+      }
+    }
+    else
+    {
+      echo "<span class=\"error_msg\"> Les mails doivent être remplis ! </span><br/>";
+      return false;
+    }
+  }
+
+  function check_passwords($password, $checkpassword)
+  {
+    if(filled($password) AND filled($checkpassword))
+    {
+      if(same_inputs($password, $checkpassword))
+      {
+        if(valid_password($password))
+        {
+          return true;
+        }
+        else
+        {
+          return "<span class=\"error_msg\">Le mot de passe est invalide ! </span><br/>";
+        }
+      }
+      else
+      {
+        return "<span class=\"error_msg\">Les mots de passe ne sont pas identiques ! </span><br/>";
+      }
+    }
+    else
+    {
+      return "<span class=\"error_msg\"> Les mots de passe doivent être remplis ! </span><br/>";
+    }
+  }
+
+  function check_mail($mail)
+  {
+    if(filled($mail))
+    {
+      if(valid_mail($mail))
+      {
+        if(!user_exists('mail', $mail))
+        {
+          return true;
+        }
+        else
+        {
+          echo "<span class=\"error_msg\">Le mail est déjà utilisé ! </span><br/>";
+          return false;
+        }
+      }
+      else
+      {
+        echo "<span class=\"error_msg\">Le mail est invalide ! </span><br/>";
+        return false;
+      }
+    }
+    else
+    {
+      echo "<span class=\"error_msg\"> Le mail doit être rempli ! </span><br/>";
+      return false;
+    }
+  }
+
+  function check_password($password)
+  {
+    if(filled($password))
+    {
+      if(valid_password($password))
+      {
+        return true;
+      }
+      else
+      {
+        return "<span class=\"error_msg\">Le mot de passe est invalide ! </span><br/>";
+      }
+    }
+    else
+    {
+      return "<span class=\"error_msg\"> Le mots de passe doit être remplis ! </span><br/>";
+    }
+  }
+
 ?>
