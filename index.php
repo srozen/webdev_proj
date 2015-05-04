@@ -16,6 +16,9 @@
 
   // Include functions and classes files
   include('functions/functions.index.php');
+  include('functions/functions.input.php');
+  include('functions/functions.register.php');
+  include('functions/functions.user.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
