@@ -10,7 +10,9 @@
     // $userid = get_user_value('id', 'login', $login);
     // add_activationcode($userid, $activationcode);
     // send_registration_mail($mail, $activationcode, $login);
-    // echo '<div class="success_msg"> Vous êtes inscrit au site ! </div>';
+    // XXX Normal status : add_user_status($userid, );
+    // XXX Activating status : add_user_status($userid, );
+    echo '<div class="success_msg"> Vous êtes inscrit au site ! </div>';
   }
 
   function send_registration_mail($mail, $activation_code, $login)
