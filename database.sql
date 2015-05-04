@@ -14,11 +14,17 @@ CREATE TABLE user(
 );
 
 CREATE TABLE user_status(
-	
+		user_id int not null,
+		status_id int not null
+		date datetime default 'NOW()',
+		foreign key(user_id) references user(id),
+		foreign key(status_id) references status(id)
 )
 
 CREATE TABLE status(
-
+		id int not null primary key,
+		level int not null unique,
+		label varchar(45) not null unique,
 )
 
 
