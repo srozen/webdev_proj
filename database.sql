@@ -15,17 +15,17 @@ CREATE TABLE user(
 
 CREATE TABLE user_status(
 		user_id int not null,
-		status_id int not null
-		date datetime default 'NOW()',
+		status_id int not null,
+		date datetime not null,
 		foreign key(user_id) references user(id),
 		foreign key(status_id) references status(id)
-)
+);
 
 CREATE TABLE status(
 		id int not null primary key,
 		level int not null unique,
 		label varchar(45) not null unique,
-)
+);
 
 
 CREATE TABLE activation(
@@ -56,3 +56,18 @@ CREATE TABLE contact_message(
 -- select * from contact_message;
 -- select * from user_status;
 -- select * from status;
+
+
+---------------------
+-- STATUS CREATION --
+---------------------
+
+-- insert into status(id, level, label) values (1, 0, admin);
+-- insert into status(id, level, label) values (2, 10, subadmin);
+-- insert into status(id, level, label) values (3, 20, normal);
+-- insert into status(id, level, label) values (4, 30, activating);
+-- insert into status(id, level, label) values (5, 40, reactivating);
+-- insert into status(id, level, label) values (6, 50, lostpassword);
+-- insert into status(id, level, label) values (7, 60, frozen);
+-- insert into status(id, level, label) values (8, 70, unregistered);
+-- insert into status(id, level, label) values (9, 80, banned);
