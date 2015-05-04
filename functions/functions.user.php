@@ -44,3 +44,24 @@
   {
 
   }
+
+  function add_status($user_id, $status_id)
+  {
+    $query = 'INSERT into user_status(user_id, status_id, date)
+              VALUES (:userid, :statusid, NOW());';
+
+    $result = $GLOBALS['dbsocket']->prepare($query);
+
+    $result->execute(array(
+      'userid' => $user_id,
+      'status_id' => $status_id
+    ));
+  }
+
+  function remove_status($user_id, $status_id)
+  {
+    $query = 'DELETE from user_status
+              WHERE user_id = \'' . $user_id . '\'
+              AND status_id = \'' . $user_id . '\';';
+    $GLOBALS['dbsocket']->exec($query);
+  }
