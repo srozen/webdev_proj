@@ -9,6 +9,7 @@
   {
     $nav =  '<a href="index.php?page=index"> Accueil </a>';
     $nav .= '<a href="index.php?page=register"> Inscription </a>';
+    $nav .= '<a href="index.php?page=login"> Connexion </a>';
     echo $nav;
   }
 
@@ -21,6 +22,9 @@
         break;
       case 'register' :
         return $values = array('Inscription', 'register.php', 'Page d\'inscription');
+        break;
+      case 'login' :
+        return $values = array('Connexion', 'login.php', 'Page de connexion');
         break;
       default :
         return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
