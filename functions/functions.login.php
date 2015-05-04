@@ -15,7 +15,14 @@
 
       if(!empty($user))
       {
-        echo 'le user existe';
+        if(is_user_status('activating', $user['id']))
+        {
+          activation($user['id'], $code)
+        }
+        else
+        {
+          grant_access($user['id']);
+        }
       }
       else
       {
@@ -28,9 +35,25 @@
     }
   }
 
-  function activation($userid)
+  function activation($userid, $code)
   {
+    if(filled($code))
+    {
+      if(get_activation_code($userid) == $code)
+      {
+        set_user_value('lastlogin', 'NOW()', $userid);
+        set_user_value('currentlogin', 'NOW()', $userid);
+        set_user_value('activation', 'NOW()', $userid);
 
+        //remove_user_status($userid, $status_id);
+
+        grant_cass($userid);
+      }
+    }
+    else
+    {
+      echo '<div class="error_msg"> Vous devez vous connecter via le mail d\'activation ! </div>';
+    }
   }
 
   function grant_access($userid)
