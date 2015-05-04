@@ -3,7 +3,18 @@
  * FUNCTIONS USED TO INTERACT WITH DATABASE *
  ********************************************/
 
+function create_user($userid, $dbsocket)
+{
+  $query = 'SELECT id, login, mail, class, subclass, lastlogin, avatar
+            FROM user
+            WHERE id = \'' . $userid . '\'';
 
+  $result = $dbsocket->query($query);
+
+  $user = $result->fetch(PDO::FETCH_ASSOC);
+  $user = new User($user['id'], $user['login'], $user['mail'], $user['class'], $user['subclass'], $user['lastlogin'], $user['avatar']);
+  return $user;
+}
 /* Returns boolean, check if $field is already in database */
 // USE : user_exists('id', 1, $dbsocket); "Is the id 1 in user table?" //
 function user_exists($field, $value, $dbsocket)

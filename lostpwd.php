@@ -14,7 +14,13 @@
   {
     if(user_exists('mail', $_POST['mail'], $dbsocket))
     {
-      echo 'Vous êtes bien enregistré sur le site ! ';
+      $userid = get_user_value('id', 'mail', $_POST['mail'], $dbsocket);
+      $user = create_user($userid, $dbsocket);
+
+      if($user->getQuestionSet() == false)
+      {
+        echo 'Vous n\'avez pas rempli la question et réponse secrète, veuillez contacter un administrateur.';
+      }
     }
     else
     {

@@ -118,6 +118,7 @@ function select_user($dbsocket)
               <option value="activating">En attente d\'activation</option>
               <option value="reactivating">En réactivation</option>
               <option value="lostpwd">Mot de passe perdu</option>
+              <option value="lostpwdreactivating">Réactivation de mot de passe perdu</option>
               <option value="frozen">Gelé</option>
               <option value="banned">Banni</option>
             </select>

@@ -11,8 +11,9 @@ create table user(
     activation datetime,
     statuschange datetime,
     avatar boolean default false,
-		secret varchar(128) default null,
-		answer char(128) default null
+		question varchar(128) default null,
+		answer char(128) default null,
+		questionset boolean default false
 );
 
 
