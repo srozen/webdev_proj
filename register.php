@@ -16,8 +16,9 @@
 
     if($valid_form)
     {
-      //Process register
+      //registration($_POST['login'], $_POST['mail'], $_POST['password'])
     }
+
   }
 
   $req = '<span class="error_msg">*</span>';
