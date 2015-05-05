@@ -46,7 +46,7 @@
         set_user_value('activation', 'NOW()', $userid);
 
         //remove_user_status($userid, $status_id);
-
+        remove_activation_code($userid);
         grant_cass($userid);
       }
     }
