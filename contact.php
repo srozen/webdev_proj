@@ -6,7 +6,16 @@
 
   if(isset($_POST['contact_submit']))
   {
-    send_contact_message(sanitize($_POST['mail']), sanitize($_POST['subject']), sanitize($_POST['message']));
+    if(logged())
+    {
+      $mail = $_SESSION['user']->getMail();
+    }
+    else
+    {
+      $mail = $_POST['mail'];
+    }
+
+    send_contact_message(sanitize($mail), sanitize($_POST['subject']), sanitize($_POST['message']));
   }
 ?>
 
