@@ -6,6 +6,7 @@
 
   // Classes inclusions before any action in order to allow $SESSION with class uses //
   include('classes/class.page.php');
+  include('classes/class.user.php');
 
   // Parsing the config file
   $config = parse_ini_file('config.ini', true);
