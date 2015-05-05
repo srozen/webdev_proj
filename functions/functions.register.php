@@ -21,7 +21,7 @@
 
    $to = $mail;
 
-   $subject = 'Insription au Wiki - Bienvenue '. $login . ' ! ';
+   $subject = 'Insription au '. $GLOBALS['config']['GLOBAL']['title'] . ' - Bienvenue '. $login . ' ! ';
 
    $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
    $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
