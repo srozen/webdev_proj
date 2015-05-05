@@ -20,6 +20,7 @@
   include('functions/functions.register.php');
   include('functions/functions.user.php');
   include('functions/functions.login.php');
+  include('functions/functions.authentication.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
