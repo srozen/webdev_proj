@@ -5,13 +5,13 @@
 
   function registration($login, $password, $mail)
   {
-    // create_new_user($login, $password, $mail);
-    // $activationcode = generate_code($login, $mail);
-    // $userid = get_user_value('id', 'login', $login);
-    // add_activationcode($userid, $activationcode);
-    // send_registration_mail($mail, $activationcode, $login);
-    // XXX Normal status : add_user_status($userid, );
-    // XXX Activating status : add_user_status($userid, );
+    create_new_user($login, $password, $mail);
+    $activationcode = generate_code($login, $mail);
+    $userid = get_user_value('id', 'login', $login);
+    add_activation_code($userid, $activationcode);
+    send_registration_mail($mail, $activationcode, $login);
+    add_user_status($userid, 3);
+    add_user_status($userid, 4);
     echo '<div class="success_msg"> Vous êtes inscrit au site ! </div>';
   }
 
