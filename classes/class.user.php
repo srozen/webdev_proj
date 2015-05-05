@@ -169,7 +169,7 @@
       $this->lastlogin=$var;
     }
 
-    public function getLasLogin()
+    public function getLastLogin()
     {
       return $this->lastlogin;
     }
