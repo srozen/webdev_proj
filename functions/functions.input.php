@@ -183,12 +183,12 @@
       }
       else
       {
-        return "<span class=\"error_msg\">Le mot de passe est invalide ! </span><br/>";
+        return "<span class=\"error_msg\"> Le mot de passe est invalide ! </span><br/>";
       }
     }
     else
     {
-      return "<span class=\"error_msg\"> Le mots de passe doit être remplis ! </span><br/>";
+      return "<span class=\"error_msg\"> Le mot de passe doit être rempli ! </span><br/>";
     }
   }
 
