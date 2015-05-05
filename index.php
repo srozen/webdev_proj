@@ -21,6 +21,7 @@
   include('functions/functions.user.php');
   include('functions/functions.login.php');
   include('functions/functions.authentication.php');
+  include('functions/functions.messenger.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
@@ -36,6 +37,7 @@
   <head>
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/<?php set_user_css(); ?>"/>
     <title><?php echo $config['GLOBAL']['title'] . ' - ' . $page->getTabTitle(); ?></title>
   </head>
 
