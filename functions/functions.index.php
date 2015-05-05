@@ -8,8 +8,15 @@
   function create_menu()
   {
     $nav =  '<a href="index.php?page=index"> Accueil </a>';
-    $nav .= '<a href="index.php?page=register"> Inscription </a>';
-    $nav .= '<a href="index.php?page=login"> Connexion </a>';
+    if(logged())
+    {
+      $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
+    }
+    else
+    {
+      $nav .= '<a href="index.php?page=register"> Inscription </a>';
+      $nav .= '<a href="index.php?page=login"> Connexion </a>';
+    }
     echo $nav;
   }
 
@@ -37,6 +44,9 @@
         break;
       case 'login' :
         return $values = array('Connexion', 'login.php', 'Page de connexion');
+        break;
+      case 'logout' :
+        return $values = array('Déconnexion', 'logout.php', 'Page de déconnexion');
         break;
       default :
         return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
