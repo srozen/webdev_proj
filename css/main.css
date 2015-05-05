@@ -11,6 +11,12 @@ header
 nav
 {
 	background-color: #F4B350;
+	padding: 4px;
+}
+
+nav a
+{
+	margin : 4px;
 }
 
 section
