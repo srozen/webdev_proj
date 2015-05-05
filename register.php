@@ -1,5 +1,11 @@
 <?php
 
+  if(logged())
+  {
+    header("Location: index.php");
+    die();
+  }
+
   $login_recall = $mail_recall = '';
 
   if(isset($_POST['register']))
