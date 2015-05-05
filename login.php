@@ -3,6 +3,11 @@
 	{
 		login(sanitize($_POST['login']), sanitize($_POST['password']), sanitize($_POST['activation']));
 	}
+
+	if(isset($_GET['activation']))
+	{
+		echo '<h4> Connectez-vous pour poursuivre votre activation. </h4>';
+	}
 ?>
 
 <form name="login" method="post" action="index.php?page=login&activation=<?php echo $_GET['activation'];?>">
