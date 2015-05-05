@@ -8,6 +8,7 @@
   function create_menu()
   {
     $nav =  '<a href="index.php?page=index"> Accueil </a>';
+    $nav .= '<a href="index.php?page=contact"> Contact </a>';
     if(logged())
     {
       $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
@@ -28,7 +29,14 @@
     }
     else
     {
-      echo 'user.css';
+      if(admin($_SESSION['user']->getId()))
+      {
+        echo 'admin.css';
+      }
+      else
+      {
+        echo 'user.css';
+      }
     }
   }
 
@@ -38,6 +46,9 @@
     {
       case 'index' :
         return $values = array('Accueil', 'welcome.php', 'Page d\'accueil');
+        break;
+      case 'contact' :
+        return $values = array('Contact', 'contact.php', 'Formulaire de contact');
         break;
       case 'register' :
         return $values = array('Inscription', 'register.php', 'Page d\'inscription');
