@@ -71,7 +71,14 @@
 
   function set_user_value($field, $value, $userid)
   {
-    $set = 'SET ' . $field . ' = \'' . $value . '\'';
+    if($value == 'NOW()')
+    {
+      $set = 'SET ' . $field . ' = NOW() ';
+    }
+    else
+    {
+      $set = 'SET ' . $field . ' = \'' . $value . '\'';
+    }
 
     $query = 'UPDATE user ' . $set . ' WHERE id =\'' . $userid . '\';';
 
@@ -140,7 +147,7 @@
 
     $result->execute(array(
       'userid' => $user_id,
-      'status_id' => $status_id
+      'statusid' => $status_id
     ));
   }
 
@@ -152,10 +159,10 @@
     $GLOBALS['dbsocket']->exec($query);
   }
 
-  function remove_user_status($user_id, $status_id)
+  function remove_user_status($userid, $statusid)
   {
     $query = 'DELETE from user_status
-              WHERE user_id = \'' . $user_id . '\'
-              AND status_id = \'' . $user_id . '\';';
+              WHERE user_id = \'' . $userid . '\'
+              AND status_id = \'' . $statusid . '\';';
     $GLOBALS['dbsocket']->exec($query);
   }
