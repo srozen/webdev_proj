@@ -23,6 +23,7 @@
   include('functions/functions.login.php');
   include('functions/functions.authentication.php');
   include('functions/functions.messenger.php');
+  include('functions/functions.profile.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
