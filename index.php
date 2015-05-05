@@ -27,6 +27,11 @@
   // Creating the database socket
   $dbsocket = database_socket();
 
+  if(logged())
+  {
+    $_SESSION['user']->reload();
+  }
+
   // Creating the Page object
   if(isset($_GET['page']))  $page = create_page($_GET['page']);
   else $page = create_page('index');
