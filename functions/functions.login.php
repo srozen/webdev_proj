@@ -26,12 +26,12 @@
       }
       else
       {
-        echo 'Mauvaise combinaison login mdp';
+        echo '<div class="error_msg"> Mauvaise combinaison login/mot de passe.</div>';
       }
     }
     else
     {
-      echo 'Les champs ne sont pas remplis !!! ';
+      echo '<div class="error_msg"> Vous devez remplir tout les champs pour vous connecter.</div>';
     }
   }
 
@@ -49,16 +49,21 @@
         remove_activation_code($userid);
         grant_cass($userid);
       }
+      else
+      {
+        echo '<div class="error_msg"> Le code d\'activation fourni n\'est pas valide.</div>';
+      }
     }
     else
     {
-      echo '<div class="error_msg"> Vous devez vous connecter via le mail d\'activation ! </div>';
+      echo '<div class="error_msg"> Vous devez vous connecter via le mail d\'activation!</div>';
     }
   }
 
   function grant_access($userid)
   {
     update_lastlogin($userid);
+    $_SESSION['logged'] = true;
   }
 
   function update_lastlogin($userid)
