@@ -17,7 +17,7 @@
       {
         if(is_user_status('activating', $user['id']))
         {
-          activation($user['id'], $code)
+          activation($user['id'], $code);
         }
         else
         {
@@ -45,9 +45,9 @@
         set_user_value('currentlogin', 'NOW()', $userid);
         set_user_value('activation', 'NOW()', $userid);
 
-        //remove_user_status($userid, $status_id);
+        remove_user_status($userid, 4);
         remove_activation_code($userid);
-        grant_cass($userid);
+        grant_access($userid);
       }
       else
       {
@@ -64,6 +64,8 @@
   {
     update_lastlogin($userid);
     $_SESSION['logged'] = true;
+    $_SESSION['user'] = new User($userid);
+    header("Location: index.php");
   }
 
   function update_lastlogin($userid)
