@@ -5,18 +5,18 @@
   if(isset($_POST['register']))
   {
     // Checking login and recalling it if valid
-    $valid_form = check_login($_POST['login']);
-    if($valid_form) $login_recall = $_POST['login'];
+    $valid_login = check_login($_POST['login']);
+    if($valid_login) $login_recall = $_POST['login'];
     // Checking mail and recalling it if valid
-    $valid_form = check_mails($_POST['mail'], $_POST['checkmail']);
-    if($valid_form) $mail_recall = $_POST['mail'];
+    $valid_mail = check_mails($_POST['mail'], $_POST['checkmail']);
+    if($valid_mail) $mail_recall = $_POST['mail'];
     // Checking if passwords are valid
-    $valid_form = check_passwords($_POST['password'], $_POST['checkpassword']);
+    $valid_password = check_passwords($_POST['password'], $_POST['checkpassword']);
 
 
-    if($valid_form)
+    if($valid_login == true AND $valid_mail == true AND $valid_password == true)
     {
-      registration(sanitize($_POST['login']), sanitize($_POST['mail']), sanitize($_POST['password']));
+      registration(sanitize($_POST['login']), sanitize($_POST['password']), sanitize($_POST['mail']));
     }
 
   }
