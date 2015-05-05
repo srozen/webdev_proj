@@ -130,17 +130,20 @@
         }
         else
         {
-          return "<span class=\"error_msg\">Le mot de passe est invalide ! </span><br/>";
+          echo "<span class=\"error_msg\">Le mot de passe est invalide ! </span><br/>";
+          return false;
         }
       }
       else
       {
-        return "<span class=\"error_msg\">Les mots de passe ne sont pas identiques ! </span><br/>";
+        echo "<span class=\"error_msg\">Les mots de passe ne sont pas identiques ! </span><br/>";
+        return false;
       }
     }
     else
     {
-      return "<span class=\"error_msg\"> Les mots de passe doivent être remplis ! </span><br/>";
+      echo "<span class=\"error_msg\"> Les mots de passe doivent être remplis ! </span><br/>";
+      return false;
     }
   }
 
@@ -183,12 +186,14 @@
       }
       else
       {
-        return "<span class=\"error_msg\"> Le mot de passe est invalide ! </span><br/>";
+        echo "<span class=\"error_msg\"> Le mot de passe est invalide ! </span><br/>";
+        return false;
       }
     }
     else
     {
-      return "<span class=\"error_msg\"> Le mot de passe doit être rempli ! </span><br/>";
+      echo "<span class=\"error_msg\"> Le mot de passe doit être rempli ! </span><br/>";
+      return false;
     }
   }
 
