@@ -1,4 +1,11 @@
 <?php
+
+	if(logged())
+	{
+		header("Location: index.php");
+		die();
+	}
+	
 	if(isset($_POST['login_submit']))
 	{
 		login(sanitize($_POST['login']), sanitize($_POST['password']), sanitize($_POST['activation']));
