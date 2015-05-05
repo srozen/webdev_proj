@@ -6,4 +6,9 @@
     else return false;
   }
 
+  function admin($userid)
+  {
+    return(is_user_status('admin', $userid));
+  }
+
 ?>
