@@ -46,13 +46,14 @@
     }
 
     $query = 'INSERT INTO contact_message (subject, mail, message, date, user_id, parentid)
-              VALUES (:subject, :mail, :message, NOW(), :user_id, ' . $parentid . ');';
+              VALUES (:subject, :mail, :message, NOW(), :user_id, :parentid);';
     $response = $GLOBALS['dbsocket']->prepare($query);
     $response->execute(array(
       'subject' => $subject,
       'mail' => $mail,
       'message' => $message,
-      'user_id' => $userid
+      'user_id' => $userid,
+      'parentid' => $parentid
     ));
   }
 
