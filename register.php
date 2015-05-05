@@ -34,7 +34,7 @@
   <label>Mail</label><br/>
     <input type="text" name="mail" value="<?php echo $mail_recall; ?>"/><?php echo $req; ?><br/>
   <label>Vérification du mail</label><br/>
-    <input type="text" name="checkmail"/><?php echo $req; ?><br/>
+    <input type="text" name="checkmail" value="<?php echo $mail_recall; ?>"/><?php echo $req; ?><br/>
   <input type="submit" name="register" value="Inscription"/><br/>
   <span class="error_msg"> * = Champs requis </span>
 </form>
