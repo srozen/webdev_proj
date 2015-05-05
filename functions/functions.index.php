@@ -13,6 +13,18 @@
     echo $nav;
   }
 
+  function set_user_css()
+  {
+    if(!logged())
+    {
+      echo 'anon.css';
+    }
+    else
+    {
+      echo 'user.css';
+    }
+  }
+
   function page_values($page)
   {
     switch($page)
