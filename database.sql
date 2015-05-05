@@ -57,6 +57,8 @@ CREATE TABLE contact_message(
 -- select * from user_status;
 -- select * from status;
 
+-- select * from user_status where user_id = 
+
 
 ---------------------
 -- STATUS CREATION --
