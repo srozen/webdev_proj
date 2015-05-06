@@ -57,12 +57,14 @@ CREATE TABLE contact_message(
 -- select * from user_status;
 -- select * from status;
 
--- select * from user_status where user_id = 
-
+-- select * from user_status where user_id =
+-- select * from user where id = (select user_id from user_status where status_id = x);
+-- select label from status where status_id = (select status_id from user_status where user_id = x);
 
 ---------------------
 -- STATUS CREATION --
 ---------------------
+
 
 -- insert into status(id, level, label) values (1, 0, admin);
 -- insert into status(id, level, label) values (2, 10, subadmin);
