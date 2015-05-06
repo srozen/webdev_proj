@@ -3,15 +3,15 @@
   function display_profile($user)
   {
     $profile = '<h4> Données du profil </h4>
-                  <label> Login : </label><br/> ' . $user->getLogin() . '
-                  <label> Mail : </label><br/> ' . $user->getMail() . '
-                  <label> Id : </label><br/> ' . $user->getId() . '
-                  <label> Dernière connexion : </label><br/> ' . $user->getLastLogin() . '
-                  <label> Avatar : </label><br/>' . display_avatar($user);
+                  <div class="avatar"><label> Avatar : </label><br/>' . display_avatar($user) .'</div>
+                  <label> Login : </label><br/> ' . $user->getLogin() . '<br/>
+                  <label> Mail : </label><br/> ' . $user->getMail() . '<br/>
+                  <label> Id : </label><br/> ' . $user->getId() . '<br/>
+                  <label> Dernière connexion : </label><br/> ' . $user->getLastLogin();
     echo $profile;
   }
 
-  function display_profile_form($user, $target)
+  function display_profile_form($user, $target, $administrate = false)
   {
     $form = '<h4> Modification du profil </h4>
                 <form name="profil" method="post" action="'. $target . '" enctype="multipart/form-data">
@@ -89,13 +89,13 @@
           $file = $GLOBALS['config']['GLOBAL']['avatar'] . $user->getId() . '.' . $ext;
           if(file_exists($file))
           {
-            echo '<img class="avatar" src="' . $file . '" alt="Avatar de ' . $user->getId() . '"/>';
+            return '<img src="' . $file . '" alt="Avatar de ' . $user->getId() . '"/>';
           }
         }
     }
     else
     {
-      echo '<img class="avatar" src="'. $GLOBALS['config']['GLOBAL']['avatar'] . $GLOBALS['config']['GLOBAL']['defaultavatar'] . '" alt="Avatar par défaut"/>';
+      return '<img src="'. $GLOBALS['config']['GLOBAL']['avatar'] . $GLOBALS['config']['GLOBAL']['defaultavatar'] . '" alt="Avatar par défaut"/>';
     }
   }
 
