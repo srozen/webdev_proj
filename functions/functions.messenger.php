@@ -34,6 +34,32 @@
     mail($to, $subject, $message, $headers);
   }
 
+  function sendreply_contact_message($mail, $subj, $text, $answer, $id)
+  {
+    $to = $mail;
+
+    $subject = 'Re : ' . $subj;
+
+    $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+    $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+    $message = '<html><body>';
+    $message .= '<pre>' . $answer . '</pre>';
+    $message .= '<h3>Rappel de votre message : <h3>';
+    $message .= '<pre>' . $text . '</pre>';
+    $message .= 'Pour toute autre demande, veuillez ouvrir un nouveau ticket via la page contact du site.';
+    $message .= '</body></html>';
+
+    mail($to, $subject, $message, $headers);
+
+    $query = 'UPDATE contact_message
+              SET answer = true
+              WHERE id = \'' . $id . '\';';
+    $result = $GLOBALS['dbsocket']->exec($query);
+  }
+
   function record_message($mail, $subject, $message, $parentid = null)
   {
     if(logged())
