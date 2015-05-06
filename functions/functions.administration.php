@@ -24,6 +24,7 @@
           display_config();
           break;
         case 'message' :
+          select_messages();
           break;
         default :
           echo '<div> Veuillez sélectionner une option d\'administration.</div>';
@@ -84,6 +85,58 @@
     {
       echo '<div class="error_msg"> Le mot de passe est incorrect </div>';
     }
+  }
+
+  function select_messages()
+  {
+    echo '<h2>Gestion des messages de contact</h2>';
+    echo '<form name="mail" action="index.php?page=administration&manage=mail" method="post">
+          <select name="mail_sort">
+            <option value="">Type de classement</option>
+            <option value="datedesc"> Les plus récents</option>
+            <option value="dateasc"> Les plus anciens</option>
+            <option value="noanswer">Messages non répondus</option>
+            <option value="answer">Messages répondus</option>
+            <option value="anonymous">Messages anonymes</option>
+            <option value="user">Messages utilisateurs</option>
+          </select>
+          <input type="submit" value="Rechercher" name="mail_submit"/>
+        </form>';
+  }
+
+  function build_message_query($sort)
+  {
+    $clause = '';
+
+    switch($sort)
+    {
+      case 'datedesc':
+        $clause = 'ORDER BY date DESC';
+        break;
+      case 'dateasc':
+        $cause = 'ORDER BY date ASC';
+        break;
+      case 'noanswer':
+        $clause = 'WHERE answer = false';
+        break;
+      case 'answer':
+        $clause = 'WHERE answer = true';
+        break;
+      case 'anonymous':
+        $clause = 'WHERE user_id is null';
+         break;
+      case 'user':
+        $clause = 'WHERE user_id is not null';
+        break;
+      default:
+        $clause = '';
+        break;
+    }
+
+    $query = 'SELECT id , user_id as Utilisateur, subject as Sujet, message as Message, mail as \'Adresse Mail\', date as \'Envoyé le\', answer as Répondu
+               FROM contact_message ' . $clause . ';';
+
+    return $query;
   }
 
   function create_table()
