@@ -22,6 +22,7 @@ nav a
 section
 {
 	background-color: #FFDDDD;
+	padding: 1%;
 }
 
 footer
@@ -29,6 +30,16 @@ footer
 	background-color: #EEEEEE;
 }
 
+form
+{
+	border: solid 1px black;
+	padding: 1%;
+}
+
+.avatar
+{
+	float : right;
+}
 .badinput
 {
 	border : 1px solid red;
