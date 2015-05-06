@@ -5,6 +5,7 @@
     $panel = '<ul> Panneau d\'administration';
     $panel .= '<li><a href=index.php?page=administration&manage=config> Gestion de la configuration </a></li>';
     $panel .= '<li><a href=index.php?page=administration&manage=contact> Gestion des messages de contact </a></li>';
+    $panel .= '<li><a href=index.php?page=administration&manage=user> Gestion des utilisateurs </a></li>';
     $panel .= '</ul>';
 
     return $panel;
@@ -32,6 +33,25 @@
           if(isset($_POST['contact_submit']))
           {
             display_contact_messages($_POST['mail_sort']);
+          }
+          break;
+        case 'user' :
+          select_users();
+          if(isset($_GET['action']) AND $_GET['action'] == 'profile')
+          {
+            if(filled($_GET['userid']) AND user_exists('id', $_GET['userid']))
+            {
+              $user = new User($_GET['userid']);
+              display_profile($user);
+            }
+            else
+            {
+              echo '<div class="error_msg"> Le user n\'existe pas ! </div>';
+            }
+          }
+          if(isset($_POST['display_users']))
+          {
+            display_users($_POST['login'], $_POST['mail'], $_POST['status']);
           }
           break;
         default :
@@ -112,6 +132,31 @@
         </form>';
   }
 
+  function select_users()
+  {
+    echo '<h3>Bienvenue dans la gestion des utilisateurs</h3>
+          <form name="user" action="index.php?page=administration&manage=user" method="post">
+            <label>Entrez un pseudo à rechercher : </label>
+              <input type="text" name="login"/>
+            <label>Entrez un email à rechercher : </label>
+              <input type="text" name ="mail"/>
+            <label>Sélectionnez un statut : </label>
+              <select name="status">
+                <option value="all">Statut</option>
+                <option value="1">Administeur</option>
+                <option value="2">Sous-Admin</option>
+                <option value="3">Normal</option>
+                <option value="4">En attente d\'activation</option>
+                <option value="5">En réactivation</option>
+                <option value="6">Mot de passe perdu</option>
+                <option value="7">Gelé</option>
+                <option value="8">Désinscrit</option>
+                <option value="9">Banni</option>
+              </select>
+              <input type="submit" value="Rechercher" name="display_users"/>
+          </form>';
+  }
+
   function build_message_query($sort)
   {
     $clause = '';
@@ -147,6 +192,52 @@
     return $query;
   }
 
+  function build_user_query($login, $mail, $status)
+  {
+    $loginclause = '';
+    $mailclause = '';
+    $statusclause = '';
+
+    $lc = false;
+    $mc = false;
+    $sc = false;
+    $clause = '';
+
+    if($login != null)
+    {
+      $loginclause .= 'login like \'%' . $login . '%\' ';
+      $lc = true;
+    }
+    if($mail != null)
+    {
+      if($lc == true)
+      {
+        $mailclause .= ' AND ';
+      }
+      $mailclause .= 'mail like \'%' . $mail . '%\' ';
+      $mc = true;
+    }
+    if($status != 'all')
+    {
+      if($lc == true OR $mc == true)
+      {
+        $statusclause .= ' AND ';
+      }
+      $sc = true;
+      $statusclause .= 'id =  (select user_id from user_status where status_id = ' . $status . ')';
+    }
+
+    if($lc == true or $mc == true or $sc == true)
+    {
+      $clause = 'WHERE ' . $loginclause . $mailclause . $statusclause;
+    }
+
+    $query = 'SELECT id, login as Login, mail as Mail, register as Inscription, lastlogin as \'Dernière connexion\'
+              FROM user '. $clause . ';';
+
+    return $query;
+  }
+
   function display_contact_messages($sort)
   {
     $query = build_message_query($sort);
@@ -154,7 +245,7 @@
 
     $elements = $result->fetchAll(PDO::FETCH_ASSOC);
     $i = 0;
-    echo '<form name="select_message" action="index.php?page=administration&manage=contact" method="post"><table><tr>';
+    echo '<form name="select_" action="index.php?page=administration&manage=contact" method="post"><table><tr>';
 
     if(count($elements))
     {
@@ -171,7 +262,7 @@
         echo '<td>' . $element['id'] . '</td>';
         if($element['Utilisateur'] != null)
         {
-          echo '<td><a href="#">'. get_user_value('login', 'id', $element['Utilisateur']) .'</a></td>';
+          echo '<td><a href="index.php?page=administration&manage=contact&action=profil&userid='. $element['Utilisateur'] . '">'. get_user_value('login', 'id', $element['Utilisateur']) .'</a></td>';
         }
         else
         {
@@ -194,6 +285,52 @@
         $i++;
       }
       echo '</tbody></table><input type="submit" value="Répondre" name="select_message"></form>';
+    }
+  }
+
+  function display_users($login, $mail, $status)
+  {
+    $query = build_user_query($login, $mail, $status);
+    echo $query;
+    $result = $GLOBALS['dbsocket']->query($query);
+
+    $elements = $result->fetchAll(PDO::FETCH_ASSOC);
+
+    $i = 0;
+    echo '<table><tr>';
+
+    if(count($elements))
+    {
+      $col_names = array_keys($elements[0]);
+
+      foreach($col_names as $name)
+      {
+        echo '<th>'. $name .'</th>';
+      }
+      echo '<th> Status </th></tr></thead><tbody>';
+      foreach($elements as $element)
+      {
+        echo '<tr>';
+        echo '<td>' . $element['id'] . '</td>';
+        echo '<td><a href="index.php?page=administration&manage=user&action=profile&userid='. $element['id'] . '">' . $element['Login']. '</td>';
+        echo '<td>' . $element['Mail'] . '</td>';
+        echo '<td>' . $element['Inscription']. '</td>';
+        echo '<td>' . $element['Dernière connexion'] . '</td>';
+
+        echo '<td>';
+        $query = 'SELECT label from status where id in (select status_id from user_status where user_id = ' . $element['id'] . ');';
+        $result = $GLOBALS['dbsocket']->query($query);
+        $array_status = $result->fetchAll(PDO::FETCH_ASSOC);
+        foreach($array_status as $status)
+        {
+          echo translate_status($status['label']) . '<br/>';
+        }
+        echo '</td>';
+
+        echo '</tr>';
+        $i++;
+      }
+      echo '</tbody></table>';
     }
   }
 
@@ -240,6 +377,41 @@
     else
     {
       echo '<div class="error_msg"> Aucun message trouvé !</div>';
+    }
+  }
+
+
+  function translate_status($label)
+  {
+    switch($label)
+    {
+      case 'admin' :
+        return 'Administrateur';
+        break;
+      case 'subadmin' :
+        return 'Sous-Admin';
+        break;
+      case 'normal' :
+        return 'Normal';
+        break;
+      case 'activating' :
+        return 'En activation';
+        break;
+      case 'reactivating' :
+        return 'En réactivation';
+        break;
+      case 'lostpassword' :
+        return 'Mot de passe perdu';
+        break;
+      case 'frozen' :
+        return 'Gelé';
+        break;
+      case 'unregistered' :
+        return 'Désinscrit';
+        break;
+      case 'banned' :
+        return 'Banni';
+        break;
     }
   }
 ?>
