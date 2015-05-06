@@ -14,6 +14,31 @@
     }
   }
 
+  function send_status_notification($mail, $status_id, $change)
+  {
+    $to = $mail;
+
+    $subject = 'Changement de statut';
+
+    $headers = message_headers();
+
+    switch($change)
+    {
+      case 'remove' :
+        $action = 'retiré de';
+        break;
+      case 'add' :
+        $action = 'ajouté à';
+        break;
+    }
+    $message = '<html><body>';
+    $message .= '<h2>Votre statut a été modifié par un administrateur.</h2>';
+    $message .= '<p> Le statut ' . get_status_label($status_id, true) . ' a été ' . $action . ' votre profil.</p>';
+    $message .= '</body></html>';
+
+    mail($to, $subject, $message, $headers);
+  }
+
   function confirm_contact_message($mail, $subj, $text)
   {
     $to = $mail;
@@ -40,10 +65,7 @@
 
     $subject = 'Re : ' . $subj;
 
-    $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
-    $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+    $headers = message_headers();
 
     $message = '<html><body>';
     $message .= '<pre>' . $answer . '</pre>';
