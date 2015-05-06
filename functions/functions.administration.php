@@ -37,12 +37,24 @@
           break;
         case 'user' :
           select_users();
-          if(isset($_GET['action']) AND $_GET['action'] == 'profile')
+          if(isset($_GET['action']))
           {
             if(filled($_GET['userid']) AND user_exists('id', $_GET['userid']))
             {
               $user = new User($_GET['userid']);
-              display_profile($user);
+              if($_GET['action'] == 'profile')
+              {
+                display_profile($user, true);
+              }
+              if($_GET['action'] == 'modify')
+              {
+                if(isset($_POST['submit_profile']))
+                {
+                  process_profile_form($_POST['login'], $_POST['password'], $_POST['checkpassword'], $_POST['mail'], $_POST['checkmail'], $_POST['userpassword'], $user, true, $_POST['add_status'], $_POST['remove_status']);
+                }
+                $target = 'index.php?page=administration&manage=user&action=modify&userid='. $user->getId();
+                display_profile_form($user, $target, true);
+              }
             }
             else
             {
@@ -318,9 +330,7 @@
         echo '<td>' . $element['Dernière connexion'] . '</td>';
 
         echo '<td>';
-        $query = 'SELECT label from status where id in (select status_id from user_status where user_id = ' . $element['id'] . ');';
-        $result = $GLOBALS['dbsocket']->query($query);
-        $array_status = $result->fetchAll(PDO::FETCH_ASSOC);
+        $array_status = get_user_status($element['id']);
         foreach($array_status as $status)
         {
           echo translate_status($status['label']) . '<br/>';
