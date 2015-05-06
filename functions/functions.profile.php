@@ -1,6 +1,6 @@
 <?php
 
-  function display_profile($user)
+  function display_profile($user, $administrate = false)
   {
     $profile = '<h4> Données du profil </h4>
                   <div class="avatar"><label> Avatar : </label><br/>' . display_avatar($user) .'</div>
@@ -65,7 +65,7 @@
 
       if($_FILES["avatar"]["error"] != 0)
       {
-        
+
       }
       else
       {
