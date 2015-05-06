@@ -65,7 +65,7 @@
 
       if($_FILES["avatar"]["error"] != 0)
       {
-        echo 'lelele';
+        
       }
       else
       {
