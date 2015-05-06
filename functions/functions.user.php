@@ -49,6 +49,33 @@
     }
   }
 
+  function is_user_statusid($statusid, $userid)
+  {
+    $query = 'SELECT count(*)
+              FROM user_status
+              WHERE user_id = \'' . $userid . '\' AND
+              status_id = ' . $statusid . ';';
+
+    $result = $GLOBALS['dbsocket']->query($query);
+
+    if($result->fetchColumn() > 0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  function get_user_status($userid)
+  {
+    $query = 'SELECT label from status where id in (select status_id from user_status where user_id = ' . $userid . ');';
+    $result = $GLOBALS['dbsocket']->query($query);
+    $array_status = $result->fetchAll(PDO::FETCH_ASSOC);
+    return $array_status;
+  }
+
   /**
    * Returns a value by looking for a know value in a known column
    * @param $value - String, column name, of the wanted value
@@ -138,19 +165,6 @@
     ));
   }
 
-  function add_user_status($user_id, $status_id)
-  {
-    $query = 'INSERT into user_status(user_id, status_id, date)
-              VALUES (:userid, :statusid, NOW());';
-
-    $result = $GLOBALS['dbsocket']->prepare($query);
-
-    $result->execute(array(
-      'userid' => $user_id,
-      'statusid' => $status_id
-    ));
-  }
-
   function remove_activation_code($userid)
   {
     $query = 'DELETE from activation
@@ -159,10 +173,35 @@
     $GLOBALS['dbsocket']->exec($query);
   }
 
-  function remove_user_status($userid, $statusid)
+  function add_user_status($userid, $statusid, $send_notification = false)
+  {
+    $query = 'INSERT into user_status(user_id, status_id, date)
+              VALUES (:userid, :statusid, NOW());';
+
+    $result = $GLOBALS['dbsocket']->prepare($query);
+
+    $result->execute(array(
+      'userid' => $userid,
+      'statusid' => $statusid
+    ));
+
+    if($send_notification)
+    {
+      $mail = get_user_value('mail', 'id', $userid);
+      send_status_notification($mail, $statusid, 'add');
+    }
+  }
+
+  function remove_user_status($userid, $statusid, $send_notification = false)
   {
     $query = 'DELETE from user_status
               WHERE user_id = \'' . $userid . '\'
               AND status_id = \'' . $statusid . '\';';
     $GLOBALS['dbsocket']->exec($query);
+
+    if($send_notification)
+    {
+      $mail = get_user_value('mail', 'id', $userid);
+      send_status_notification($mail, $statusid, 'remove');
+    }
   }
