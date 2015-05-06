@@ -25,6 +25,7 @@
   include('functions/functions.messenger.php');
   include('functions/functions.profile.php');
   include('functions/functions.administration.php');
+  include('functions/functions.status.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
