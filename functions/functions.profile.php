@@ -7,7 +7,16 @@
                   <label> Login : </label><br/> ' . $user->getLogin() . '<br/>
                   <label> Mail : </label><br/> ' . $user->getMail() . '<br/>
                   <label> Id : </label><br/> ' . $user->getId() . '<br/>
-                  <label> Dernière connexion : </label><br/> ' . $user->getLastLogin();
+                  <label> Dernière connexion : </label><br/> ' . $user->getLastLogin() . '<br/>';
+                  if($administrate)
+                  {
+                    echo '<a href="index.php?page=administration&manage=user&action=modify&userid=' . $user->getId() . '">Modifier l\'utilisateur</a><br/>';
+                    $array_status = get_user_status($user->getId());
+                    foreach($array_status as $status)
+                    {
+                      $profile .= '<label> Statut : </label>' . translate_status($status['label']) . '<br/>';
+                    }
+                  }
     echo $profile;
   }
 
@@ -26,15 +35,44 @@
                   <label> Vérification Mail : </label><br/>
                     <input type="text" name="checkmail"/><br/>
                   <label> Avatar : </label><br/>
-                    <input type="file" name="avatar" id="avatar"><br/>
-                  <label> Pour appliquer les changements, entrez votre mot de passe : </label><br/>
+                    <input type="file" name="avatar" id="avatar"><br/>';
+    if($administrate AND !admin($user->getId()))
+    {
+      $form .= '<label> Ajout d\'un statut : </label>
+                  <select name="add_status">
+                    <option value="">---</option>
+                    <option value="2">Sous-Admin</option>
+                    <option value="3">Normal</option>
+                    <option value="4">En attente d\'activation</option>
+                    <option value="5">En réactivation</option>
+                    <option value="6">Mot de passe perdu</option>
+                    <option value="7">Gelé</option>
+                    <option value="8">Désinscrit</option>
+                    <option value="9">Banni</option>
+                  </select><br/>';
+
+      $form .= '<label> Retrait d\'un statut : </label>
+                  <select name="remove_status">
+                    <option value="">---</option>
+                    <option value="2">Sous-Admin</option>
+                    <option value="3">Normal</option>
+                    <option value="4">En attente d\'activation</option>
+                    <option value="5">En réactivation</option>
+                    <option value="6">Mot de passe perdu</option>
+                    <option value="7">Gelé</option>
+                    <option value="8">Désinscrit</option>
+                    <option value="9">Banni</option>
+                  </select><br/>';
+    }
+
+        $form .='<label> Pour appliquer les changements, entrez votre mot de passe : </label><br/>
                   <input type="password" name="userpassword"/><br/>
                   <input type="submit" name="submit_profile"/><br/>
                 </form>';
     echo $form;
   }
 
-  function process_profile_form($login, $password, $checkpassword, $mail, $checkmail, $userpassword, $user)
+  function process_profile_form($login, $password, $checkpassword, $mail, $checkmail, $userpassword, $user, $administrate = false, $addstatus = null, $removestatus = null)
   {
     if(indoor_auth($userpassword))
     {
@@ -70,6 +108,50 @@
       else
       {
         update_user_avatar($user);
+      }
+
+      if($administrate AND !admin($user->getId()))
+      {
+        if(filled($addstatus) AND $addstatus != null)
+        {
+          if($addstatus != 1)
+          {
+            if(!is_user_statusid($addstatus, $user->getId()))
+            {
+              add_user_status($user->getId(), $addstatus, true);
+            }
+            else
+            {
+              echo '<div class="error_msg">L\'utilisateur possède déjà ce statut.</div>';
+            }
+          }
+          else
+          {
+            echo '<div class="error_msg">Le statut administrateur ne peut pas être conféré.</div>';
+          }
+        }
+
+        if($administrate AND !admin($user->getId()))
+        {
+          if(filled($removestatus) AND $removestatus != null)
+          {
+            if($addstatus != 1)
+            {
+              if(is_user_statusid($removestatus, $user->getId()))
+              {
+                remove_user_status($user->getId(), $removestatus, true);
+              }
+              else
+              {
+                echo '<div class="error_msg">L\'utilisateur ne possède pas ce statut.</div>';
+              }
+            }
+            else
+            {
+              echo '<div class="error_msg">Le statut administrateur ne peut pas être retiré.</div>';
+            }
+          }
+        }
       }
     }
     else
