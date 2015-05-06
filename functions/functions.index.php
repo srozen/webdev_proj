@@ -12,6 +12,10 @@
     if(logged())
     {
       $nav .= '<a href="index.php?page=profile"> Profil </a>';
+      if(admin($_SESSION['user']->getId()))
+      {
+        $nav .= '<a href="index.php?page=administration"> Administration </a>';
+      }
       $nav .= '<a href="index.php?page=logout"> Déconnexion </a>';
     }
     else
@@ -53,6 +57,9 @@
         break;
       case 'profile' :
         return $values = array('Profil', 'profile.php', 'Gestion du profil');
+        break;
+      case 'administration' :
+        return $values = array('Administration', 'administration.php', 'Administration');
         break;
       case 'register' :
         return $values = array('Inscription', 'register.php', 'Page d\'inscription');
