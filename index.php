@@ -33,6 +33,11 @@
   if(logged())
   {
     $_SESSION['user']->reload();
+    if($_SESSION['user']->getSecret() == false AND $_GET['page'] != 'secretquestion' AND $_GET['page'] != 'logout')
+    {
+      header("Location: index.php?page=secretquestion");
+      die();
+    }
   }
 
   // Creating the Page object
