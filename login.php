@@ -17,7 +17,7 @@
 	}
 ?>
 
-<form name="login" method="post" action="index.php?page=login&activation=<?php echo $_GET['activation'];?>">
+<form name="login" method="post" action="index.php?page=login<?php if(isset($_GET['activation'])) echo '&activation=' . $_GET['activation'];?>">
 	Pseudo : <br/>
 	<input type="text" name="login"/><br/>
 	Mot de passe : <br/>
