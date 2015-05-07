@@ -209,7 +209,7 @@
       $this->question=$var;
     }
 
-    public function getQuestion($var)
+    public function getQuestion()
     {
       return $this->question;
     }
