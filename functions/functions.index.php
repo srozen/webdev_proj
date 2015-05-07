@@ -64,6 +64,9 @@
       case 'register' :
         return $values = array('Inscription', 'register.php', 'Page d\'inscription');
         break;
+      case 'secretquestion' :
+        return $values = array('Question Secrète', 'secretquestion.php', 'Question et Réponse secrètes');
+        break;
       case 'login' :
         return $values = array('Connexion', 'login.php', 'Page de connexion');
         break;
