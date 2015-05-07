@@ -15,9 +15,13 @@
 
       if(!empty($user))
       {
-        if(is_user_status('activating', $user['id']))
+        if(activating($user['id']))
         {
           activation($user['id'], $code);
+        }
+        else if(banned($user['id']))
+        {
+          echo '<div class="error_msg"> Vous êtes banni ! </div>';
         }
         else
         {
