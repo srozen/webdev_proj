@@ -84,16 +84,13 @@
 
   function send_passwordrecovery_message($mail, $recovery_code)
   {
-   $url = 'http://'. $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?page=passwordrecovery&activation=';
+   $url = 'http://'. $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?page=recoverpassword&activation=';
 
    $to = $mail;
 
    $subject = $GLOBALS['config']['GLOBAL']['title'] . ' - Restauration du mot de passe';
 
-   $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
-   $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
-   $headers .= "MIME-Version: 1.0\r\n";
-   $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+   $headers = message_headers();
 
    $message = '<html><body>';
    $message .= '<h2>Vous avez demandé une restauration du mot de passe.</h2>';
@@ -105,6 +102,27 @@
    $message .= '</body></html>';
 
    mail($to, $subject, $message, $headers);
+  }
+
+  function send_mailrecovery_message($mail, $recovery_code)
+  {
+    $url = 'http://'. $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?page=login&activation=';
+
+    $to = $mail;
+
+    $subject = $GLOBALS['config']['GLOBAL']['title'] . ' - Restauration du mot de passe';
+
+    $headers = message_headers();
+
+    $message = '<html><body>';
+    $message .= '<h2>Vous avez modifié votre mail avec succès.</h2>';
+    $message .= '<h3> Veuillez à présent valider ce changement via le lien suivant : </h3>';
+    $message .= '<a href="'. $url . $recovery_code . '">Activation</a><br/>';
+    $message .= '<h3> Ou en copiant ce lien dans votre navigateur : </h3>';
+    $message .= '<span>'. $url . $recovery_code;
+    $message .= '</body></html>';
+
+    mail($to, $subject, $message, $headers);
   }
 
   function record_message($mail, $subject, $message, $parentid = null)
