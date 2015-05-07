@@ -22,6 +22,7 @@
         else if(banned($user['id']))
         {
           echo '<div class="error_msg"> Vous êtes banni ! </div>';
+          die();
         }
         else
         {
