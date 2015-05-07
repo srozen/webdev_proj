@@ -19,6 +19,18 @@
         {
           activation($user['id'], $code);
         }
+        else if(reactivating($user['id']))
+        {
+          reactivation($user['id'], $code);
+        }
+        else if(lostpassword($user['id']))
+        {
+          $message = 'Demande de changement de mot de passe annulée !';
+          $url = '?message='.$message;
+          remove_user_status($userid, 6);
+          remove_activation_code($userid);
+          grant_access($user['id']);
+        }
         else if(banned($user['id']))
         {
           echo '<div class="error_msg"> Vous êtes banni ! </div>';
@@ -65,12 +77,33 @@
     }
   }
 
-  function grant_access($userid)
+  function reactivation($userid, $code)
+  {
+    if(filled($code))
+    {
+      if(get_reactivation_code($userid) == $code)
+      {
+        remove_user_status($userid, 5);
+        remove_reactivation_code($userid);
+        grant_access($userid);
+      }
+      else
+      {
+        echo '<div class="error_msg"> Le code de réactivation fourni n\'est pas valide.</div>';
+      }
+    }
+    else
+    {
+      grant_access($userid);
+    }
+  }
+
+  function grant_access($userid, $message = null)
   {
     update_lastlogin($userid);
     $_SESSION['logged'] = true;
     $_SESSION['user'] = new User($userid);
-    header("Location: index.php");
+    header('Location: index.php' . $message);
   }
 
   function update_lastlogin($userid)
