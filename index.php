@@ -67,6 +67,7 @@
     <section>
       <?php
         echo '<h2>' . $page->getTitle() . '</h2>';
+        if(isset($_GET['message'])) echo $_GET['message'];
         include($page->getFile());
       ?>
     </section>
