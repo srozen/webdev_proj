@@ -36,7 +36,11 @@
                   <label> Vérification Mail : </label><br/>
                     <input type="text" name="checkmail"/><br/>
                   <label> Avatar : </label><br/>
-                    <input type="file" name="avatar" id="avatar"><br/>';
+                    <input type="file" name="avatar" id="avatar"><br/>
+                  <label> Question secrète :</label><br/>
+                    <input type="text" name="question" value="' . $user->getQuestion() .'"/><br/>
+                  <label> Réponse secrète : </label><br/>
+                    <input type="text" name="answer"/><br/>';
     if($administrate AND !admin($user->getId()))
     {
       $form .= '<label> Ajout d\'un statut : </label>
@@ -73,7 +77,7 @@
     echo $form;
   }
 
-  function process_profile_form($login, $password, $checkpassword, $mail, $checkmail, $userpassword, $user, $administrate = false, $addstatus = null, $removestatus = null)
+  function process_profile_form($login, $password, $checkpassword, $mail, $checkmail, $userpassword, $user, $question, $answer, $administrate = false, $addstatus = null, $removestatus = null)
   {
     if(indoor_auth($userpassword))
     {
@@ -100,6 +104,15 @@
         {
           $user->update('mail', $mail);
         }
+      }
+
+      if(filled($question) AND filled($answer))
+      {
+        process_question_answer($question, $answer, $user);
+      }
+      else if($question != $user->getQuestion() AND !filled($answer))
+      {
+        echo '<div class="error_msg"> Une réponse doit être entrée pour votre nouvelle question secrète ! </div>';
       }
 
       if($_FILES["avatar"]["error"] != 0)
