@@ -27,9 +27,9 @@
         {
           $message = 'Demande de changement de mot de passe annulée !';
           $url = '?message='.$message;
-          remove_user_status($userid, 6);
-          remove_activation_code($userid);
-          grant_access($user['id']);
+          remove_user_status($user['id'], 6);
+          remove_activation_code($user['id']);
+          grant_access($user['id'], $url);
         }
         else if(banned($user['id']))
         {
