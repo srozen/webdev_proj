@@ -28,6 +28,16 @@
     return preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{'. $GLOBALS['config']['PASSWORD']['password_minlength'] . ',' . $GLOBALS['config']['PASSWORD']['password_maxlength'] . '50}$/', $password);
   }
 
+  function valid_question($question)
+  {
+    return preg_match('/[A-Za-z ]{6,40}[?]*[?]/', $question);
+  }
+
+  function valid_answer($answer)
+  {
+    return preg_match('/[A-Za-z0-9]{6,40}/', $answer);
+  }
+
   /* Check if two strings are the same, if flag is true the comparison is case unsensitive */
   function same_inputs($str1, $str2, $flag = false)
   {
@@ -193,6 +203,48 @@
     else
     {
       echo "<span class=\"error_msg\"> Le mot de passe doit être rempli ! </span><br/>";
+      return false;
+    }
+  }
+
+  function check_question($question)
+  {
+    if(filled($question))
+    {
+      if(valid_question($question))
+      {
+        return true;
+      }
+      else
+      {
+        echo '<div class="error_msg"> La question n\'est pas valide ! </div>';
+        return false;
+      }
+    }
+    else
+    {
+      echo '<div class="error_msg"> Vous devez remplir la question secrète ! </div>';
+      return false;
+    }
+  }
+
+  function check_answer($answer)
+  {
+    if(filled($answer))
+    {
+      if(valid_answer($answer))
+      {
+        return true;
+      }
+      else
+      {
+        echo '<div class="error_msg"> La réponse secrète n\'est pas valide ! </div>';
+        return false;
+      }
+    }
+    else
+    {
+      echo '<div class="error_msg"> Vous devez remplir la réponse secrète ! </div>';
       return false;
     }
   }
