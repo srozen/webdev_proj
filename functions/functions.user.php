@@ -147,7 +147,20 @@
   {
     $query = 'SELECT code
               FROM activation
-              WHERE user_id = \'' . $userid . '\';';
+              WHERE user_id = \'' . $userid . '\'
+              AND recovery = false;';
+    $result = $GLOBALS['dbsocket']->query($query);
+    $activation = $result->fetch();
+
+    return $activation['code'];
+  }
+
+  function get_reactivation_code($userid)
+  {
+    $query = 'SELECT code
+              FROM activation
+              WHERE user_id = \'' . $userid . '\'
+              AND recovery = true;';
     $result = $GLOBALS['dbsocket']->query($query);
     $activation = $result->fetch();
 
@@ -171,6 +184,14 @@
     $query = 'DELETE from activation
               WHERE user_id = \'' . $userid . '\'
               AND recovery = false;';
+    $GLOBALS['dbsocket']->exec($query);
+  }
+
+  function remove_reactivation_code($userid)
+  {
+    $query = 'DELETE from activation
+              WHERE user_id = \'' . $userid . '\'
+              AND recovery = true;';
     $GLOBALS['dbsocket']->exec($query);
   }
 
