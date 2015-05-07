@@ -50,7 +50,7 @@
               {
                 if(isset($_POST['submit_profile']))
                 {
-                  process_profile_form($_POST['login'], $_POST['password'], $_POST['checkpassword'], $_POST['mail'], $_POST['checkmail'], $_POST['userpassword'], $user, true, $_POST['add_status'], $_POST['remove_status']);
+                  process_profile_form($_POST['login'], $_POST['password'], $_POST['checkpassword'], $_POST['mail'], $_POST['checkmail'], $_POST['userpassword'], $user, $_POST['question'], $_POST['answer'], true, $_POST['add_status'], $_POST['remove_status']);
                 }
                 $target = 'index.php?page=administration&manage=user&action=modify&userid='. $user->getId();
                 display_profile_form($user, $target, true);
