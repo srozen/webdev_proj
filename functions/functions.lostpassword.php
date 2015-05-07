@@ -48,9 +48,9 @@
   {
     if(filled($answer))
     {
-      if(check_passwords($_password, $checkpassword))
+      if(check_passwords($password, $checkpassword))
       {
-        if(compare_answers($user, $_answer))
+        if(compare_answers($user, $answer))
         {
           $user->update('password', encrypt($password));
           // Removing reactivation status if belonging to it
