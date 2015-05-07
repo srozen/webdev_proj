@@ -67,6 +67,9 @@
       case 'secretquestion' :
         return $values = array('Question Secrète', 'secretquestion.php', 'Question et Réponse secrètes');
         break;
+      case 'lostpassword' :
+        return $values = array('Mot de passe perdu', 'lostpassword.php', 'Récupération du mot de passe');
+        break;
       case 'login' :
         return $values = array('Connexion', 'login.php', 'Page de connexion');
         break;

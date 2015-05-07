@@ -82,6 +82,31 @@
     $result = $GLOBALS['dbsocket']->exec($query);
   }
 
+  function send_passwordrecovery_message($mail, $recovery_code)
+  {
+   $url = 'http://'. $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?page=passwordrecovery&activation=';
+
+   $to = $mail;
+
+   $subject = $GLOBALS['config']['GLOBAL']['title'] . ' - Restauration du mot de passe';
+
+   $headers = "From: " . strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+   $headers .= "Reply-To: ". strip_tags('no-reply@wiki.pmm.be') . "\r\n";
+   $headers .= "MIME-Version: 1.0\r\n";
+   $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+   $message = '<html><body>';
+   $message .= '<h2>Vous avez demandé une restauration du mot de passe.</h2>';
+   $message .= '<h2>Si vous n\'avez pas fait cette requête, veuillez sécuriser vos données afin d\'éviter un vol de votre compte.</h2>';
+   $message .= '<h3> Veuillez valider cette restauration via le lien suivant : </h3>';
+   $message .= '<a href="'. $url . $recovery_code . '">Activation</a><br/>';
+   $message .= '<h3> Ou en copiant ce lien dans votre navigateur : </h3>';
+   $message .= '<span>'. $url . $recovery_code;
+   $message .= '</body></html>';
+
+   mail($to, $subject, $message, $headers);
+  }
+
   function record_message($mail, $subject, $message, $parentid = null)
   {
     if(logged())

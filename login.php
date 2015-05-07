@@ -5,7 +5,7 @@
 		header("Location: index.php");
 		die();
 	}
-	
+
 	if(isset($_POST['login_submit']))
 	{
 		login(sanitize($_POST['login']), sanitize($_POST['password']), sanitize($_POST['activation']));
@@ -26,4 +26,4 @@
 	<input type="submit" name="login_submit"/><br/>
 </form>
 
-<a href="#">Mot de passe oublié?</a><br/><br/>
+<a href="index.php?page=lostpassword">Mot de passe oublié?</a><br/><br/>

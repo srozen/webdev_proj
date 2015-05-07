@@ -154,14 +154,15 @@
     return $activation['code'];
   }
 
-  function add_activation_code($userid, $code)
+  function add_activation_code($userid, $code, $recovery = 0)
   {
-    $query = 'INSERT INTO activation (user_id, code)
-              VALUES(:userid, :code)';
+    $query = 'INSERT INTO activation (user_id, code, recovery)
+              VALUES(:user_id, :code, :recovery)';
     $result = $GLOBALS['dbsocket']->prepare($query);
     $result->execute(array(
-      'userid' => $userid,
-      'code' => $code
+      'user_id' => $userid,
+      'code' => $code,
+      'recovery' => $recovery
     ));
   }
 
