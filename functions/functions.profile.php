@@ -103,6 +103,12 @@
         if(check_mails($mail, $checkmail))
         {
           $user->update('mail', $mail);
+          add_user_status($user->getId(), 5);
+          echo '<div class="success_msg">Mail changé, un mail de réactivation va vous ête envoyé sur la nouvelle adresse mail.</div>';
+          // ajout code de réactivation
+          $code = generate_code($user->getLogin(), $user->getMail());
+          add_activation_code($user->getId(), $code, 1);
+          send_mailrecovery_message($user->getMail(), $code);
         }
       }
 
