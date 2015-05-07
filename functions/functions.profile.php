@@ -6,10 +6,11 @@
                   <div class="avatar"><label> Avatar : </label><br/>' . display_avatar($user) .'</div>
                   <label> Login : </label><br/> ' . $user->getLogin() . '<br/>
                   <label> Mail : </label><br/> ' . $user->getMail() . '<br/>
-                  <label> Id : </label><br/> ' . $user->getId() . '<br/>
+                  <label> Question secrète : </label><br/> ' . $user->getQuestion() . '<br/>
                   <label> Dernière connexion : </label><br/> ' . $user->getLastLogin() . '<br/>';
                   if($administrate)
                   {
+                    $profile .= '<label> Id : </label><br/> ' . $user->getId() . '<br/>';
                     echo '<a href="index.php?page=administration&manage=user&action=modify&userid=' . $user->getId() . '">Modifier l\'utilisateur</a><br/>';
                     $array_status = get_user_status($user->getId());
                     foreach($array_status as $status)
@@ -157,6 +158,17 @@
     else
     {
       echo '<div class="error_msg"> Le mot de passe de confirmation est erroné. </div>';
+    }
+  }
+
+  function process_question_answer($question, $answer, $user)
+  {
+    if(check_question($question) AND check_answer($answer))
+    {
+      $user->update('question', $question);
+      $user->update('answer', encrypt($answer));
+      $user->update('secret', true);
+      return true;
     }
   }
 
