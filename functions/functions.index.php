@@ -8,6 +8,7 @@
   function create_menu()
   {
     $nav =  '<a href="index.php?page=index"> Accueil </a>';
+    $nav .= '<a href="index.php?page=wiki"> Wikies </a>';
     $nav .= '<a href="index.php?page=contact"> Contact </a>';
     if(logged())
     {
@@ -57,6 +58,9 @@
         break;
       case 'profile' :
         return $values = array('Profil', 'profile.php', 'Gestion du profil');
+        break;
+      case 'wiki' :
+        return $values = array('Wikies', 'wiki.php', 'Wikies');
         break;
       case 'administration' :
         return $values = array('Administration', 'administration.php', 'Administration');
