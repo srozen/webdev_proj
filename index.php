@@ -27,6 +27,7 @@
   include('functions/functions.administration.php');
   include('functions/functions.status.php');
   include('functions/functions.lostpassword.php');
+  include('functions/functions.parser.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
