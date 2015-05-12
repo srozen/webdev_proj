@@ -60,7 +60,7 @@
         return $values = array('Profil', 'profile.php', 'Gestion du profil');
         break;
       case 'wiki' :
-        return $values = array('Wikies', 'wiki.php', 'Wiki');
+        return $values = array('Wiki', 'wiki.php', 'Wiki');
         break;
       case 'administration' :
         return $values = array('Administration', 'administration.php', 'Administration');
