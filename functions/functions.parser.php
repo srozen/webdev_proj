@@ -3,12 +3,12 @@
   function parser($text)
   {
     // Replacing special chars by html code
-    $text = htmlspecialchars($text);
+    //$text = htmlspecialchars($text);
 
     // Creating <br/> to keep carriage returns
     $text = nl2br($text);
 
-    // Removing false tags
+    // Creatings wiki links
     $text = preg_replace('#\[\[(.+)\]\]#isU', '<a href="#">$1</a>', $text);
 
     // Boolean value used by whole function to exit loop when no tag is processed
@@ -74,7 +74,7 @@
     * SPECIAL CHARS *
     *****************/
     // On retire les fausses balises
-    $text = preg_replace('#\[[^abipuhnd]\|(.[^\]]+)\]#', '$1', $text);
+    $text = preg_replace('#\[[^abipuhndtb]\|(.[^\]]+)\]#', '$1', $text);
 
     /**************
     * SIMPLE TAGS *
@@ -98,6 +98,15 @@
     // UNDERLINED
     $text = preg_replace('#\[i\|(.+)\]#isU', '<i>$1</i>', $text);
 
+    /**************
+    * TABLES TAGS *
+    ***************/
+    // TABLE
+    // [tb||] - [tr] - [th] - [td]
+    $text = preg_replace('#\[tb\|(.+)\|(.+)\]#isU', '<table style="border : solid gray $1px;">$2</table>', $text);
+    $text = preg_replace('#\[tr\|(.+)\]#isU', '<tr>$1</tr>', $text);
+    $text = preg_replace('#\[th\|(.+)\]#isU', '<th>$1</th>', $text);
+    $text = preg_replace('#\[td\|(.+)\]#isU', '<td>$1</td>', $text);
 
     /***************
     * COMPLEX TAGS *
@@ -122,13 +131,14 @@
     $text = preg_replace('#\[div\|(.+)\|(.+)\]#isU', '<div style="background : url($1);">$2</div>', $text);
     // CREATING LIST ITEMS
     $text = preg_replace('#(\|)#isU', '</li><li>', $text);
+
     return $text;
   }
 
   function parser_specialchars($text)
   {
     // Replace ^ by a blank space
-    $text = preg_replace('#\^#isU', '&nbsp;', $text);
+    $text = preg_replace('#^#isU', '&nbsp;', $text);
     // Replace \char by the wanted special char
     $text = preg_replace('#\\\\(.{1})#isU', '$1', $text);
     return $text;
@@ -156,10 +166,10 @@
               [a| http://www.google.be | google.be]
               [a| http://www.google.be | google.be]';
 
-              $spechar= '\'"&<> \[\]\^\|';
+    $table = '[tb|1|[tr|[td|lol][td|lol]][tr|[td|mdr][td|mdl][td|[ul|groschichon|lelele|[ol|lele|remy|es†|tropur]]]]]';
     echo '<form name="testparse" action="index.php?page=wiki" method="post">
             <label> Votre texte : </label><br/>
-            <textarea rows="6" cols="50" name="text"> ' . $text_test . '</textarea><br/>
+            <textarea rows="6" cols="50" name="text"> ' . $table . '</textarea><br/>
             <input type="submit" name="submit"/>
           </form>';
   }
