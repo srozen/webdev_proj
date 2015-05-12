@@ -127,6 +127,9 @@
 
   function parser_specialchars($text)
   {
+    // Replace ^ by a blank space
+    $text = preg_replace('#\^#isU', '&nbsp;', $text);
+    // Replace \char by the wanted special char
     $text = preg_replace('#\\\\(.{1})#isU', '$1', $text);
     return $text;
   }
