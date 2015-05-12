@@ -48,6 +48,33 @@ CREATE TABLE contact_message(
 );
 
 -----------------
+-- WIKI TABLES --
+-----------------
+
+CREATE TABLE subject(
+		id int not null auto_increment primary key,
+		author_id int not null,
+		title varchar(100) not null,
+		description mediumtext not null,
+		creation datetime not null,
+		last_modification datetime default null,
+		visibility_author tinyint not null default 0,
+		visibility_modo tinyint default null,
+		visibility_admin tinyint default null,
+		foreign key(author_id) references user(id)
+)
+
+CREATE TABLE page(
+		id int not null auto_increment primary key,
+		subject_id int not null,
+		keywork varchar(50) not null,
+		content mediumtext,
+		creation datetime not null,
+		last_modification datetime default null,
+		foreign key(subject_id) references subject(id)
+)
+
+-----------------
 -- SQL QUERIES --
 -----------------
 
