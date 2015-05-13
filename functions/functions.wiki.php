@@ -13,20 +13,22 @@
           </form>';
   }
 
-  function search_wiki($title, $description, $keyword)
+  function search_wiki($title, $description, $keywords)
   {
-    if()
+    $page_query = search_page_query($keywords);
+    $subject_query = search_subject_query($title, $description);
+    $subject_result = $GLOBALS['dbsocket']->query($query);
+    $page_result = $GLOBALS['dbsocket']->query($query);
+
   }
 
-  function search_wiki_query()
+  function search_subject_query($title, $description)
   {
     $titleclause = '';
     $descriptionclause = '';
-    $keywordclause = '';
 
     $tc = false;
     $dc = false;
-    $kc = false;
     $clause = '';
 
     if($title != null)
@@ -40,26 +42,34 @@
       {
         $descriptionclause .= ' AND ';
       }
-      $descriptionclause .= 'mail like \'%' . $description . '%\' ';
+      $descriptionclause .= 'description like \'%' . $description . '%\' ';
       $dc = true;
     }
-    if($status != 'all')
+
+    if($tc == true or $dc == true)
     {
-      if($tc == true OR $dc == true)
-      {
-        $keywordclause .= ' AND ';
-      }
-      $kc = true;
-      $keywordclause .= 'keyword like \'%' . $keyword .'%\' ';
+      $clause = 'WHERE ' . $titleclause . $descriptionclause;
     }
 
-    if($tc == true or $dc == true or $kc == true)
+    $query = 'SELECT id
+              FROM subject '. $clause . ';';
+
+    return $query;
+  }
+
+  function search_page_query($keywords)
+  {
+    if($keywords != null)
     {
-      $clause = 'WHERE ' . $titleclause . $descriptionclause . $keywordclause;
+      $clause = 'WHERE keywords like \'%' . $keywords . '%\' ';
+    }
+    else
+    {
+      $clause = '';
     }
 
-    $query = 'SELECT id, login as Login, mail as Mail, register as Inscription, lastlogin as \'Dernière connexion\'
-              FROM user '. $clause . ';';
+    $query = 'SELECT id
+              FROM page ' . $clause . ';';
 
     return $query;
   }
