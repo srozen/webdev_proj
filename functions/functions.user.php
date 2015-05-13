@@ -68,6 +68,15 @@
     }
   }
 
+  function get_user_statuslevel($userid)
+  {
+    $query = 'SELECT min(level) as lvl FROM status WHERE id IN (SELECT status_id FROM user_status WHERE user_id = ' . $userid . ');';
+    $result = $GLOBALS['dbsocket']->query($query);
+    $userlevel = $result->fetch();
+
+    return $userlevel['lvl'];
+  }
+
   function get_user_status($userid)
   {
     $query = 'SELECT label from status where id in (select status_id from user_status where user_id = ' . $userid . ');';
