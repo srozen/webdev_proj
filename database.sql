@@ -58,11 +58,12 @@ CREATE TABLE subject(
 		description mediumtext not null,
 		creation datetime not null,
 		last_modification datetime default null,
+		moderator int default null,
 		visibility_author tinyint not null default 0,
 		visibility_modo tinyint default null,
 		visibility_admin tinyint default null,
 		foreign key(author_id) references user(id)
-)
+);
 
 CREATE TABLE page(
 		id int not null auto_increment primary key,
@@ -72,7 +73,7 @@ CREATE TABLE page(
 		creation datetime not null,
 		last_modification datetime default null,
 		foreign key(subject_id) references subject(id)
-)
+);
 
 -----------------
 -- SQL QUERIES --
@@ -94,7 +95,7 @@ CREATE TABLE page(
 
 
 -- insert into status(id, level, label) values (1, 0, admin);
--- insert into status(id, level, label) values (2, 10, subadmin);
+-- insert into status(id, level, label) values (2, 10, moderator);
 -- insert into status(id, level, label) values (3, 20, normal);
 -- insert into status(id, level, label) values (4, 30, activating);
 -- insert into status(id, level, label) values (5, 40, reactivating);
