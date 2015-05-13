@@ -1,8 +1,27 @@
 <?php
 
+  function create_wiki_form()
+  {
+    echo '<form name="search_wiki" action="index.php?page=wiki&action=create" method="post">
+            <label> Titre du sujet : </label><br/>
+              <input type="text" name="title"/><br/>
+            <label> Description du sujet : </label><br/>
+              <textarea rows="6" cols="50" name="description"></textarea><br/>
+            <label> Choix de visibilité : </label>
+              <select name="visibility_author">
+                <option value="0"> Pas de choix </option>
+                <option value="1"> Anonymes </option>
+                <option value="2"> Utilisateurs </option>';
+                if(moderator_level($_SESSION['user']->getId())) echo '<option value="3"> Modérateurs </option>';
+                if(admin_level($_SESSION['user']->getId())) echo '<option value="4"> Administrateur </option>';
+        echo '</select><br/>
+            <input type="submit" name="search_wiki"/>
+          </form>';
+  }
+
   function search_wiki_form()
   {
-    echo '<form name="search_wiki" action="index.php?page=wiki" method="post">
+    echo '<form name="search_wiki" action="index.php?page=wiki&action=search" method="post">
             <label> Titre du sujet : </label>
               <input type="text" name="title"/><br/>
             <label> Description du sujet : </label>
