@@ -13,13 +13,62 @@
           </form>';
   }
 
+
   function search_wiki($title, $description, $keywords)
   {
+    // Get the queries depending on the parameters
     $page_query = search_page_query($keywords);
     $subject_query = search_subject_query($title, $description);
-    $subject_result = $GLOBALS['dbsocket']->query($query);
-    $page_result = $GLOBALS['dbsocket']->query($query);
 
+    // Execute queries
+    $subject_result = $GLOBALS['dbsocket']->query($subject_query);
+    $page_result = $GLOBALS['dbsocket']->query($page_query);
+
+    //Get data
+    $subjects = $subject_result->fetchAll(PDO::FETCH_ASSOC);
+    $pages = $page_result->fetchAll(PDO::FETCH_ASSOC);
+
+    $i = 0;
+    echo '<table><caption>Sujets trouvés : </caption><tr>';
+
+    if(count($subjects))
+    {
+      $col_names = array_keys($subjects[0]);
+
+      foreach($col_names as $name)
+      {
+        echo '<th>'. $name .'</th>';
+      }
+      echo '</tr></thead><tbody>';
+      foreach($subjects as $subject)
+      {
+        echo '<tr>';
+        echo '</tr>';
+        $i++;
+      }
+    }
+    echo '</tbody></table>';
+
+    echo '<table><caption>Pages trouvées : </caption><tr>';
+
+    $i = 0;
+    if(count($pages))
+    {
+      $col_names = array_keys($pages[0]);
+
+      foreach($col_names as $name)
+      {
+        echo '<th>'. $name .'</th>';
+      }
+      echo '</tr></thead><tbody>';
+      foreach($pages as $page)
+      {
+        echo '<tr>';
+        echo '</tr>';
+        $i++;
+      }
+    }
+    echo '</tbody></table>';
   }
 
   function search_subject_query($title, $description)
