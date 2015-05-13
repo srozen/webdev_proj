@@ -6,14 +6,37 @@
     else return false;
   }
 
+  /*********************
+  * STATUS LEVEL CHECK *
+  **********************/
+
+  function admin_level($userid)
+  {
+    return( get_user_statuslevel($userid) <= 0);
+  }
+
+  function moderator_level($userid)
+  {
+    return( get_user_statuslevel($userid) <= 10);
+  }
+
+  function user_level($userid)
+  {
+    return( get_user_statuslevel($userid) <= 20);
+  }
+
+  /***********************************************
+  * SIMPLE STATUS CHECK FUNCTIONS BASED ON LABEL *
+  ************************************************/
+
   function admin($userid)
   {
     return (is_user_status('admin', $userid));
   }
 
-  function subadmin($userid)
+  function moderator($userid)
   {
-    return (is_user_status('subadmin', $userid));
+    return (is_user_status('moderator', $userid));
   }
 
   function normal($userid)
