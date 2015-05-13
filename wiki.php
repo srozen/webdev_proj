@@ -1,6 +1,6 @@
 <?php
 
-  search_wiki();
+  search_wiki_form();
 
   form_test();
 
