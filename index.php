@@ -29,7 +29,7 @@
   include('functions/functions.lostpassword.php');
   include('functions/functions.parser.php');
   include('functions/functions.wiki.php');
-  include('functions/functions.wikisubject.php');
+  include('functions/functions.wikisubjects.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
