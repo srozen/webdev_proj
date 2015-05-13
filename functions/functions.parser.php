@@ -24,7 +24,11 @@
       // Premier itérateur pour parcourir la chaîne entière
       for($i; $i < strlen($text); $i++)
       {
-        if($text[$i] == '[' AND $text[$i-1] != '\\')
+        if($i == 0 AND $text[$i] == '\\')
+        {
+          $wtext .= $text[$i];
+        }
+        else if($text[$i] == '[' AND $text[$i-1] != '\\')
         {
           // On commence le working tag
           $wtag .= $text[$i];
@@ -137,10 +141,10 @@
 
   function parser_specialchars($text)
   {
-    // Replace ^ by a blank space
-    $text = preg_replace('#^#isU', '&nbsp;', $text);
     // Replace \char by the wanted special char
     $text = preg_replace('#\\\\(.{1})#isU', '$1', $text);
+    // Replace ^ by a blank space
+    $text = preg_replace('#^#isU', '&nbsp;', $text);
     return $text;
   }
 
@@ -169,7 +173,7 @@
     $table = '[tb|1|[tr|[td|lol][td|lol]][tr|[td|mdr][td|mdl][td|[ul|groschichon|lelele|[ol|lele|remy|es†|tropur]]]]]';
     echo '<form name="testparse" action="index.php?page=wiki" method="post">
             <label> Votre texte : </label><br/>
-            <textarea rows="6" cols="50" name="text"> ' . $table . '</textarea><br/>
+            <textarea rows="6" cols="50" name="text">' . $text_test . '</textarea><br/>
             <input type="submit" name="submit"/>
           </form>';
   }
