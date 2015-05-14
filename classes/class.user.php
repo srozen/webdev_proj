@@ -88,7 +88,7 @@
           $this->setCurrentLogin($value);
           break;
         case 'activation' :
-          $dbfield = 'activatiob';
+          $dbfield = 'activation';
           $this->setActivation($value);
           break;
         case 'avatar' :
