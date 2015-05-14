@@ -90,7 +90,7 @@
       {
         echo '<tr>';
           echo '<td>' . $page['Id'] . '</td>';
-          echo '<td>' . get_subject_value('title', 'id', $page['Sujet']) . '</td>';
+          echo '<td><a href="index.php?page=subject&subjectid=' . $page['Sujet'] . '">' . get_subject_value('title', 'id', $page['Sujet']) . '</td>';
           echo '<td>'; if(isset($page['Mot-clé'])) echo $page['Mot-clé']; else echo 'Page d\'entrée'; echo '</td>';
           echo '<td>' . $page['Date de création'] . '</td>';
         echo '</tr>';
