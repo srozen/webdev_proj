@@ -63,7 +63,7 @@
         return $values = array('Wiki', 'wiki.php', 'Wiki');
         break;
       case 'subject' :
-        return $values = array('Sujet', 'subject.php', 'Page de sujet');
+        return $values = array('Sujet', 'subject.php', 'Sujet');
         break;
       case 'administration' :
         return $values = array('Administration', 'administration.php', 'Administration');
