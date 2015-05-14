@@ -2,7 +2,8 @@
 
   function create_wiki_form()
   {
-    echo '<form name="search_wiki" action="index.php?page=wiki&action=create" method="post">
+    echo '<form name="create_wiki" action="index.php?page=wiki&action=create" method="post">
+            <h3> Creation d\'un nouveau sujet : </h3>
             <label> Titre du sujet : </label><br/>
               <input type="text" name="title"/><br/>
             <label> Description du sujet : </label><br/>
@@ -15,13 +16,14 @@
                 if(moderator_level($_SESSION['user']->getId())) echo '<option value="3"> Modérateurs </option>';
                 if(admin_level($_SESSION['user']->getId())) echo '<option value="4"> Administrateur </option>';
         echo '</select><br/>
-            <input type="submit" name="search_wiki"/>
+            <input type="submit" name="create_wiki"/>
           </form>';
   }
 
   function search_wiki_form()
   {
     echo '<form name="search_wiki" action="index.php?page=wiki&action=search" method="post">
+          <h3> Rechercher dans le wiki : </h3>
             <label> Titre du sujet : </label>
               <input type="text" name="title"/><br/>
             <label> Description du sujet : </label>
@@ -62,6 +64,7 @@
       foreach($subjects as $subject)
       {
         echo '<tr>';
+         echo '<td>' . $subject['id'] . '</td>';
         echo '</tr>';
         $i++;
       }
