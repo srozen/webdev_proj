@@ -68,7 +68,7 @@ CREATE TABLE subject(
 CREATE TABLE page(
 		id int not null auto_increment primary key,
 		subject_id int not null,
-		keywords varchar(50) not null,
+		keyword varchar(50) default null,
 		content mediumtext,
 		creation datetime not null,
 		last_modification datetime default null,
