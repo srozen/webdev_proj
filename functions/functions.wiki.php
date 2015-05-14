@@ -1,6 +1,6 @@
 <?php
 
-  function create_wiki_form()
+  function create_subject_form()
   {
     echo '<form name="create_wiki" action="index.php?page=wiki&action=create" method="post">
             <h3> Creation d\'un nouveau sujet : </h3>
@@ -64,13 +64,16 @@
       foreach($subjects as $subject)
       {
         echo '<tr>';
-         echo '<td>' . $subject['id'] . '</td>';
+         echo '<td>' . $subject['Id'] . '</td>';
+         echo '<td>' . get_user_value('login', 'id', $subject['Auteur']) . '</td>';
+         echo '<td><a href="index.php?page=subject&subjectid=' . $subject['Id'] . '">' . $subject['Titre'] . '</a></td>';
+         echo '<td>' . $subject['Description'] . '</td>';
         echo '</tr>';
         $i++;
       }
     }
     echo '</tbody></table>';
-
+    echo '<br/><hr/><br/>';
     echo '<table><caption>Pages trouvées : </caption><tr>';
 
     $i = 0;
@@ -86,6 +89,10 @@
       foreach($pages as $page)
       {
         echo '<tr>';
+          echo '<td>' . $page['Id'] . '</td>';
+          echo '<td>' . get_subject_value('title', 'id', $page['Sujet']) . '</td>';
+          echo '<td>'; if(isset($page['Mot-clé'])) echo $page['Mot-clé']; else echo 'Page d\'entrée'; echo '</td>';
+          echo '<td>' . $page['Date de création'] . '</td>';
         echo '</tr>';
         $i++;
       }
@@ -122,24 +129,24 @@
       $clause = 'WHERE ' . $titleclause . $descriptionclause;
     }
 
-    $query = 'SELECT id
+    $query = 'SELECT id as Id, author_id as Auteur, title as Titre, description as Description
               FROM subject '. $clause . ';';
 
     return $query;
   }
 
-  function search_page_query($keywords)
+  function search_page_query($keyword)
   {
-    if($keywords != null)
+    if($keyword != null)
     {
-      $clause = 'WHERE keywords like \'%' . $keywords . '%\' ';
+      $clause = 'WHERE keyword like \'%' . $keyword . '%\' ';
     }
     else
     {
       $clause = '';
     }
 
-    $query = 'SELECT id
+    $query = 'SELECT id as Id, subject_id as Sujet, keyword as \'Mot-Clé\', creation as \'Date de création\'
               FROM page ' . $clause . ';';
 
     return $query;
