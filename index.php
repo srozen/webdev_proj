@@ -7,6 +7,7 @@
   // Classes inclusions before any action in order to allow $SESSION with class uses //
   include('classes/class.page.php');
   include('classes/class.user.php');
+  include('classes/class.subject.php');
 
   // Parsing the config file
   $config = parse_ini_file('config.ini', true);
@@ -15,7 +16,7 @@
   session_name($config['SESSION']['session_name']);
   session_start();
 
-  // Include functions and classes files
+  // Include functions files
   include('functions/functions.index.php');
   include('functions/functions.input.php');
   include('functions/functions.register.php');
@@ -29,7 +30,8 @@
   include('functions/functions.lostpassword.php');
   include('functions/functions.parser.php');
   include('functions/functions.wiki.php');
-  include('functions/functions.wikisubjects.php');
+  include('functions/functions.wikisubject.php');
+  include('functions/functions.wikipage.php');
 
   // Creating the database socket
   $dbsocket = database_socket();
