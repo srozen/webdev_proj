@@ -67,6 +67,40 @@
           </form>';
   }
 
+  function display_subject_pages($subject, $owner)
+  {
+    $query = 'SELECT keyword as \'Mot-Clé\', creation as \'Date de création\', last_modification as \'Dernière modification\'
+              FROM page
+              WHERE subject_id = ' . $subject->getId() .';';
+    $page_result = $GLOBALS['dbsocket']->query($query);
+    $pages = $page_result->fetchAll(PDO::FETCH_ASSOC);
+
+    echo '<table><tr>';
+
+    $i = 0;
+    if(count($pages))
+    {
+      $col_names = array_keys($pages[0]);
+
+      foreach($col_names as $name)
+      {
+        echo '<th>'. $name .'</th>';
+      }
+      echo '</tr></thead><tbody>';
+      foreach($pages as $page)
+      {
+        echo '<tr>';
+          echo '<td>'; if(isset($page['Mot-clé'])) echo $page['Mot-clé']; else echo 'Page d\'entrée'; echo '</td>';
+          echo '<td>' . $page['Date de création'] . '</td>';
+          echo '<td>'; if(isset($page['Dernière modification'])) echo $page['Dernière modification']; else echo '---'; echo '</td>';
+        echo '</tr>';
+        $i++;
+      }
+    }
+    echo '</tbody></table>';
+  }
+
+
 
   function save_subject_modification($subject, $title, $description, $visibility_author)
   {
