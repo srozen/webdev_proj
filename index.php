@@ -8,6 +8,7 @@
   include('classes/class.page.php');
   include('classes/class.user.php');
   include('classes/class.subject.php');
+  include('classes/class.wikipage.php');
 
   // Parsing the config file
   $config = parse_ini_file('config.ini', true);
