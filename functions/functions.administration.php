@@ -303,7 +303,6 @@
   function display_users($login, $mail, $status)
   {
     $query = build_user_query($login, $mail, $status);
-    echo $query;
     $result = $GLOBALS['dbsocket']->query($query);
 
     $elements = $result->fetchAll(PDO::FETCH_ASSOC);
