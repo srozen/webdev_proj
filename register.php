@@ -33,8 +33,10 @@
 <form name="register" action="index.php?page=register" method="post">
   <label>Login</label><br/>
     <input type="text" name="login" value="<?php echo $login_recall; ?>"/><?php echo $req; ?><br/>
+    <small>Minimum 6 caractères alphanumériques.<br/>
   <label>Mot de passe</label><br/>
     <input type="password" name="password"/><?php echo $req; ?><br/>
+    <small>Minimum 1 majuscule, chiffre, minuscule et 8 caractères.</small><br/>
   <label>Vérification du mot de passe</label><br/>
     <input type="password" name="checkpassword"/><?php echo $req; ?><br/>
   <label>Mail</label><br/>
