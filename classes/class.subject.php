@@ -38,18 +38,17 @@
 
     public function reload()
     {
-      $userid = $this->getId();
-
-      $this->id = $id;
+      $id = $this->getId();
 
       $query = 'SELECT author_id, title, description, creation, last_modification, moderator, visibility_author, visibility_modo, visibility_admin
-                FROM user
+                FROM subject
                 WHERE id = \'' . $id . '\'';
 
       $result = $GLOBALS['dbsocket']->query($query);
 
       $subject = $result->fetch(PDO::FETCH_ASSOC);
 
+      $this->setAuthorId($subject['author_id']);
   		$this->setTitle($subject['title']);
   		$this->setDescription($subject['description']);
   		$this->setLastModification($subject['last_modification']);
@@ -100,7 +99,7 @@
       if($dbfield != null)
       {
         $query = 'UPDATE subject
-                  SET ' . $dbfield . ' =\'' . $value . '\', last_modification = NOW() 
+                  SET ' . $dbfield . ' =\'' . $value . '\', last_modification = NOW()
                   WHERE id=\'' . $this->getId() . '\';';
         $GLOBALS['dbsocket']->exec($query);
         return true;
@@ -120,7 +119,10 @@
     **** GETTERS AND SETTERS ****
     *****************************/
 
-
+    public function setAuthorId($id)
+    {
+      $this->author_id = $id;
+    }
     public function getAuthorId()
     {
       return $this->author_id;
