@@ -62,7 +62,8 @@ CREATE TABLE subject(
 		visibility_author tinyint not null default 0,
 		visibility_modo tinyint default null,
 		visibility_admin tinyint default null,
-		foreign key(author_id) references user(id)
+		foreign key(author_id) references user(id),
+		foreign key(moderator) references user(id)
 );
 
 CREATE TABLE page(
@@ -72,6 +73,7 @@ CREATE TABLE page(
 		content mediumtext,
 		creation datetime not null,
 		last_modification datetime default null,
+		start boolean default false,
 		foreign key(subject_id) references subject(id)
 );
 
