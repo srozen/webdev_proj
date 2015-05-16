@@ -30,6 +30,7 @@
     if(logged() AND $subject->getAuthorId() == $_SESSION['user']->getId())
     {
       echo '<a href="index.php?page=subject&subjectid=' . $subject->getId() . '&action=modifsubject"> Modifier le sujet </a><br/>';
+      echo '<a href="index.php?page=subject&subjectid=' . $subject->getId() . '"> Ajouter une page</a><br/>';
     }
     echo '<span><b> Titre : </b></span>' . $subject->getTitle() . '<br/>';
     echo '<span><b> Auteur : </b></span>' . $subject->getAuthorName() .'<br/>';
@@ -83,7 +84,7 @@
 
   function display_subject_pages($subject, $owner)
   {
-    $query = 'SELECT keyword as \'Mot-Clé\', creation as \'Date de création\', last_modification as \'Dernière modification\'
+    $query = 'SELECT id, keyword as \'Mot-Clé\', creation as \'Date de création\', last_modification as \'Dernière modification\'
               FROM page
               WHERE subject_id = ' . $subject->getId() .';';
     $page_result = $GLOBALS['dbsocket']->query($query);
@@ -96,15 +97,15 @@
     {
       $col_names = array_keys($pages[0]);
 
-      foreach($col_names as $name)
-      {
-        echo '<th>'. $name .'</th>';
-      }
+      echo '<th>'. $col_names[1] .'</th>';
+      echo '<th>'. $col_names[2] .'</th>';
+      echo '<th>'. $col_names[3] .'</th>';
+
       echo '</tr></thead><tbody>';
       foreach($pages as $page)
       {
         echo '<tr>';
-          echo '<td>'; if(isset($page['Mot-clé'])) echo $page['Mot-clé']; else echo 'Page d\'entrée'; echo '</td>';
+          echo '<td><a href="index.php?page=subject&subjectid=' . $subject->getId() . '&pageid=' . $page['id'] . '&action=displaypage">'; if(isset($page['Mot-clé'])) echo $page['Mot-clé']; else echo 'Page d\'entrée'; echo '</a></td>';
           echo '<td>' . $page['Date de création'] . '</td>';
           echo '<td>'; if(isset($page['Dernière modification'])) echo $page['Dernière modification']; else echo '---'; echo '</td>';
         echo '</tr>';

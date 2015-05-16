@@ -28,7 +28,7 @@
         {
           $wtext .= $text[$i];
         }
-        else if($text[$i] == '[' AND $text[$i-1] != '\\')
+        else if($text[$i] == '[' AND ($i == 0 OR $text[$i-1] != '\\'))
         {
           // On commence le working tag
           $wtag .= $text[$i];
@@ -69,7 +69,7 @@
       $text = $wtext;
       $wtext = '';
     }
-    echo parser_specialchars($text);
+    return parser_specialchars($text);
   }
 
   function parser_decode($text)
@@ -78,7 +78,7 @@
     * SPECIAL CHARS *
     *****************/
     // On retire les fausses balises
-    $text = preg_replace('#\[[^abipuhndtb]\|(.[^\]]+)\]#', '$1', $text);
+    $text = preg_replace('#\[[^abipuhndtb1234]\|(.[^\]]+)\]#', '$1', $text);
 
     /**************
     * SIMPLE TAGS *
@@ -86,7 +86,10 @@
     // COMMENTS
     $text = preg_replace('#\[\!\|(.+)\]#isU', '<!--$1-->', $text);
     // TITLES
-    $text = preg_replace('#\[(1-4)\|(.+)\]#isU', '<h$1>$2</h$1>', $text);
+    $text = preg_replace('#\[1\|(.+)\]#isU', '<h1>$1</h1>', $text);
+    $text = preg_replace('#\[2\|(.+)\]#isU', '<h2>$1</h2>', $text);
+    $text = preg_replace('#\[3\|(.+)\]#isU', '<h3>$1</h3>', $text);
+    $text = preg_replace('#\[4\|(.+)\]#isU', '<h4>$1</h4>', $text);
     // DIVS
     $text = preg_replace('#\[d\|(.+)\]#isU', '<div>$1</div>', $text);
     // PARAGRAPHS

@@ -14,13 +14,14 @@
 
   function display_page($subject, $page)
   {
+    echo '<a href="index.php?page=subject&subjectid=' . $subject->getId() . '">Quitter page</a><br/>';
     if(logged() AND $subject->getAuthorId() == $_SESSION['user']->getId())
     {
       echo '<a href="index.php?page=subject&subjectid=' . $subject->getId() . '&action=modifpage&pageid=' . $page->getId() . '"> Modifier la page </a><br/>';
     }
     echo '<span><b> Mot clé : </b></span><br/>' . $page->getKeyword() . '<br/>';
     echo '<span><b> Modifié le : </b></span><br/>' . $page->getLastModification() . '<br/>';
-    echo '<span><b> Contenu : </b></span><br/>' . $page->getContent() . '<br/><br/>';
+    echo '<span><b> Contenu : </b></span><br/>' . parser($page->getContent()) . '<br/><br/>';
   }
 
   function modify_page_form($subject, $page)
@@ -29,11 +30,23 @@
           <form name="create_page" action="index.php?page=subject&subjectid=' . $subject->getId() .'&action=displaypage&pageid=' . $page->getId() . '" method="post">
             <h3> Modification de la page : </h3>
             <label> Mot-clé : </label><br/>
-              <input type="text" name="title" value="' . $page->getKeyword() .'" /><br/>
+              <input type="text" name="keyword" value="' . $page->getKeyword() .'" /><br/>
             <label> Contenu : </label><br/>
-              <textarea rows="6" cols="50" name="description">' . $page->getContent() .'</textarea><br/>
+              <textarea rows="6" cols="50" name="content">' . $page->getContent() .'</textarea><br/>
             <input type="submit" name="modify_page"/>
           </form>';
+  }
+
+  function save_page_modification($page, $keyword, $content)
+  {
+    if(filled($keyword) AND $keyword != $page->getKeyword())
+    {
+      $page->update('keyword', $keyword);
+    }
+    if(filled($content) AND $content != $page->getContent())
+    {
+      $page->update('content', $content);
+    }
   }
 
   function load_page($pageid)

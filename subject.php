@@ -17,6 +17,10 @@
   {
     save_subject_modification($subject, $_POST['title'], $_POST['description'], $_POST['visibility_author']);
   }
+  if(isset($_POST['modify_page']))
+  {
+    save_page_modification($page, sanitize($_POST['keyword']), sanitize($_POST['content']));
+  }
 
   if(isset($_GET['action']) AND $_GET['action'] == 'modifsubject' AND logged() AND $owner)
   {
@@ -31,6 +35,8 @@
 
   if(isset($_GET['action']) AND $_GET['action'] == 'displaypage' AND $page_related)
   {
+    $page->reload();
+    echo '<hr/><h1>Page : </h1>';
     display_page($subject, $page);
   }
   if(isset($_GET['action']) AND $_GET['action'] == 'modifpage' AND $page_related AND $owner)
