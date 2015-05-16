@@ -2,6 +2,11 @@
 
   search_wiki_form();
 
+  if(isset($_POST['search_wiki']))
+  {
+    search_wiki(sanitize($_POST['title']), sanitize($_POST['description']), sanitize($_POST['keyword']));
+  }
+
   if(logged() AND !banned($_SESSION['user']->getId()) AND !frozen($_SESSION['user']->getId()) AND !unregistered($_SESSION['user']->getId()) AND !reactivating($_SESSION['user']->getId()))
   {
     create_subject_form();
@@ -17,10 +22,4 @@
       }
     }
   }
-
-  if(isset($_POST['search_wiki']))
-  {
-    search_wiki(sanitize($_POST['title']), sanitize($_POST['description']), sanitize($_POST['keyword']));
-  }
-
 ?>
