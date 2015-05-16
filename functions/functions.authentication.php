@@ -12,17 +12,17 @@
 
   function admin_level($userid)
   {
-    return( get_user_statuslevel($userid) <= 0);
+    return(get_user_statuslevel($userid) <= 0);
   }
 
   function moderator_level($userid)
   {
-    return( get_user_statuslevel($userid) <= 10);
+    return(get_user_statuslevel($userid) <= 10);
   }
 
   function user_level($userid)
   {
-    return( get_user_statuslevel($userid) <= 20);
+    return(get_user_statuslevel($userid) <= 20);
   }
 
   /***********************************************
