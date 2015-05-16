@@ -8,12 +8,13 @@
 		private $content;
 		private $creation;
 		private $last_modification;
+    private $start;
 
     public function __construct($id)
     {
       $this->id = $id;
 
-      $query = 'SELECT subject_id, keyword, content, creation, last_modification
+      $query = 'SELECT subject_id, keyword, content, creation, last_modification, start
                 FROM page
                 WHERE id = \'' . $id . '\'';
 
@@ -26,13 +27,14 @@
   		$this->content = $wikipage['content'];
   		$this->creation = $wikipage['creation'];
   		$this->last_modification = $wikipage['last_modification'];
+      $this->start = $wikipage['start'];
     }
 
     public function reload()
     {
       $id = $this->getId();
 
-      $query = 'SELECT subject_id, keyword, content, creation, last_modification
+      $query = 'SELECT subject_id, keyword, content, creation, last_modification, start
                 FROM page
                 WHERE id = \'' . $id . '\'';
 
@@ -45,6 +47,7 @@
       $this->setContent($wikipage['content']);
       $this->setCreation($wikipage['creation']);
       $this->setLastModification($wikipage['last_modification']);
+      $this->setStart($wikipage['start']);
     }
 
     public function update($field, $value)
@@ -80,9 +83,12 @@
       if($dbfield != null)
       {
         $query = 'UPDATE page
-                  SET ' . $dbfield . ' =\'' . $value . '\', last_modification = NOW()
+                  SET ' . $dbfield . ' = :value, last_modification = NOW()
                   WHERE id=\'' . $this->getId() . '\';';
-        $GLOBALS['dbsocket']->exec($query);
+        $result = $GLOBALS['dbsocket']->prepare($query);
+        $result->execute(array(
+          'value' => $value
+        ));
         return true;
       }
       else
@@ -145,5 +151,15 @@
     public function getLastModification()
     {
       return $this->last_modification;
+    }
+
+    public function setStart($start)
+    {
+      $this->start=$start;
+    }
+
+    public function getStart()
+    {
+      return $this->start;
     }
   }
