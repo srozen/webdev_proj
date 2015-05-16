@@ -1,6 +1,6 @@
 <?php
 
-  function parser($text)
+  function parser($text, $subject)
   {
     // Replacing special chars by html code
     //$text = htmlspecialchars($text);
@@ -8,8 +8,21 @@
     // Creating <br/> to keep carriage returns
     $text = nl2br($text);
 
-    // Creatings wiki links
-    $text = preg_replace('#\[\[(.+)\]\]#isU', '<a href="#">$1</a>', $text);
+    $text = preg_replace_callback(
+      '#\[\[(.+)\]\]#isU',
+      function($match) use ($subject)
+      {
+        if(keyword_exists($subject, $match[1]))
+        {
+          return '<a class="validkeyword" href="index.php?page=subject&subjectid='. $subject->getId() .'&action=displaypage&pageid='. get_page_value('id', 'keyword', $match[1]) .'">' . $match[1] . '</a>';
+        }
+        else
+        {
+          return '<a class="createkeyword" href="index.php?page=subject&subjectid='. $subject->getId() .'&action=createpage&keyword='. $match[1] .'">' . $match[1] . '</a>';
+        }
+      },
+      $text
+    );
 
     // Boolean value used by whole function to exit loop when no tag is processed
     $processed_tags = true;
