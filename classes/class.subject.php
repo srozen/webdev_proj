@@ -99,9 +99,12 @@
       if($dbfield != null)
       {
         $query = 'UPDATE subject
-                  SET ' . $dbfield . ' =\'' . $value . '\', last_modification = NOW()
+                  SET ' . $dbfield . ' = :value, last_modification = NOW()
                   WHERE id=\'' . $this->getId() . '\';';
-        $GLOBALS['dbsocket']->exec($query);
+        $result = $GLOBALS['dbsocket']->prepare($query);
+        $result->execute(array(
+          'value' => $value
+        ));
         return true;
       }
       else
